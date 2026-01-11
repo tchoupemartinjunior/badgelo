@@ -7,7 +7,9 @@
     "types": [],
     "baseUrl": "./src",
     "paths":{
-      "@layout/*": ["app/layout/*"]
+      "@layout/*": ["app/layout/*"],
+      "@shared/*": ["app/shared/*"],
+      "@features/*": ["app/features/*"]
     }
   },
   "include": [

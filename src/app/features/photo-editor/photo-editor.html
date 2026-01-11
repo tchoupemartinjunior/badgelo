@@ -1,0 +1,23 @@
+
+<div class="container">
+<div>
+ <h1>Edition Photo</h1>
+</div>
+<div class="flex flex-row">
+    <div class="w-1/2 p-4">
+        <h2>Outils d'édition</h2>
+        <!-- Ajoutez ici les outils d'édition de photo -->
+    </div>
+    <div class="w-1/2 p-4">
+        <h2>Aperçu de l'image</h2>
+        <!-- Ajoutez ici l'aperçu de l'image éditée -->
+         <div class="h-200 w-200">
+     <img [src]="fileUploadService.previewUrl()" alt="Uploaded Image" />  
+         </div>
+    
+    </div>
+</div>
+
+</div>
+
+
