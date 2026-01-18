@@ -11,8 +11,8 @@ export const routes: Routes = [{
 },
 {
     path: 'editor',
-    loadComponent: () => import('./features/photo-editor/photo-editor').then(m => m.PhotoEditor),
-    loadChildren: () => import('./features/photo-editor/editor.routes').then(m => m.EDITOR_ROUTES)
+    loadComponent: () => import('./features/editor/editor').then(m => m.Editor),
+    loadChildren: () => import('./features/editor/editor.routes').then(m => m.EDITOR_ROUTES)
 }
 
 ];
