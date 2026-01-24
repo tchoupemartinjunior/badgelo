@@ -3,7 +3,7 @@
         <h1 class="text-3xl text-purple-700">Edition Photo</h1>
     </div>
 
-    <div class="flex flex-row  bg-white shadow-lg rounded-lg mx-auto justify-center w-11/12 mt-2">
+    <div class="flex flex-row bg-white shadow-lg rounded-lg mx-auto justify-center w-11/12 mt-2">
 
         <!-- Edition section -->
         <div class="w-1/3 p-4 pl-4 border-purple-200 border-r shadow-lg rounded-lg flex flex-col justify-between">
@@ -27,10 +27,8 @@
             </div>
 
             <div>
-                <button (click)="editorStateService.resetEditor()" class="bg-gray-700 text-white text-base font-medium
-           px-6 py-3 rounded-lg shadow-md
-           hover:border-gray-300 hover:shadow-lg hover:cursor-pointer
-           transition duration-200 ease-in-out">Réinitialiser les modifications</button>
+                <bdge-button text="Réinitialiser les modifications" [bgColor]="'bg-gray-700'"
+                    [onHoverBgColor]="'bg-gray-500'" (onClick)="editorStateService.resetEditor()"></bdge-button>
             </div>
         </div>
 
@@ -42,12 +40,9 @@
             <canvas #canvas hidden></canvas>
 
             <div class="flex flex-row space-x-4 mt-4 justify-center items-center">
-                <bdge-upload-button (fileSelected)="fileUploadService.upload($event)"
+                <bdge-upload-button [backgroundColor]="'bg-gray-700'" (fileSelected)="fileUploadService.upload($event)"
                     class="bg-gray-100"></bdge-upload-button>
-                <button (click)="download()" class="bg-purple-700 text-white text-base font-medium
-           px-6 py-3 rounded-lg shadow-md
-           hover:bg-purple-600 hover:shadow-lg
-           transition duration-200 ease-in-out">Téléchargez l'image</button>
+                <bdge-button text="Téléchargez l'image" (onClick)="download()"></bdge-button>
             </div>
         </div>
 

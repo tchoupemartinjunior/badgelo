@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, signal, input } from '@angular/core';
 
 @Component({
   selector: 'bdge-upload-button',
@@ -8,7 +8,8 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class UploadButton {
   @Output() fileSelected = new EventEmitter<File>();
-  
+
+  backgroundColor = input<string>('bg-purple-700');
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;

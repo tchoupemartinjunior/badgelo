@@ -3,12 +3,13 @@ import { FileUploadService } from '../../shared/services/file-upload.service';
 import { UploadButton } from "@shared/components/upload-button/upload-button";
 import { Preview } from "./preview/preview";
 import { NgClass } from '@angular/common';
-import { PhotoEditor } from './photo-editor/photo-editor';
+import { ButtonComponent } from "@shared/components/button/button";
 import { EditorStateService } from './state/editor-state.service';
+import { PhotoEditor } from './photo-editor/photo-editor';
 
 @Component({
   selector: 'bdge-editor',
-  imports: [UploadButton, Preview, NgClass, PhotoEditor],
+  imports: [UploadButton, Preview, NgClass, PhotoEditor, ButtonComponent],
   templateUrl: './editor.html',
   styleUrl: './editor.scss',
 })

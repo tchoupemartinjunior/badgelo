@@ -11,7 +11,6 @@ import { EditorStateService } from '../state/editor-state.service';
 export class Preview {
   @ViewChild('previewImage') previewImage!: ElementRef<HTMLCanvasElement>;
 
-
   fileUploadService = inject(FileUploadService);
   editorStateService = inject(EditorStateService);
 
