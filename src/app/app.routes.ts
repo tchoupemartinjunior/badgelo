@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Home } from './features/home/home';
+import { Home } from './layout/home/home';
 
 export const routes: Routes = [{
     path: '',
@@ -7,7 +7,7 @@ export const routes: Routes = [{
     pathMatch: 'full'
 }, {
     path: 'home',
-    component: Home 
+    component: Home
 },
 {
     path: 'editor',

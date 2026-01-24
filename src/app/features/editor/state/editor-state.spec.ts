@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EditorState } from './editor-state';
+import { EditorState } from './editor-state.service';
 
 describe('EditorState', () => {
   let service: EditorState;

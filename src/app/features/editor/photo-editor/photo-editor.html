@@ -1,0 +1,44 @@
+<!-- Ajoutez ici les outils d'édition de photo -->
+<div class="space-y-2">
+    <!-- Boutons pour chaque accordion -->
+    @for(acc of accordions; track acc.key){
+    <ng-container>
+        <button (click)="openAccordion = openAccordion === acc.key ? null : acc.key"
+            class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-600 font-medium hover:cursor-pointer hover:bg-purple-50">
+            {{ acc.label }}
+            <span [class.rotate-180]="openAccordion === acc.key" class="transition-transform duration-200">
+                ▼
+            </span>
+        </button>
+        <!-- Contenu dynamique via ng-template -->
+        @if(openAccordion === acc.key) {
+        <ng-container [ngTemplateOutlet]="getTemplate(acc.key)"></ng-container>
+        }
+    </ng-container>
+    }
+
+</div>
+
+<!-- Templates définis une seule fois -->
+<ng-template #baseTemplate>
+    <div class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
+        <bdge-slider [value]="editorStateService.brightness()" (valueChange)="updateBrightness($event)"
+            label="Luminosité"></bdge-slider>
+        <bdge-slider [value]="editorStateService.contrast()" (valueChange)="updateContrast($event)"
+            label="Contraste"></bdge-slider>
+        <bdge-slider [value]="editorStateService.saturation()" (valueChange)="updateSaturation($event)"
+            label="Saturation"></bdge-slider>
+    </div>
+</ng-template>
+
+<ng-template #filtersTemplate>
+    <div class="p-4 bg-gray-50 rounded shadow">
+        Contenu des Filtres
+    </div>
+</ng-template>
+
+<ng-template #transformTemplate>
+    <div class="p-4 bg-gray-50 rounded shadow">
+        Contenu des Transformations
+    </div>
+</ng-template>

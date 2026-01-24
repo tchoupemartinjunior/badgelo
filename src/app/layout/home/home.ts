@@ -6,8 +6,7 @@ import { FileUploadService } from '@shared/services/file-upload.service';
 @Component({
   selector: 'bdge-home',
   imports: [FileUploader],
-  templateUrl: './home.html',
-  styleUrl: './home.scss',
+  templateUrl: './home.html'
 })
 export class Home {
   router = inject(Router);
