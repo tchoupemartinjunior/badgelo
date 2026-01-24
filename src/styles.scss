@@ -1,1 +1,11 @@
-@use 'tailwindcss' as *;
+@import "tailwindcss";
+
+@layer components {
+    .tab {
+        @apply border-b-2 border-transparent px-1 pb-2 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300;
+    }
+
+    .tab-active {
+        @apply border-purple-600 text-purple-600;
+    }
+}

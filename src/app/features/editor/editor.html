@@ -1,0 +1,107 @@
+<div class="container p-4 mx-auto bg-gray-100 flex flex-col pt-5 items-center">
+
+    <div>
+        <h1 class="text-3xl text-purple-700">Edition Photo</h1>
+    </div>
+
+    <div class="flex flex-row  bg-white shadow-lg rounded-lg mx-auto justify-center w-10/12 mt-2">
+
+        <!-- Edition section -->
+
+        <div class="w-1/2 p-4 pl-4 border-purple-200 border-r shadow-lg rounded-lg">
+
+            <div class="border-b border-gray-200 mb-4">
+                <nav class="-mb-px flex gap-6">
+                    @for(tab of tabs; track tab.key) {
+                    <button (click)="activeTab = tab.key"
+                        class="border-b-2 px-1 pb-2 text-sm font-medium hover:cursor-pointer" [ngClass]="activeTab === tab.key 
+                ? 'border-purple-600 text-purple-600' 
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'">
+                        {{ tab.label }}
+                    </button>
+                    }
+                </nav>
+            </div>
+
+            <ng-container [ngTemplateOutlet]="activeTab === 'photo' ? editionTools : badgeTools" />
+        </div>
+
+
+
+        <!-- Preview section -->
+        <div class="w-1/2 p-4 flex flex-col items-center bg-gray-50">
+
+            <h2>Aperçu de l'image</h2>
+            <bdge-preview></bdge-preview>
+
+            <div class="flex flex-row space-x-4 mt-4 justify-center items-center">
+                <bdge-upload-button (fileSelected)="fileUploadService.upload($event)"
+                    class="bg-gray-100"></bdge-upload-button>
+                <button (click)="download()" class="bg-purple-700 text-white text-base font-medium
+           px-6 py-3 rounded-lg shadow-md
+           hover:bg-purple-600 hover:shadow-lg
+           transition duration-200 ease-in-out">Téléchargez l'image</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Ajoutez ici les outils d'édition de photo -->
+<ng-template #editionTools>
+    <div class="space-y-2">
+        <!-- Boutons pour chaque accordion -->
+        @for(acc of accordions; track acc.key){
+        <ng-container>
+            <button (click)="openAccordion = openAccordion === acc.key ? null : acc.key"
+                class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-600 font-medium hover:cursor-pointer hover:bg-purple-50">
+                {{ acc.label }}
+                <span [class.rotate-180]="openAccordion === acc.key" class="transition-transform duration-200">
+                    ▼
+                </span>
+            </button>
+            <!-- Contenu dynamique via ng-template -->
+            @if(openAccordion === acc.key) {
+            <ng-container [ngTemplateOutlet]="getTemplate(acc.key)"></ng-container>
+            }
+        </ng-container>
+        }
+
+    </div>
+
+</ng-template>
+
+<ng-template #badgeTools></ng-template>
+
+<!-- Templates définis une seule fois -->
+<ng-template #baseTemplate>
+    <div class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
+        <div>
+            <label class="block text-gray-700 mb-1">Luminosité</label>
+            <input type="range" min="0" max="200" value="100" class="w-full accent-indigo-600">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">Contraste</label>
+            <input type="range" min="0" max="200" value="100" class="w-full accent-indigo-600">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">Saturation</label>
+            <input type="range" min="0" max="200" value="100" class="w-full accent-indigo-600">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #filtersTemplate>
+    <div class="p-4 bg-gray-50 rounded shadow">
+        Contenu des Filtres
+    </div>
+</ng-template>
+
+<ng-template #transformTemplate>
+    <div class="p-4 bg-gray-50 rounded shadow">
+        Contenu des Transformations
+    </div>
+</ng-template>

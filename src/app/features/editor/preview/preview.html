@@ -1,0 +1,7 @@
+<!-- Ajoutez ici l'aperçu de l'image éditée -->
+<div class="my-2">
+    <img class="h-100 w-100"
+        [src]="fileUploadService.uploadedFile() ? fileUploadService.previewUrl() : fileUploadService.placeholderUrl()"
+        alt="Uploaded Image" />
+    <canvas #canvas hidden></canvas>
+</div>

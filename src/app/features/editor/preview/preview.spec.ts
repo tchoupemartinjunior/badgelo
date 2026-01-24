@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PhotoEditor } from './photo-editor';
+import { Preview } from './preview';
 
-describe('PhotoEditor', () => {
-  let component: PhotoEditor;
-  let fixture: ComponentFixture<PhotoEditor>;
+describe('Preview', () => {
+  let component: Preview;
+  let fixture: ComponentFixture<Preview>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PhotoEditor]
+      imports: [Preview]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PhotoEditor);
+    fixture = TestBed.createComponent(Preview);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
