@@ -10,13 +10,16 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
   templateUrl: './editor.html',
   styleUrl: './editor.scss',
 })
+
 export class Editor {
   @ViewChild('baseTemplate', { static: true }) baseTemplate!: TemplateRef<any>;
   @ViewChild('filtersTemplate', { static: true }) filtersTemplate!: TemplateRef<any>;
   @ViewChild('transformTemplate', { static: true }) transformTemplate!: TemplateRef<any>;
+  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
 
 
   fileUploadService = inject(FileUploadService);
+
   activeTab: string = 'photo';
   openAccordion: string | null = null;
 
@@ -32,17 +35,7 @@ export class Editor {
   ];
 
 
-  onFileSelected($event: File) {
-    this.fileUploadService.upload($event);
-  }
-
   getTemplate(key: string): TemplateRef<any> {
-    console.log('Getting template for key:', key);
-    console.log('Available templates:', {
-      base: this.baseTemplate,
-      filters: this.filtersTemplate,
-      transform: this.transformTemplate
-    });
     switch (key) {
       case 'base': return this.baseTemplate;
       case 'filters': return this.filtersTemplate;
@@ -51,9 +44,6 @@ export class Editor {
     }
   }
 
-
-
-  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
 
   download() {
     const canvas = this.canvas.nativeElement;
