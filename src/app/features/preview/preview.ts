@@ -1,6 +1,6 @@
 import { Component, inject, ViewChild, ElementRef, effect } from '@angular/core';
 import { FileService } from '@shared/services/file.service';
-import { EditorStateService } from '../state/editor-state.service';
+import { EditorStateService } from '../editor/state/editor-state.service';
 
 @Component({
   selector: 'bdge-preview',
@@ -15,12 +15,10 @@ export class Preview {
 
   constructor() {
     effect(() => {
-      const brightness = this.editorStateService.brightness();
-      const contrast = this.editorStateService.contrast();
-      const saturation = this.editorStateService.saturation();
+      this.editorStateService.hasChanges();
       if (!this.previewImage) return;
       const imgElement = this.previewImage.nativeElement;
-      imgElement.style.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`;
+      imgElement.style.filter = this.editorStateService.imageStyleFilter();
     });
   }
 }

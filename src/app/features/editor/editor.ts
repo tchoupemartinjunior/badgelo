@@ -1,7 +1,7 @@
 import { Component, inject, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { FileService } from '../../shared/services/file.service';
 import { UploadButton } from "@shared/components/upload-button/upload-button";
-import { Preview } from "./preview/preview";
+import { Preview } from "../preview/preview";
 import { NgClass } from '@angular/common';
 import { ButtonComponent } from "@shared/components/button/button";
 import { EditorStateService } from './state/editor-state.service';
@@ -28,27 +28,5 @@ export class Editor {
     { key: 'badge', label: 'Badge' }
   ];
 
-
-  download() {
-    const canvas = this.canvas.nativeElement;
-    const ctx = canvas.getContext('2d')!;
-    const img = new Image();
-    img.src = this.fileService.previewUrl()!;
-
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const brightness = this.editorStateService.brightness();
-      const contrast = this.editorStateService.contrast();
-      const saturation = this.editorStateService.saturation();
-      ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`;
-      ctx.drawImage(img, 0, 0);
-
-      const link = document.createElement('a');
-      link.download = 'edited-image.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    };
-  }
-
 }
+

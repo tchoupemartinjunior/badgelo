@@ -16,6 +16,11 @@ export class EditorStateService {
   readonly contrast = computed(() => this.imageState().contrast);
   readonly saturation = computed(() => this.imageState().saturation);
 
+  readonly imageStyleFilter = computed(() => {
+    return `brightness(${this.brightness()}%) contrast(${this.contrast()}%) saturate(${this.saturation()}%)`;
+  });
+
+
   setBrightness(value: number) {
     this.imageState.update(s => ({ ...s, brightness: value }));
   }
@@ -32,5 +37,10 @@ export class EditorStateService {
       contrast: 100,
       saturation: 100,
     });
+  }
+
+  hasChanges(): boolean {
+    const state = this.imageState();
+    return state.brightness !== 100 || state.contrast !== 100 || state.saturation !== 100;
   }
 }
