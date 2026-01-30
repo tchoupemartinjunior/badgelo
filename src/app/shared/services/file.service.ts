@@ -1,13 +1,15 @@
-import { Injectable, signal } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';  
+import { inject, Injectable, signal } from '@angular/core';
+import { EditorStateService } from '../../features/editor/state/editor-state.service';
+import { CanvasService } from './canvas.service';
+
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-export class FileUploadService {            
-    constructor(private http: HttpClient) { }
-    
+export class FileService {
+    editorStateService = inject(EditorStateService);
+    canvasService = inject(CanvasService);
+
     private _uploadedFile = signal<File | null>(null);
     private _previewUrl = signal<string | null>(null);
     private placeholderImageUrl = signal<string | null>('../../../assets/images/landscape-placeholder.svg');
@@ -19,10 +21,16 @@ export class FileUploadService {
     getUploadedFile() {
         return this.uploadedFile();
     }
-    
-    upload(file: File): void{
-        console.log('Uploading file:', file);
+
+    upload(file: File): void {
         this._uploadedFile.set(file);
         this._previewUrl.set(URL.createObjectURL(file));
+        this.editorStateService.resetEditor();
+    }
+
+
+    download(canvas: HTMLCanvasElement) {
+        if (!this.previewUrl()) return;
+        this.canvasService.exportAndDownload(this.previewUrl()!, canvas);
     }
 }

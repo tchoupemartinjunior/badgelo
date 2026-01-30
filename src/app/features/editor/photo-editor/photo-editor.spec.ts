@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Home } from './home';
+import { PhotoEditor } from './photo-editor';
 
-describe('Home', () => {
-  let component: Home;
-  let fixture: ComponentFixture<Home>;
+describe('PhotoEditor', () => {
+  let component: PhotoEditor;
+  let fixture: ComponentFixture<PhotoEditor>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Home]
+      imports: [PhotoEditor]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Home);
+    fixture = TestBed.createComponent(PhotoEditor);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
