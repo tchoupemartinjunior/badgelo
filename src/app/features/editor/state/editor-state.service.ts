@@ -1,15 +1,17 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { EditorState } from './editor-state.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EditorStateService {
+
   imageState = signal<EditorState>({
     brightness: 100,
     contrast: 100,
     saturation: 100,
   });
+
   readonly brightness = computed(() => this.imageState().brightness);
   readonly contrast = computed(() => this.imageState().contrast);
   readonly saturation = computed(() => this.imageState().saturation);

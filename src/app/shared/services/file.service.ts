@@ -1,12 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { EditorStateService } from '../../features/editor/state/editor-state.service';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class FileUploadService {
+export class FileService {
     editorStateService = inject(EditorStateService);
 
     private _uploadedFile = signal<File | null>(null);

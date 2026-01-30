@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FileUploader } from "@shared/components/file-uploader/file-uploader";
-import { FileUploadService } from '@shared/services/file-upload.service';
+import { FileService } from '@shared/services/file.service';
 
 @Component({
   selector: 'bdge-home',
@@ -10,9 +10,10 @@ import { FileUploadService } from '@shared/services/file-upload.service';
 })
 export class Home {
   router = inject(Router);
-  fileUploadService = inject(FileUploadService);
+  fileService = inject(FileService);
+
   onFileSelected($event: File) {
-    this.fileUploadService.upload($event);
+    this.fileService.upload($event);
     this.router.navigate(['/editor']);
   }
 

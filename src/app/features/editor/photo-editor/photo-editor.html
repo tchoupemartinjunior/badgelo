@@ -22,11 +22,11 @@
 <!-- Templates définis une seule fois -->
 <ng-template #baseTemplate>
     <div class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
-        <bdge-slider [value]="editorStateService.brightness()" (valueChange)="updateBrightness($event)"
+        <bdge-slider [value]="editorStateService.brightness()" (valueChange)="editorStateService.setBrightness($event)"
             label="Luminosité"></bdge-slider>
-        <bdge-slider [value]="editorStateService.contrast()" (valueChange)="updateContrast($event)"
+        <bdge-slider [value]="editorStateService.contrast()" (valueChange)="editorStateService.setContrast($event)"
             label="Contraste"></bdge-slider>
-        <bdge-slider [value]="editorStateService.saturation()" (valueChange)="updateSaturation($event)"
+        <bdge-slider [value]="editorStateService.saturation()" (valueChange)="editorStateService.setSaturation($event)"
             label="Saturation"></bdge-slider>
     </div>
 </ng-template>

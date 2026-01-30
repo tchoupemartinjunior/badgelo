@@ -1,17 +1,16 @@
 import { Component, inject, ViewChild, ElementRef, effect } from '@angular/core';
-import { FileUploadService } from '@shared/services/file-upload.service';
+import { FileService } from '@shared/services/file.service';
 import { EditorStateService } from '../state/editor-state.service';
 
 @Component({
   selector: 'bdge-preview',
   imports: [],
-  templateUrl: './preview.html',
-  styleUrl: './preview.scss',
+  templateUrl: './preview.html'
 })
 export class Preview {
   @ViewChild('previewImage') previewImage!: ElementRef<HTMLCanvasElement>;
 
-  fileUploadService = inject(FileUploadService);
+  fileService = inject(FileService);
   editorStateService = inject(EditorStateService);
 
   constructor() {

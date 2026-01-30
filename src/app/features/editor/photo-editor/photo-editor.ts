@@ -34,16 +34,4 @@ export class PhotoEditor {
     }
   }
 
-  updateBrightness($event: number) {
-    this.editorStateService.setBrightness($event);
-  }
-
-  updateSaturation($event: number) {
-    this.editorStateService.setSaturation($event);
-  }
-
-  updateContrast($event: number) {
-    this.editorStateService.setContrast($event);
-  }
-
 }

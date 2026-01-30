@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild, ElementRef, TemplateRef } from '@angular/core';
-import { FileUploadService } from '../../shared/services/file-upload.service';
+import { FileService } from '../../shared/services/file.service';
 import { UploadButton } from "@shared/components/upload-button/upload-button";
 import { Preview } from "./preview/preview";
 import { NgClass } from '@angular/common';
@@ -18,7 +18,7 @@ export class Editor {
 
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
 
-  fileUploadService = inject(FileUploadService);
+  fileService = inject(FileService);
   editorStateService = inject(EditorStateService);
 
   activeTab: string = 'photo';
@@ -33,7 +33,7 @@ export class Editor {
     const canvas = this.canvas.nativeElement;
     const ctx = canvas.getContext('2d')!;
     const img = new Image();
-    img.src = this.fileUploadService.previewUrl()!;
+    img.src = this.fileService.previewUrl()!;
 
     img.onload = () => {
       canvas.width = img.width;

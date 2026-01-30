@@ -5,7 +5,15 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@assets/*":["assets/*"]
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@features/*": [
+        "app/features/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ]
     },
     "strict": true,
     "noImplicitOverride": true,
