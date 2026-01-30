@@ -22,11 +22,12 @@ export class Editor {
   fileService = inject(FileService);
   editorStateService = inject(EditorStateService);
 
-  activeTab: string = 'photo';
+  activeTab: string = 'badge';
 
   tabs = [
-    { key: 'photo', label: 'Edition Photo' },
-    { key: 'badge', label: 'Badge' }
+    { key: 'badge', label: 'Badge', index: 0 },
+    { key: 'photo', label: 'Edition Photo', index: 1 }
+
   ];
 
 }

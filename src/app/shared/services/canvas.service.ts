@@ -8,7 +8,7 @@ export class CanvasService {
     private editorStateService = inject(EditorStateService);
 
     async drawImageToCanvas(previewUrl: string, canvas: HTMLCanvasElement): Promise<void> {
-        return this.renderImage(previewUrl, canvas, this.birthdayOverlay.bind(this));
+        return this.renderImage(previewUrl, canvas, this.drawOverlay.bind(this));
     }
 
     async renderImage(
@@ -42,7 +42,7 @@ export class CanvasService {
         link.click();
     }
 
-    birthdayOverlay(
+    drawOverlay(
         ctx: CanvasRenderingContext2D,
         img: HTMLImageElement
     ): void {
@@ -60,7 +60,7 @@ export class CanvasService {
             height - gradientHeight
         );
 
-        gradient.addColorStop(0, 'rgba(0, 102, 204, 0.85)');
+        gradient.addColorStop(0, this.editorStateService.badgeColor() || 'rgba(0, 102, 204, 0.85)');
         gradient.addColorStop(1, 'rgba(0, 102, 204, 0)');
 
         ctx.fillStyle = gradient;
@@ -80,7 +80,7 @@ export class CanvasService {
         // Ligne 1
         ctx.font = `600 ${subtitleSize}px Arial`;
         ctx.fillText(
-            'Joyeux anniversaire',
+            this.editorStateService.badgeType() || 'Joyeux Anniversaire',
             width / 2,
             height - bottomPadding - titleSize - lineSpacing
 
@@ -89,7 +89,7 @@ export class CanvasService {
         // Ligne 2 (très visible)
         ctx.font = `900 ${titleSize}px Arial`;
         ctx.fillText(
-            'MARIE ET FLAVIE',
+            this.editorStateService.badgeText() || 'Prenom',
             width / 2,
             height - bottomPadding
         );

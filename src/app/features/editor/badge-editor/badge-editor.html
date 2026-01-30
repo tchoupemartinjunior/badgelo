@@ -9,9 +9,9 @@
         <select id="badge-type" (input)="updateBadgeType($event)"
             class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm bg-white cursor-pointer">
             <option value="" disabled selected>Sélectionnez un type</option>
-            <option value="anniversaire">Anniversaire</option>
-            <option value="bienvenue">Bienvenue</option>
-            <option value="aurevoir">Au revoir</option>
+            @for(option of badgeTypeOptions; track option.value) {
+            <option [value]="option.label">{{ option.label }}</option>
+            }
         </select>
     </div>
 

@@ -54,6 +54,7 @@ export class EditorStateService {
     const currentState = this.imageState();
     const updatedBadge = { ...currentState.badge, type } as EditorState['badge'];
     this.imageState.update(s => ({ ...s, badge: updatedBadge }));
+    console.log('Badge type set to:', type);
   }
 
   setBadgeColor(color: string) {

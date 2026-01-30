@@ -9,7 +9,7 @@
         <div class="w-1/3 p-4 pl-4 border-purple-200 border-r shadow-lg rounded-lg flex flex-col justify-between">
             <div class="border-b border-gray-200 mb-4">
                 <nav class="-mb-px flex gap-6">
-                    @for(tab of tabs; track tab.key) {
+                    @for(tab of tabs; track tab.index) {
                     <button (click)="activeTab = tab.key"
                         class="border-b-2 px-1 pb-2 text-sm font-medium hover:cursor-pointer" [ngClass]="activeTab === tab.key 
                 ? 'border-purple-600 text-purple-600' 
