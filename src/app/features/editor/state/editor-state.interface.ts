@@ -3,6 +3,12 @@ export interface EditorState {
   contrast: number;
   saturation: number;
   //filter: 'none' | 'bw' | 'sepia';
-  // badges: Badge[];
+  badge: Badge | null;
   // watermark?: Watermark;
+}
+
+export interface Badge {
+  type: string;
+  color: string;
+  text: string;
 }

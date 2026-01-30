@@ -10,16 +10,29 @@ export class EditorStateService {
     brightness: 100,
     contrast: 100,
     saturation: 100,
+    badge: null,
   });
 
   readonly brightness = computed(() => this.imageState().brightness);
   readonly contrast = computed(() => this.imageState().contrast);
   readonly saturation = computed(() => this.imageState().saturation);
+  readonly badgeText = computed(() => this.imageState().badge?.text || '');
+  readonly badgeType = computed(() => this.imageState().badge?.type || '');
+  readonly badgeColor = computed(() => this.imageState().badge?.color || '');
 
   readonly imageStyleFilter = computed(() => {
     return `brightness(${this.brightness()}%) contrast(${this.contrast()}%) saturate(${this.saturation()}%)`;
   });
 
+
+  resetEditor() {
+    this.imageState.set({
+      brightness: 100,
+      contrast: 100,
+      saturation: 100,
+      badge: null
+    });
+  }
 
   setBrightness(value: number) {
     this.imageState.update(s => ({ ...s, brightness: value }));
@@ -31,16 +44,28 @@ export class EditorStateService {
     this.imageState.update(s => ({ ...s, saturation: value }));
   }
 
-  resetEditor() {
-    this.imageState.set({
-      brightness: 100,
-      contrast: 100,
-      saturation: 100,
-    });
+  setBadgeText(text: string) {
+    const currentState = this.imageState();
+    const updatedBadge = { ...currentState.badge, text } as EditorState['badge'];
+    this.imageState.update(s => ({ ...s, badge: updatedBadge }));
   }
+
+  setBadgeType(type?: string) {
+    const currentState = this.imageState();
+    const updatedBadge = { ...currentState.badge, type } as EditorState['badge'];
+    this.imageState.update(s => ({ ...s, badge: updatedBadge }));
+  }
+
+  setBadgeColor(color: string) {
+    const currentState = this.imageState();
+    const updatedBadge = { ...currentState.badge, color } as EditorState['badge'];
+    this.imageState.update(s => ({ ...s, badge: updatedBadge }));
+  }
+
 
   hasChanges(): boolean {
     const state = this.imageState();
     return state.brightness !== 100 || state.contrast !== 100 || state.saturation !== 100;
   }
+
 }

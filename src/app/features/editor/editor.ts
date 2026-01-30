@@ -6,10 +6,11 @@ import { NgClass } from '@angular/common';
 import { ButtonComponent } from "@shared/components/button/button";
 import { EditorStateService } from './state/editor-state.service';
 import { PhotoEditor } from './photo-editor/photo-editor';
+import { BadgeEditor } from "./badge-editor/badge-editor";
 
 @Component({
   selector: 'bdge-editor',
-  imports: [UploadButton, Preview, NgClass, PhotoEditor, ButtonComponent],
+  imports: [UploadButton, Preview, NgClass, PhotoEditor, ButtonComponent, BadgeEditor],
   templateUrl: './editor.html',
   styleUrl: './editor.scss',
 })
