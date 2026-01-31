@@ -25,12 +25,15 @@ export class FileService {
     upload(file: File): void {
         this._uploadedFile.set(file);
         this._previewUrl.set(URL.createObjectURL(file));
+        this.canvasService.drawImageToCanvas(this.previewUrl()!, this.editorStateService.canvas()!);
         this.editorStateService.resetEditor();
     }
 
 
-    download(canvas: HTMLCanvasElement) {
+    download() {
         if (!this.previewUrl()) return;
+        const canvas = this.editorStateService.canvas();
+        if (!canvas) return;
         this.canvasService.exportAndDownload(this.previewUrl()!, canvas);
     }
 }

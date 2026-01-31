@@ -5,6 +5,7 @@ import { EditorState } from './editor-state.interface';
   providedIn: 'root',
 })
 export class EditorStateService {
+  _canvas = signal<HTMLCanvasElement | null>(null);
 
   imageState = signal<EditorState>({
     brightness: 100,
@@ -19,6 +20,7 @@ export class EditorStateService {
   readonly badgeText = computed(() => this.imageState().badge?.text || '');
   readonly badgeType = computed(() => this.imageState().badge?.type || '');
   readonly badgeColor = computed(() => this.imageState().badge?.color || '');
+  readonly canvas = computed(() => this._canvas());
 
   readonly imageStyleFilter = computed(() => {
     return `brightness(${this.brightness()}%) contrast(${this.contrast()}%) saturate(${this.saturation()}%)`;
@@ -43,6 +45,9 @@ export class EditorStateService {
   setSaturation(value: number) {
     this.imageState.update(s => ({ ...s, saturation: value }));
   }
+  setCanvas(canvas: HTMLCanvasElement) {
+    this._canvas.set(canvas);
+  }
 
   setBadgeText(text: string) {
     const currentState = this.imageState();
@@ -54,7 +59,6 @@ export class EditorStateService {
     const currentState = this.imageState();
     const updatedBadge = { ...currentState.badge, type } as EditorState['badge'];
     this.imageState.update(s => ({ ...s, badge: updatedBadge }));
-    console.log('Badge type set to:', type);
   }
 
   setBadgeColor(color: string) {
@@ -66,7 +70,7 @@ export class EditorStateService {
 
   hasChanges(): boolean {
     const state = this.imageState();
-    return state.brightness !== 100 || state.contrast !== 100 || state.saturation !== 100;
+    return state.brightness !== 100 || state.contrast !== 100 || state.saturation !== 100 || state.badge !== null;
   }
 
 }

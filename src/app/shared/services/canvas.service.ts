@@ -16,6 +16,7 @@ export class CanvasService {
         canvas: HTMLCanvasElement,
         overlay?: (ctx: CanvasRenderingContext2D, img: HTMLImageElement) => void
     ): Promise<void> {
+        if (!canvas) return;
         const ctx = canvas.getContext('2d')!;
         const img = new Image();
         img.crossOrigin = 'anonymous';

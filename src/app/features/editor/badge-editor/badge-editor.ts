@@ -29,6 +29,5 @@ export class BadgeEditor {
     const inputElement = event.target as HTMLInputElement;
     const text = inputElement.value;
     this.editorStateService.setBadgeText(text);
-    console.log('Badge text updated to:', text);
   }
 }

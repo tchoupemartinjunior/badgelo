@@ -43,14 +43,19 @@
         <!-- Preview section -->
         <div class="w-full md:w-2/3 p-4 flex flex-col items-center bg-gray-50">
             <h2>Aperçu de l'image</h2>
+
+            @if(!editorStateService.hasChanges()) {
             <bdge-preview></bdge-preview>
-            <canvas #canvas hidden></canvas>
+            }
+            <canvas [hidden]="!editorStateService.hasChanges()" class="h-100 w-full object-contain" #canvas></canvas>
+
+
 
             <div class="flex flex-col sm:flex-row gap-4 mt-4 justify-center items-center">
                 <bdge-upload-button [backgroundColor]="'bg-gray-700'" (fileSelected)="fileService.upload($event)">
                 </bdge-upload-button>
 
-                <bdge-button text="Téléchargez l'image" (onClick)="fileService.download(canvas)">
+                <bdge-button text="Téléchargez l'image" (onClick)="fileService.download()">
                 </bdge-button>
             </div>
         </div>
