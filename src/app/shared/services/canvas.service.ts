@@ -36,10 +36,37 @@ export class CanvasService {
 
     async exportAndDownload(previewUrl: string, canvas: HTMLCanvasElement, filename = 'Badgelo-edited-image.png'): Promise<void> {
         await this.drawImageToCanvas(previewUrl, canvas);
+
+        const blob = await new Promise<Blob | null>((resolve) =>
+            canvas.toBlob(resolve, 'image/png')
+        );
+
+        if (!blob) {
+            throw new Error('Failed to create image blob');
+        }
+
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
+        link.href = url;
         link.download = filename;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        // Some browsers (notably iOS Safari) ignore the download attribute.
+        // Append link to the DOM so click() works reliably on mobile browsers.
+        document.body.appendChild(link);
+
+        const isDownloadSupported = 'download' in HTMLAnchorElement.prototype;
+        const isIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !(window as any).MSStream;
+
+        if (!isDownloadSupported || isIOS) {
+            // Fallback: open in new tab so user can long-press to save the image.
+            window.open(url, '_blank');
+        } else {
+            link.click();
+        }
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+            if (link.parentNode) link.parentNode.removeChild(link);
+        }, 1000);
     }
 
     drawOverlay(
