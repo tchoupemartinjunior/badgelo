@@ -25,7 +25,7 @@ export class FileService {
     upload(file: File): void {
         this._uploadedFile.set(file);
         this._previewUrl.set(URL.createObjectURL(file));
-        this.canvasService.drawImageToCanvas(this.previewUrl()!, this.editorStateService.canvas()!);
+        this.canvasService.drawImageToCanvas(this.previewUrl());
         this.editorStateService.resetEditor();
     }
 

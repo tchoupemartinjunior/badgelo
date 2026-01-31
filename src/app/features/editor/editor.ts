@@ -38,8 +38,7 @@ export class Editor implements AfterViewInit {
       this.editorStateService.hasChanges();
       this.editorStateService.badgeText();
       this.editorStateService.badgeType();
-      if (!this.canvas) return;
-      this.canvasService.drawImageToCanvas(this.fileService.previewUrl()!, this.canvas.nativeElement);
+      this.canvasService.drawImageToCanvas(this.fileService.previewUrl());
     });
   }
 

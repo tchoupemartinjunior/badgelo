@@ -7,7 +7,9 @@ import { EditorStateService } from '../../features/editor/state/editor-state.ser
 export class CanvasService {
     private editorStateService = inject(EditorStateService);
 
-    async drawImageToCanvas(previewUrl: string, canvas: HTMLCanvasElement): Promise<void> {
+    async drawImageToCanvas(previewUrl: string | null): Promise<void> {
+        const canvas = this.editorStateService.canvas();
+        if (!canvas || !previewUrl) return;
         return this.renderImage(previewUrl, canvas, this.drawOverlay.bind(this));
     }
 
@@ -36,7 +38,7 @@ export class CanvasService {
     }
 
     async exportAndDownload(previewUrl: string, canvas: HTMLCanvasElement, filename = 'Badgelo-edited-image.png'): Promise<void> {
-        await this.drawImageToCanvas(previewUrl, canvas);
+        await this.drawImageToCanvas(previewUrl);
 
         const blob = await new Promise<Blob | null>((resolve) =>
             canvas.toBlob(resolve, 'image/png')

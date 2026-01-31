@@ -1,8 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { Header } from "@layout/header/header";
 import { Navbar } from "@layout/navbar/navbar";
 import { Footer } from "@layout/footer/footer";
+import { filter } from 'rxjs/operators';
+
+declare let gtag: Function;
 
 @Component({
   selector: 'app-root',
@@ -12,4 +15,14 @@ import { Footer } from "@layout/footer/footer";
 })
 export class App {
   protected readonly title = signal('badgelo');
+
+  constructor(router: Router) {
+    router.events
+      .pipe(filter((event: any) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        gtag('config', 'G-N4MMFW00MS', {
+          page_path: event.urlAfterRedirects
+        });
+      });
+  }
 }
