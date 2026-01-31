@@ -10,7 +10,10 @@ export class CanvasService {
     async drawImageToCanvas(previewUrl: string | null): Promise<void> {
         const canvas = this.editorStateService.canvas();
         if (!canvas || !previewUrl) return;
-        return this.renderImage(previewUrl, canvas, this.drawOverlay.bind(this));
+        if (this.editorStateService.hasBadge()) {
+            return this.renderImage(previewUrl, canvas, this.drawOverlay.bind(this));
+        }
+        return this.renderImage(previewUrl, canvas);
     }
 
     async renderImage(
@@ -123,5 +126,14 @@ export class CanvasService {
             width / 2,
             height - bottomPadding
         );
+
+        // ajouter un filigrane "Made with Badgelo" en bas à droite
+        const watermarkText = 'Made with Badgelo';
+        const watermarkFontSize = Math.round(width * 0.03);
+        ctx.font = `400 ${watermarkFontSize}px Arial`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(watermarkText, width - 10, height - 10);
     }
 }

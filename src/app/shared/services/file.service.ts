@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { EditorStateService } from '../../features/editor/state/editor-state.service';
 import { CanvasService } from './canvas.service';
+import { Analytics } from './analytics';
 
 
 @Injectable({
@@ -9,6 +10,7 @@ import { CanvasService } from './canvas.service';
 export class FileService {
     editorStateService = inject(EditorStateService);
     canvasService = inject(CanvasService);
+    analyticsService = inject(Analytics);
 
     private _uploadedFile = signal<File | null>(null);
     private _previewUrl = signal<string | null>(null);
@@ -27,6 +29,10 @@ export class FileService {
         this._previewUrl.set(URL.createObjectURL(file));
         this.canvasService.drawImageToCanvas(this.previewUrl());
         this.editorStateService.resetEditor();
+        this.analyticsService.track('upload_image', {
+            event_category: 'file_management',
+            event_label: 'image_upload'
+        });
     }
 
 
@@ -35,5 +41,9 @@ export class FileService {
         const canvas = this.editorStateService.canvas();
         if (!canvas) return;
         this.canvasService.exportAndDownload(this.previewUrl()!, canvas);
+        this.analyticsService.track('download_image', {
+            event_category: 'file_management',
+            event_label: 'image_download'
+        });
     }
 }
