@@ -19,18 +19,27 @@
     <div class="flex flex-col gap-2">
         <label for="badge-color" class="text-sm font-medium text-gray-700">Couleur du badge</label>
         <div class="flex items-center gap-3">
-            <input id="badge-color" type="color" (input)="updateBadgeColor($event)"
+            <!-- <input id="badge-color" type="color" (input)="updateBadgeColor($event)"
                 class="w-12 h-12 rounded-lg cursor-pointer border border-gray-300">
-            <span class="text-sm text-gray-500">#FF6B6B</span>
+            <span class="text-sm text-gray-500">#FF6B6B</span> -->
+
+            <div class="flex gap-2">
+                <input id="badge-color" type="color" (input)="updateBadgeColor($event)"
+                    class="w-8 h-8 rounded-full cursor-pointer border-2 border-gray-300 hover:border-purple-500">
+                @for(color of predefinedBadgeColors; track color) {
+                <div (click)="selectPredefinedColor(color)" [style.backgroundColor]="color"
+                    class="w-8 h-8 rounded-full cursor-pointer border-2 border-gray-300 hover:border-purple-500">
+                </div>
+                }
+            </div>
         </div>
+
+        <!-- Badge Text Input -->
+        <div class="flex flex-col gap-2">
+            <label for="badge-text" class="text-sm font-medium text-gray-700">Texte du badge</label>
+            <textarea (input)="updateBadgeText($event)" id="badge-text" placeholder="Entrez le contenu du badge"
+                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-24"></textarea>
+        </div>
+
+
     </div>
-
-    <!-- Badge Text Input -->
-    <div class="flex flex-col gap-2">
-        <label for="badge-text" class="text-sm font-medium text-gray-700">Texte du badge</label>
-        <textarea (input)="updateBadgeText($event)" id="badge-text" placeholder="Entrez le contenu du badge"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-24"></textarea>
-    </div>
-
-
-</div>

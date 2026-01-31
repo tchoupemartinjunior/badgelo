@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ButtonComponent } from "@shared/components/button/button";
 import { EditorStateService } from '../state/editor-state.service';
 import { BadgeType, BadgeTypeOptions } from './badge.enum';
+import { PredefinedBadgeColors, PredefinedBadgeColorsArray } from './colors/colors.enum';
 
 @Component({
   selector: 'bdge-badge-editor',
@@ -10,8 +11,10 @@ import { BadgeType, BadgeTypeOptions } from './badge.enum';
   styleUrl: './badge-editor.scss',
 })
 export class BadgeEditor {
+
   editorStateService = inject(EditorStateService);
   readonly badgeTypeOptions = BadgeTypeOptions;
+  readonly predefinedBadgeColors = PredefinedBadgeColorsArray;
 
   updateBadgeType(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -29,5 +32,9 @@ export class BadgeEditor {
     const inputElement = event.target as HTMLInputElement;
     const text = inputElement.value;
     this.editorStateService.setBadgeText(text);
+  }
+
+  selectPredefinedColor(color: string) {
+    this.editorStateService.setBadgeColor(color);
   }
 }
