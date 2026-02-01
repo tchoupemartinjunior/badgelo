@@ -6,8 +6,7 @@ export enum PredefinedBadgeColors {
     Yellow = '#FFCC00',
     Purple = '#AF52DE',
     Orange = '#FF9500',
-    Pink = '#FF2D55',
-    Teal = '#5AC8FA'
+    Pink = '#FF2D55'
 }
 
 export const PredefinedBadgeColorsArray: string[] = [
@@ -17,6 +16,5 @@ export const PredefinedBadgeColorsArray: string[] = [
     PredefinedBadgeColors.Yellow,
     PredefinedBadgeColors.Purple,
     PredefinedBadgeColors.Orange,
-    PredefinedBadgeColors.Pink,
-    PredefinedBadgeColors.Teal
+    PredefinedBadgeColors.Pink
 ];
