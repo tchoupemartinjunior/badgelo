@@ -1,0 +1,10 @@
+{
+    "HOME": {
+        "TITLE": "Bienvenue sur Badgelo",
+        "DESCRIPTION": "Badgelo est une application de gestion de badges pour les événements. Elle permet de créer, gérer et imprimer des badges pour les participants."
+    },
+    "ABOUT": {
+        "TITLE": "À propos de Badgelo",
+        "DESCRIPTION": "Badgelo a été développé pour faciliter la gestion des badges lors des événements. Il offre une interface conviviale et des fonctionnalités avancées pour répondre aux besoins des organisateurs d'événements."
+    }
+}
