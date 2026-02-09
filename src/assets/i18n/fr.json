@@ -12,7 +12,61 @@
     "HOME": {
         "TITLE": "Bienvenue sur Badgelo",
         "TAGLINE": "Editez vos images en toute simplicité",
-        "DESCRIPTION": "Badgelo est une application de gestion de badges pour les événements. Elle permet de créer, gérer et imprimer des badges pour les participants."
+        "DESCRIPTION": "Badgelo est une application de gestion de badges pour les événements. Elle permet de créer, gérer et imprimer des badges pour les participants.",
+        "HERO_SUB": "Créez de beaux badges et aperçus d'images en quelques secondes.",
+        "HERO_CTA": "Commencer",
+        "HERO_LEARN": "En savoir plus",
+        "PLACEHOLDER_IMAGE": "Espace image",
+        "QUICK": "Rapide & Simple",
+        "QUICK_DESC": "Obtenez des résultats rapidement avec des outils intuitifs.",
+        "SECURE": "Sécurisé",
+        "SECURE_DESC": "Vos images et données restent privées.",
+        "FEATURES": {
+            "TITLE": "Fonctionnalités",
+            "ITEMS": {
+                "FAST": {
+                    "TITLE": "Édition rapide",
+                    "DESC": "Flux optimisé pour éditer badges et photos rapidement."
+                },
+                "CUSTOM": {
+                    "TITLE": "Badges personnalisés",
+                    "DESC": "Ajoutez texte, couleurs et styles pour votre marque."
+                },
+                "SHARE": {
+                    "TITLE": "Exporter & Partager",
+                    "DESC": "Téléchargez ou partagez vos badges en un clic."
+                }
+            }
+        },
+        "TARGETS": {
+            "TITLE": "Pour qui ?",
+            "ITEMS": {
+                "ORGANIZERS": {
+                    "TITLE": "Organisateurs d'événements",
+                    "DESC": "Créez et imprimez des badges pour conférences et meetups."
+                },
+                "MARKETERS": {
+                    "TITLE": "Marketeurs",
+                    "DESC": "Concevez des badges brandés pour promotions et campagnes."
+                },
+                "VOLUNTEERS": {
+                    "TITLE": "Bénévoles",
+                    "DESC": "Préparez rapidement des badges d'identification pour vos équipes."
+                }
+            }
+        },
+        "TESTIMONIALS": {
+            "TITLE": "Témoignages",
+            "QUOTE1": {
+                "TEXT": "Badgelo nous a fait gagner des heures lors de notre dernier événement."
+            },
+            "QUOTE2": {
+                "TEXT": "Simple, rapide et fiable — fortement recommandé."
+            }
+        },
+        "CTA_TITLE": "Prêt à créer votre premier badge ?",
+        "CTA_DESC": "Commencez maintenant gratuitement — téléchargez une image ou essayez un modèle.",
+        "CTA_BUTTON": "Commencer"
     },
     "ABOUT": {
         "TITLE": "À propos de Badgelo",
