@@ -1,12 +1,14 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { EditorState } from './editor-state.interface';
 import { Analytics } from '@shared/services/analytics';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EditorStateService {
   analyticsService = inject(Analytics);
+  translateService = inject(TranslateService);
   _canvas = signal<HTMLCanvasElement | null>(null);
 
   imageState = signal<EditorState>({
@@ -75,7 +77,8 @@ export class EditorStateService {
 
   setBadgeType(type?: string) {
     const currentState = this.imageState();
-    const updatedBadge = { ...currentState.badge, type } as EditorState['badge'];
+    const translatedType = type ? this.translateService.instant(type) : '';
+    const updatedBadge = { ...currentState.badge, type: translatedType } as EditorState['badge'];
     this.imageState.update(s => ({ ...s, badge: updatedBadge }));
 
     this.analyticsService.track('select_badge_type', {

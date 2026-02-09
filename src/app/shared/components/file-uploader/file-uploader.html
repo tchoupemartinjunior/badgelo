@@ -1,29 +1,20 @@
-<div
-  class="flex flex-col items-center justify-center mx-auto w-full max-w-md h-80
-         bg-white shadow-xl rounded-2xl border border-purple-100 p-6"
->
+<div class="flex flex-col items-center justify-center mx-auto w-full max-w-md h-80
+         bg-white shadow-xl rounded-2xl border border-purple-100 p-6">
   <!-- Icône -->
   <div class="flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 mb-4">
-    <svg
-      class="w-8 h-8 text-purple-700"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      viewBox="0 0 24 24"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round"
-        d="M7 16l5-5 5 5M12 11v8M4 4h16" />
+    <svg class="w-8 h-8 text-purple-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l5-5 5 5M12 11v8M4 4h16" />
     </svg>
   </div>
 
   <!-- Texte -->
   <p class="text-lg font-semibold text-gray-800 mb-2">
-    Téléchargez une image
+    {{ 'EDITOR.UPLOAD_TITLE' | translate }}
   </p>
   <p class="text-sm text-gray-500 mb-6">
-    Cliquez sur le bouton ou déposez votre image ici
+    {{ 'EDITOR.INSTRUCTIONS' | translate }}
   </p>
 
   <!-- Bouton -->
-   <bdge-upload-button (fileSelected)="onFileSelected($event)"></bdge-upload-button>
+  <bdge-upload-button (fileSelected)="onFileSelected($event)"></bdge-upload-button>
 </div>

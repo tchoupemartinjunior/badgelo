@@ -28,5 +28,19 @@ export class App {
 
     const browserLang = translateService.getBrowserLang() ?? 'fr';
     translateService.use(browserLang.match(/fr|en/) ? browserLang : 'fr');
+    // set document title from translations and update on language change
+    translateService.get('NAV.LOGO').subscribe((title: string) => {
+      if (title) {
+        document.title = title;
+      }
+    });
+
+    translateService.onLangChange?.subscribe(() => {
+      translateService.get('NAV.LOGO').subscribe((title: string) => {
+        if (title) {
+          document.title = title;
+        }
+      });
+    });
   }
 }

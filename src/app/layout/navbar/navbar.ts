@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { SHARED_MODULES } from "@shared/shared";
 
 @Component({
   selector: 'bdge-navbar',
-  imports: [RouterLink, TranslateModule],
+  imports: [RouterLink, SHARED_MODULES],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })

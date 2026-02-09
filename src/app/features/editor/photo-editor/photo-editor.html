@@ -1,13 +1,13 @@
 <div class="space-y-6">
     <div class="border-b border-gray-200 pb-4">
-        <h2 class="text-lg font-semibold text-purple-700">Éditeur Photo</h2>
+        <h2 class="text-lg font-semibold text-purple-700">{{ 'PHOTO_EDITOR.TITLE' | translate }}</h2>
     </div>
     <!-- Boutons pour chaque accordion -->
     @for(acc of accordions; track acc.key){
     <ng-container>
         <button (click)="openAccordion = openAccordion === acc.key ? null : acc.key"
             class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-600 font-medium hover:cursor-pointer hover:bg-purple-50">
-            {{ acc.label }}
+            {{ acc.label | translate}}
             <span [class.rotate-180]="openAccordion === acc.key" class="transition-transform duration-200">
                 ▼
             </span>
@@ -25,22 +25,22 @@
 <ng-template #baseTemplate>
     <div class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
         <bdge-slider [value]="editorStateService.brightness()" (valueChange)="editorStateService.setBrightness($event)"
-            label="Luminosité"></bdge-slider>
+            [label]="'PHOTO_EDITOR.SLIDERS.BRIGHTNESS' | translate"></bdge-slider>
         <bdge-slider [value]="editorStateService.contrast()" (valueChange)="editorStateService.setContrast($event)"
-            label="Contraste"></bdge-slider>
+            [label]="'PHOTO_EDITOR.SLIDERS.CONTRAST' | translate"></bdge-slider>
         <bdge-slider [value]="editorStateService.saturation()" (valueChange)="editorStateService.setSaturation($event)"
-            label="Saturation"></bdge-slider>
+            [label]="'PHOTO_EDITOR.SLIDERS.SATURATION' | translate"></bdge-slider>
     </div>
 </ng-template>
 
 <ng-template #filtersTemplate>
     <div class="p-4 bg-gray-50 rounded shadow">
-        Contenu des Filtres
+        {{ 'PHOTO_EDITOR.FILTERS_CONTENT' | translate }}
     </div>
 </ng-template>
 
 <ng-template #transformTemplate>
     <div class="p-4 bg-gray-50 rounded shadow">
-        Contenu des Transformations
+        {{ 'PHOTO_EDITOR.TRANSFORM_CONTENT' | translate }}
     </div>
 </ng-template>

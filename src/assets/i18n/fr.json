@@ -1,10 +1,69 @@
 {
+    "NAV": {
+        "LOGO": "Badgelo",
+        "HOME": "Accueil",
+        "FEATURES": "Fonctionnalités",
+        "PRICING": "Tarifs",
+        "LOGIN": "Connexion",
+        "SIGNUP": "Inscription",
+        "LANG_EN": "English",
+        "LANG_FR": "Français"
+    },
     "HOME": {
         "TITLE": "Bienvenue sur Badgelo",
+        "TAGLINE": "Editez vos images en toute simplicité",
         "DESCRIPTION": "Badgelo est une application de gestion de badges pour les événements. Elle permet de créer, gérer et imprimer des badges pour les participants."
     },
     "ABOUT": {
         "TITLE": "À propos de Badgelo",
         "DESCRIPTION": "Badgelo a été développé pour faciliter la gestion des badges lors des événements. Il offre une interface conviviale et des fonctionnalités avancées pour répondre aux besoins des organisateurs d'événements."
+    },
+    "EDITOR": {
+        "TITLE": "Edition Photo",
+        "PREVIEW": "Aperçu de l'image",
+        "RESET_CHANGES": "Réinitialiser les modifications",
+        "DOWNLOAD_IMAGE": "Téléchargez l'image",
+        "UPLOAD_TITLE": "Télécharger une image",
+        "INSTRUCTIONS": "Cliquez sur le bouton ci-dessous pour sélectionner une image depuis votre appareil.",
+        "TABS": {
+            "PHOTO": "Éditeur Photo",
+            "BADGE": "Badge"
+        },
+        "UPLOAD_IMAGE": "Choisir une image"
+    },
+    "PHOTO_EDITOR": {
+        "TITLE": "Éditeur Photo",
+        "SLIDERS": {
+            "BRIGHTNESS": "Luminosité",
+            "CONTRAST": "Contraste",
+            "SATURATION": "Saturation"
+        },
+        "FILTERS_CONTENT": "Contenu des Filtres",
+        "TRANSFORM_CONTENT": "Contenu des Transformations",
+        "ACCORDIONS": {
+            "BASE": "Paramètres de base",
+            "FILTERS": "Filtres",
+            "TRANSFORM": "Transformations"
+        }
+    },
+    "BADGE_EDITOR": {
+        "TITLE": "Éditeur de Badges",
+        "TYPE_LABEL": "Type de badge",
+        "TYPE_PLACEHOLDER": "Sélectionnez un type",
+        "COLOR_LABEL": "Couleur du badge",
+        "TEXT_LABEL": "Texte du badge",
+        "TEXT_PLACEHOLDER": "Entrez le contenu du badge"
+    },
+    "BADGE_TYPES": {
+        "BIRTHDAY": "Joyeux Anniversaire",
+        "WELCOME": "Bienvenue",
+        "FAREWELL": "Au revoir"
+    },
+    "FOOTER": {
+        "NAME": "Badgelo",
+        "COPYRIGHT": "© 2026 Badgelo. Tous droits réservés. Développé par MJ Tchoupe",
+        "ABOUT_US": "À propos",
+        "CONTACT": "Contact",
+        "PRIVACY_POLICY": "Politique de confidentialité"
     }
 }
