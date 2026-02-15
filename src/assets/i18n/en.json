@@ -1,0 +1,119 @@
+{
+    "NAV": {
+        "LOGO": "Badgelo",
+        "HOME": "Home",
+        "FEATURES": "Features",
+        "PRICING": "Pricing",
+        "LOGIN": "Login",
+        "SIGNUP": "Sign Up",
+        "LANG_EN": "English",
+        "LANG_FR": "Français"
+    },
+    "HOME": {
+        "TITLE": "Welcome to Badgelo",
+        "TAGLINE": "Edit your images with Badgelo",
+        "DESCRIPTION": "Badgelo is a badge management app for events. Create, manage and print participant badges.",
+        "HERO_SUB": "Create beautiful badges and image previews in seconds.",
+        "HERO_CTA": "Get Started",
+        "HERO_LEARN": "Learn more",
+        "PLACEHOLDER_IMAGE": "Image placeholder",
+        "QUICK": "Fast & Easy",
+        "QUICK_DESC": "Get results quickly with intuitive tools.",
+        "SECURE": "Secure",
+        "SECURE_DESC": "Your images and data stay private.",
+        "FEATURES": {
+            "TITLE": "Features",
+            "ITEMS": {
+                "FAST": {
+                    "TITLE": "Fast editing",
+                    "DESC": "Optimized workflow to edit badges and photos quickly."
+                },
+                "CUSTOM": {
+                    "TITLE": "Custom badges",
+                    "DESC": "Add text, colors and styles to match your brand."
+                },
+                "SHARE": {
+                    "TITLE": "Export & Share",
+                    "DESC": "Download or share your badges with a click."
+                }
+            }
+        },
+        "TARGETS": {
+            "TITLE": "Who is Badgelo for?",
+            "ITEMS": {
+                "ORGANIZERS": {
+                    "TITLE": "Event Organizers",
+                    "DESC": "Create and print badges for conferences and meetups."
+                },
+                "MARKETERS": {
+                    "TITLE": "Marketers",
+                    "DESC": "Design branded badges for promotions and campaigns."
+                },
+                "VOLUNTEERS": {
+                    "TITLE": "Volunteers",
+                    "DESC": "Quickly prepare identification badges for teams."
+                }
+            }
+        },
+        "TESTIMONIALS": {
+            "TITLE": "What people say",
+            "QUOTE1": {
+                "TEXT": "Badgelo saved us hours during our last event."
+            },
+            "QUOTE2": {
+                "TEXT": "Simple, fast and reliable — highly recommended."
+            }
+        },
+        "CTA_TITLE": "Ready to create your first badge?",
+        "CTA_DESC": "Start now for free — upload an image or try a template.",
+        "CTA_BUTTON": "Start now"
+    },
+    "EDITOR": {
+        "TITLE": "Photo Editor",
+        "PREVIEW": "Image Preview",
+        "RESET_CHANGES": "Reset changes",
+        "DOWNLOAD_IMAGE": "Download image",
+        "UPLOAD_TITLE": "Upload Image",
+        "INSTRUCTIONS": "Click the button below to select an image from your device.",
+        "TABS": {
+            "PHOTO": "Photo Editor",
+            "BADGE": "Badge"
+        },
+        "UPLOAD_IMAGE": "Upload image"
+    },
+    "PHOTO_EDITOR": {
+        "TITLE": "Photo Editor",
+        "SLIDERS": {
+            "BRIGHTNESS": "Brightness",
+            "CONTRAST": "Contrast",
+            "SATURATION": "Saturation"
+        },
+        "FILTERS_CONTENT": "Filters content",
+        "TRANSFORM_CONTENT": "Transformations content",
+        "ACCORDIONS": {
+            "BASE": "Base settings",
+            "FILTERS": "Filters",
+            "TRANSFORM": "Transformations"
+        }
+    },
+    "BADGE_EDITOR": {
+        "TITLE": "Badge Editor",
+        "TYPE_LABEL": "Badge Type",
+        "TYPE_PLACEHOLDER": "Select a type",
+        "COLOR_LABEL": "Badge Color",
+        "TEXT_LABEL": "Badge Text",
+        "TEXT_PLACEHOLDER": "Enter badge content"
+    },
+    "BADGE_TYPES": {
+        "BIRTHDAY": "Birthday",
+        "WELCOME": "Welcome",
+        "FAREWELL": "Farewell"
+    },
+    "FOOTER": {
+        "NAME": "Badgelo",
+        "COPYRIGHT": "© 2026 Badgelo. All rights reserved. Developed by MJ Tchoupe",
+        "ABOUT_US": "About Us",
+        "CONTACT": "Contact",
+        "PRIVACY_POLICY": "Privacy Policy"
+    }
+}

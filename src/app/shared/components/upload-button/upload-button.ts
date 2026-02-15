@@ -1,8 +1,9 @@
 import { Component, Output, EventEmitter, signal, input } from '@angular/core';
+import { SHARED_MODULES } from '@shared/shared';
 
 @Component({
   selector: 'bdge-upload-button',
-  imports: [],
+  imports: [SHARED_MODULES],
   templateUrl: './upload-button.html',
   styleUrl: './upload-button.scss',
 })

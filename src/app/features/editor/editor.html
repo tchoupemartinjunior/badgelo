@@ -1,6 +1,6 @@
 <div class="container p-4 mx-auto flex flex-col pt-5 items-center">
     <div>
-        <h1 class="text-3xl text-purple-700">Edition Photo</h1>
+        <h1 class="text-3xl text-purple-700">{{ 'EDITOR.TITLE' | translate }}</h1>
     </div>
 
     <div
@@ -16,7 +16,7 @@
                         class="border-b-2 px-1 pb-2 text-sm font-medium hover:cursor-pointer" [ngClass]="activeTab === tab.key 
                 ? 'border-purple-600 text-purple-600' 
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'">
-                        {{ tab.label }}
+                        {{ tab.label |translate}}
                     </button>
                     }
                 </nav>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="mt-4 flex justify-start">
-                <bdge-button text="Réinitialiser les modifications" [bgColor]="'bg-gray-700'"
+                <bdge-button [text]="'EDITOR.RESET_CHANGES' | translate" [bgColor]="'bg-gray-700'"
                     [onHoverBgColor]="'bg-gray-500'" (onClick)="editorStateService.resetEditor()"></bdge-button>
             </div>
         </div>
@@ -42,7 +42,7 @@
 
         <!-- Preview section -->
         <div class="w-full md:w-2/3 p-4 flex flex-col items-center bg-gray-50">
-            <h2>Aperçu de l'image</h2>
+            <h2>{{ 'EDITOR.PREVIEW' | translate }}</h2>
 
             @if(!editorStateService.hasChanges()) {
             <bdge-preview></bdge-preview>
@@ -55,7 +55,7 @@
                 <bdge-upload-button [backgroundColor]="'bg-gray-700'" (fileSelected)="fileService.upload($event)">
                 </bdge-upload-button>
 
-                <bdge-button text="Téléchargez l'image" (onClick)="fileService.download()">
+                <bdge-button [text]="'EDITOR.DOWNLOAD_IMAGE' | translate" (onClick)="fileService.download()">
                 </bdge-button>
             </div>
         </div>

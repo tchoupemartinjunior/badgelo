@@ -3,10 +3,11 @@ import { ButtonComponent } from "@shared/components/button/button";
 import { EditorStateService } from '../state/editor-state.service';
 import { BadgeType, BadgeTypeOptions } from './badge.enum';
 import { PredefinedBadgeColors, PredefinedBadgeColorsArray } from './colors/colors.enum';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bdge-badge-editor',
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './badge-editor.html',
   styleUrl: './badge-editor.scss',
 })

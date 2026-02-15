@@ -4,6 +4,7 @@ import { Header } from "@layout/header/header";
 import { Navbar } from "@layout/navbar/navbar";
 import { Footer } from "@layout/footer/footer";
 import { filter } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 declare let gtag: Function;
 
@@ -16,7 +17,7 @@ declare let gtag: Function;
 export class App {
   protected readonly title = signal('badgelo');
 
-  constructor(router: Router) {
+  constructor(router: Router, translateService: TranslateService) {
     router.events
       .pipe(filter((event: any) => event instanceof NavigationEnd))
       .subscribe((event: any) => {
@@ -24,5 +25,22 @@ export class App {
           page_path: event.urlAfterRedirects
         });
       });
+
+    const browserLang = translateService.getBrowserLang() ?? 'fr';
+    translateService.use(browserLang.match(/fr|en/) ? browserLang : 'fr');
+    // set document title from translations and update on language change
+    translateService.get('NAV.LOGO').subscribe((title: string) => {
+      if (title) {
+        document.title = title;
+      }
+    });
+
+    translateService.onLangChange?.subscribe(() => {
+      translateService.get('NAV.LOGO').subscribe((title: string) => {
+        if (title) {
+          document.title = title;
+        }
+      });
+    });
   }
 }

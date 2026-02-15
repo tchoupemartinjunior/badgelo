@@ -9,10 +9,11 @@ import { PhotoEditor } from './photo-editor/photo-editor';
 import { BadgeEditor } from "./badge-editor/badge-editor";
 import { OnInit } from '@angular/core';
 import { CanvasService } from '../../shared/services/canvas.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'bdge-editor',
-  imports: [UploadButton, Preview, NgClass, PhotoEditor, ButtonComponent, BadgeEditor],
+  imports: [UploadButton, TranslateModule, Preview, NgClass, PhotoEditor, ButtonComponent, BadgeEditor],
   templateUrl: './editor.html',
   styleUrl: './editor.scss',
 })
@@ -28,8 +29,8 @@ export class Editor implements AfterViewInit {
   activeTab: string = 'badge';
 
   tabs = [
-    { key: 'badge', label: 'Badge', index: 0 },
-    { key: 'photo', label: 'Edition Photo', index: 1 }
+    { key: 'badge', label: 'EDITOR.TABS.BADGE', index: 0 },
+    { key: 'photo', label: 'EDITOR.TABS.PHOTO', index: 1 }
 
   ];
 
