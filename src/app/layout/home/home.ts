@@ -6,7 +6,7 @@ import { FileService } from '@shared/services/file.service';
 
 @Component({
   selector: 'bdge-home',
-  imports: [FileUploader, TranslateModule],
+  imports: [TranslateModule],
   templateUrl: './home.html'
 })
 export class Home {
