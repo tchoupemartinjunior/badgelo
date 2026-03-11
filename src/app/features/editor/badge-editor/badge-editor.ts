@@ -38,4 +38,16 @@ export class BadgeEditor {
   selectPredefinedColor(color: string) {
     this.editorStateService.setBadgeColor(color);
   }
+
+  isCustomBadgeType(): boolean {
+    const badge = this.editorStateService.imageState().badge;
+    const badgeType = badge?.type || '';
+    return badgeType.includes('Badge Personnalisé') || badgeType.includes('Custom Badge');
+  }
+
+  updateCustomBadgeType(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const customTitle = inputElement.value;
+    this.editorStateService.setCustomBadgeTitle(customTitle);
+  }
 }

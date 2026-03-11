@@ -11,4 +11,5 @@ export interface Badge {
   type: string;
   color: string;
   text: string;
+  customTitle?: string; // Title displayed on canvas when custom badge is selected
 }

@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { FileUploader } from "@shared/components/file-uploader/file-uploader";
 import { FileService } from '@shared/services/file.service';
 
 @Component({

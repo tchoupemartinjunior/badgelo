@@ -24,6 +24,7 @@ export class EditorStateService {
   readonly badgeText = computed(() => this.imageState().badge?.text || '');
   readonly badgeType = computed(() => this.imageState().badge?.type || '');
   readonly badgeColor = computed(() => this.imageState().badge?.color || '');
+  readonly badgeCustomTitle = computed(() => this.imageState().badge?.customTitle || '');
   readonly canvas = computed(() => this._canvas());
 
   readonly imageStyleFilter = computed(() => {
@@ -95,6 +96,17 @@ export class EditorStateService {
     this.analyticsService.track('select_badge_color', {
       event_category: 'badge_edit',
       event_label: 'badge_color_select'
+    });
+  }
+
+  setCustomBadgeTitle(customTitle: string) {
+    const currentState = this.imageState();
+    const updatedBadge = { ...currentState.badge, customTitle } as EditorState['badge'];
+    this.imageState.update(s => ({ ...s, badge: updatedBadge }));
+
+    this.analyticsService.track('set_custom_badge_title', {
+      event_category: 'badge_edit',
+      event_label: 'custom_badge_title_input'
     });
   }
 

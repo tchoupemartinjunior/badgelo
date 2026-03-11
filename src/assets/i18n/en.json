@@ -102,12 +102,17 @@
         "TYPE_PLACEHOLDER": "Select a type",
         "COLOR_LABEL": "Badge Color",
         "TEXT_LABEL": "Badge Text",
-        "TEXT_PLACEHOLDER": "Enter badge content"
+        "TEXT_PLACEHOLDER": "Enter badge content",
+        "CUSTOM_TEXT_LABEL": "Badge Description",
+        "CUSTOM_TEXT_PLACEHOLDER": "Enter additional badge description",
+        "CUSTOM_BADGE_TYPE_LABEL": "Badge Title",
+        "CUSTOM_BADGE_TYPE_PLACEHOLDER": "Enter the title displayed on the badge"
     },
     "BADGE_TYPES": {
         "BIRTHDAY": "Birthday",
         "WELCOME": "Welcome",
-        "FAREWELL": "Farewell"
+        "FAREWELL": "Farewell",
+        "CUSTOM": "Custom Badge"
     },
     "FOOTER": {
         "NAME": "Badgelo",

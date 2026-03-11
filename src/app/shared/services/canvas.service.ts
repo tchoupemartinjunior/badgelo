@@ -110,13 +110,16 @@ export class CanvasService {
         const lineSpacing = Math.round(subtitleSize * 0.6);
         const bottomPadding = Math.round(height * 0.05);
 
-        // Ligne 1
+        // Déterminer si c'est un badge personnalisé
+        const isCustomBadge = this.editorStateService.badgeType().includes('Badge Personnalisé') ||
+            this.editorStateService.badgeType().includes('Custom Badge');
+
+        // Ligne 1 - Afficher le titre personnalisé si c'est un badge custom, sinon le type
         ctx.font = `600 ${subtitleSize}px Arial`;
         ctx.fillText(
-            this.editorStateService.badgeType() || 'Joyeux Anniversaire',
+            isCustomBadge ? (this.editorStateService.badgeCustomTitle() || 'Badge') : (this.editorStateService.badgeType() || 'Joyeux Anniversaire'),
             width / 2,
             height - bottomPadding - titleSize - lineSpacing
-
         );
 
         // Ligne 2 (très visible)
