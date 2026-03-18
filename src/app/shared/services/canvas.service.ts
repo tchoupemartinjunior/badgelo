@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { EditorStateService } from '../../features/editor/state/editor-state.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CanvasService {
     private editorStateService = inject(EditorStateService);
+    private translateService = inject(TranslateService);
 
     async drawImageToCanvas(previewUrl: string | null): Promise<void> {
         const canvas = this.editorStateService.canvas();
@@ -240,14 +242,14 @@ export class CanvasService {
         // Ligne 2 (très visible)
         ctx.font = `900 ${titleSize}px Arial`;
         ctx.fillText(
-            this.editorStateService.badgeText() || 'Prenom',
+            this.editorStateService.badgeText() || this.translateService.instant('BADGE_EDITOR.TEXT_PLACEHOLDER'),
             width / 2,
             height - bottomPadding
         );
 
         // ajouter un filigrane "Made with Badgelo" en bas à droite
-        const watermarkText = 'Made with Badgelo';
-        const watermarkFontSize = Math.round(width * 0.03);
+        const watermarkText = 'Badgelo';
+        const watermarkFontSize = Math.round(width * 0.02);
         ctx.font = `400 ${watermarkFontSize}px Arial`;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.textAlign = 'right';

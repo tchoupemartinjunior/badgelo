@@ -106,7 +106,7 @@
         "TYPE_PLACEHOLDER": "Sélectionnez un type",
         "COLOR_LABEL": "Couleur du badge",
         "TEXT_LABEL": "Texte du badge",
-        "TEXT_PLACEHOLDER": "Entrez le contenu du badge",
+        "TEXT_PLACEHOLDER": "<Texte du badge>",
         "CUSTOM_TEXT_LABEL": "Description du badge",
         "CUSTOM_TEXT_PLACEHOLDER": "Entrez une description supplémentaire du badge",
         "CUSTOM_BADGE_TYPE_LABEL": "Titre du badge",

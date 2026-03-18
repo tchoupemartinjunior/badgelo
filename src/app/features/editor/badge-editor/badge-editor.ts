@@ -18,6 +18,7 @@ export class BadgeEditor {
   readonly predefinedBadgeColors = PredefinedBadgeColorsArray;
 
   updateBadgeType(event: Event) {
+    this.updateBadgeText();
     const selectElement = event.target as HTMLSelectElement;
     const selectedType = selectElement.value as BadgeType;
     this.editorStateService.setBadgeType(selectedType);
@@ -29,9 +30,9 @@ export class BadgeEditor {
     this.editorStateService.setBadgeColor(color);
   }
 
-  updateBadgeText(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const text = inputElement.value;
+  updateBadgeText(event?: Event) {
+    const inputElement = event?.target as HTMLInputElement;
+    const text = inputElement?.value || '';
     this.editorStateService.setBadgeText(text);
   }
 

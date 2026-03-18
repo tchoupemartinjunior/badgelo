@@ -5,15 +5,15 @@
     <!-- Boutons pour chaque accordion -->
     @for(acc of accordions; track acc.key){
     <ng-container>
-        <button (click)="openAccordion = openAccordion === acc.key ? null : acc.key"
+        <button (click)="toggleAccordion(acc.key)"
             class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-600 font-medium hover:cursor-pointer hover:bg-purple-50">
             {{ acc.label | translate}}
-            <span [class.rotate-180]="openAccordion === acc.key" class="transition-transform duration-200">
+            <span [class.rotate-180]="openAccordions.has(acc.key)" class="transition-transform duration-200">
                 ▼
             </span>
         </button>
         <!-- Contenu dynamique via ng-template -->
-        @if(openAccordion === acc.key) {
+        @if(openAccordions.has(acc.key)) {
         <ng-container [ngTemplateOutlet]="getTemplate(acc.key)"></ng-container>
         }
     </ng-container>

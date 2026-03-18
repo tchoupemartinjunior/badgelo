@@ -18,13 +18,21 @@ export class PhotoEditor {
   @ViewChild('filtersTemplate', { static: true }) filtersTemplate!: TemplateRef<any>;
   @ViewChild('transformTemplate', { static: true }) transformTemplate!: TemplateRef<any>;
 
-  openAccordion: string | null = null;
-
   accordions = [
     { key: 'base', label: 'PHOTO_EDITOR.ACCORDIONS.BASE' },
-    { key: 'filters', label: 'PHOTO_EDITOR.ACCORDIONS.FILTERS' },
-    { key: 'transform', label: 'PHOTO_EDITOR.ACCORDIONS.TRANSFORM' }
+    // { key: 'filters', label: 'PHOTO_EDITOR.ACCORDIONS.FILTERS' },
+    // { key: 'transform', label: 'PHOTO_EDITOR.ACCORDIONS.TRANSFORM' }
   ];
+
+  openAccordions = new Set<string>(['base', 'filters', 'transform']);
+
+  toggleAccordion(key: string): void {
+    if (this.openAccordions.has(key)) {
+      this.openAccordions.delete(key);
+    } else {
+      this.openAccordions.add(key);
+    }
+  }
 
   getTemplate(key: string): TemplateRef<any> {
     switch (key) {
