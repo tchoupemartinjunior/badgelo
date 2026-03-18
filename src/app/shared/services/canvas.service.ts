@@ -31,13 +31,128 @@ export class CanvasService {
             img.onload = () => {
                 canvas.width = img.width;
                 canvas.height = img.height;
-                ctx.filter = this.editorStateService.imageStyleFilter();
                 ctx.drawImage(img, 0, 0);
+
+                // Apply filters using pixel manipulation for better mobile support
+                this.applyFilters(ctx, canvas);
+
                 if (overlay) overlay(ctx, img);
                 resolve();
             };
             img.onerror = () => reject(new Error('Failed to load image'));
         });
+    }
+
+    private applyFilters(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
+        const brightness = this.editorStateService.brightness();
+        const contrast = this.editorStateService.contrast();
+        const saturation = this.editorStateService.saturation();
+
+        // Skip if all values are at default (100)
+        if (brightness === 100 && contrast === 100 && saturation === 100) {
+            return;
+        }
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        // Convert brightness/contrast/saturation percentages to normalized values
+        const brightnessAdjust = (brightness - 100) / 100;
+        const contrastAdjust = contrast / 100;
+        const saturationAdjust = saturation / 100;
+
+        for (let i = 0; i < data.length; i += 4) {
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+            const a = data[i + 3];
+
+            // Apply brightness
+            r = Math.min(255, r * (1 + brightnessAdjust));
+            g = Math.min(255, g * (1 + brightnessAdjust));
+            b = Math.min(255, b * (1 + brightnessAdjust));
+
+            // Apply contrast
+            const contrastCenter = 128;
+            r = Math.max(0, Math.min(255, (r - contrastCenter) * contrastAdjust + contrastCenter));
+            g = Math.max(0, Math.min(255, (g - contrastCenter) * contrastAdjust + contrastCenter));
+            b = Math.max(0, Math.min(255, (b - contrastCenter) * contrastAdjust + contrastCenter));
+
+            // Apply saturation (convert RGB to HSL, adjust saturation, convert back)
+            if (saturation !== 100) {
+                const hsl = this.rgbToHsl(r, g, b);
+                hsl.s = hsl.s * saturationAdjust;
+                hsl.s = Math.max(0, Math.min(1, hsl.s));
+                const rgb = this.hslToRgb(hsl.h, hsl.s, hsl.l);
+                r = rgb.r;
+                g = rgb.g;
+                b = rgb.b;
+            }
+
+            data[i] = Math.round(r);
+            data[i + 1] = Math.round(g);
+            data[i + 2] = Math.round(b);
+            data[i + 3] = a;
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    private rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h = 0;
+        let s = 0;
+        const l = (max + min) / 2;
+
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+            switch (max) {
+                case r:
+                    h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+                    break;
+                case g:
+                    h = ((b - r) / d + 2) / 6;
+                    break;
+                case b:
+                    h = ((r - g) / d + 4) / 6;
+                    break;
+            }
+        }
+
+        return { h, s, l };
+    }
+
+    private hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: number } {
+        let r, g, b;
+
+        if (s === 0) {
+            r = g = b = l;
+        } else {
+            const hue2rgb = (p: number, q: number, t: number) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        return { r: r * 255, g: g * 255, b: b * 255 };
     }
 
     async exportAndDownload(previewUrl: string, canvas: HTMLCanvasElement, filename = 'Badgelo-edited-image.png'): Promise<void> {

@@ -36,9 +36,15 @@ export class Editor implements AfterViewInit {
 
   constructor() {
     effect(() => {
-      this.editorStateService.hasChanges();
+      // Explicitly track image filter changes to ensure canvas redraws
+      this.editorStateService.imageStyleFilter();
+      // Also track badge changes
       this.editorStateService.badgeText();
       this.editorStateService.badgeType();
+      this.editorStateService.brightness();
+      this.editorStateService.contrast();
+      this.editorStateService.saturation();
+      // Redraw canvas whenever any of the above values change
       this.canvasService.drawImageToCanvas(this.fileService.previewUrl());
     });
   }
