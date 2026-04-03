@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd, RouterLink } from '@angular/router';
 import { Header } from "@layout/header/header";
 import { Navbar } from "@layout/navbar/navbar";
 import { Footer } from "@layout/footer/footer";
@@ -10,7 +10,7 @@ declare let gtag: Function;
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Navbar, Footer],
+  imports: [RouterOutlet, RouterLink, Header, Navbar, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

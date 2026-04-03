@@ -118,6 +118,32 @@
         "FAREWELL": "Au revoir",
         "CUSTOM": "Badge Personnalisé"
     },
+    "FEEDBACK": {
+        "TITLE": "Nous aimerions vos commentaires",
+        "DESCRIPTION": "Aidez-nous à améliorer Badgelo en partageant vos retours et suggestions.",
+        "FORM": {
+            "NAME": "Nom",
+            "NAME_PLACEHOLDER": "Votre nom (optionnel)",
+            "EMAIL": "Email",
+            "EMAIL_PLACEHOLDER": "votre.email@exemple.com",
+            "EMAIL_REQUIRED": "L'email est obligatoire",
+            "EMAIL_INVALID": "Veuillez entrer un email valide",
+            "SUBJECT": "Sujet",
+            "SUBJECT_PLACEHOLDER": "Sujet de votre message",
+            "SUBJECT_REQUIRED": "Le sujet est obligatoire",
+            "MESSAGE": "Message",
+            "MESSAGE_PLACEHOLDER": "Partagez vos commentaires ou vos idées...",
+            "MESSAGE_REQUIRED": "Le message est obligatoire",
+            "RATING": "Comment évalueriez-vous votre expérience ?",
+            "RATING_PLACEHOLDER": "Sélectionnez une note",
+            "SUBMIT": "Envoyer",
+            "SUBMITTING": "Envoi...",
+            "SUCCESS": "Merci pour votre feedback !",
+            "SUCCESS_MESSAGE": "Votre message a été envoyé avec succès. Nous apprécions vos commentaires.",
+            "ERROR": "Une erreur s'est produite",
+            "ERROR_MESSAGE": "Veuillez vérifier le formulaire et réessayer."
+        }
+    },
     "FOOTER": {
         "NAME": "Badgelo",
         "COPYRIGHT": "© 2026 Badgelo. Tous droits réservés. Développé par MJ Tchoupe",
