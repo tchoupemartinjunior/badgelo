@@ -1,0 +1,97 @@
+<div class="feedback-container">
+    <div class="feedback-header">
+        <h1>{{ 'FEEDBACK.TITLE' | translate }}</h1>
+        <p>{{ 'FEEDBACK.DESCRIPTION' | translate }}</p>
+    </div>
+
+    @if (success()) {
+    <div class="feedback-message success-message">
+        <div class="message-icon">✓</div>
+        <h2>{{ 'FEEDBACK.FORM.SUCCESS' | translate }}</h2>
+        <p>{{ 'FEEDBACK.FORM.SUCCESS_MESSAGE' | translate }}</p>
+        <button type="button" class="btn-secondary" (click)="resetForm()">
+            Envoyer un autre message
+        </button>
+    </div>
+    } @else if (error()) {
+    <div class="feedback-message error-message">
+        <div class="message-icon">✕</div>
+        <h2>{{ 'FEEDBACK.FORM.ERROR' | translate }}</h2>
+        <p>{{ error() }}</p>
+    </div>
+    } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="feedback-form" novalidate>
+        <!-- Name Field -->
+        <div class="form-group">
+            <label for="name">{{ 'FEEDBACK.FORM.NAME' | translate }}</label>
+            <input id="name" type="text" formControlName="name"
+                [placeholder]="'FEEDBACK.FORM.NAME_PLACEHOLDER' | translate" class="input-field"
+                [class.input-error]="form.get('name')?.invalid && submitted()" />
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email">
+                {{ 'FEEDBACK.FORM.EMAIL' | translate }}
+                <span class="required">*</span>
+            </label>
+            <input id="email" type="email" formControlName="email"
+                [placeholder]="'FEEDBACK.FORM.EMAIL_PLACEHOLDER' | translate" class="input-field"
+                [class.input-error]="form.get('email')?.invalid && submitted()" autocomplete="email" />
+            @if (getFieldError('email')) {
+            <span class="error-text" role="alert">{{ getFieldError('email') }}</span>
+            }
+        </div>
+
+        <!-- Subject Field -->
+        <div class="form-group">
+            <label for="subject">
+                {{ 'FEEDBACK.FORM.SUBJECT' | translate }}
+                <span class="required">*</span>
+            </label>
+            <input id="subject" type="text" formControlName="subject"
+                [placeholder]="'FEEDBACK.FORM.SUBJECT_PLACEHOLDER' | translate" class="input-field"
+                [class.input-error]="form.get('subject')?.invalid && submitted()" />
+            @if (getFieldError('subject')) {
+            <span class="error-text" role="alert">{{ getFieldError('subject') }}</span>
+            }
+        </div>
+
+        <!-- Message Field -->
+        <div class="form-group">
+            <label for="message">
+                {{ 'FEEDBACK.FORM.MESSAGE' | translate }}
+                <span class="required">*</span>
+            </label>
+            <textarea id="message" formControlName="message"
+                [placeholder]="'FEEDBACK.FORM.MESSAGE_PLACEHOLDER' | translate" class="input-field textarea-field"
+                [class.input-error]="form.get('message')?.invalid && submitted()" rows="5"></textarea>
+            @if (getFieldError('message')) {
+            <span class="error-text" role="alert">{{ getFieldError('message') }}</span>
+            }
+        </div>
+
+        <!-- Rating Field -->
+        <div class="form-group">
+            <label for="rating">{{ 'FEEDBACK.FORM.RATING' | translate }}</label>
+            <select id="rating" formControlName="rating" class="input-field">
+                <option value="" disabled>{{ 'FEEDBACK.FORM.RATING_PLACEHOLDER' | translate }}</option>
+                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                <option value="4">⭐⭐⭐⭐ Bon</option>
+                <option value="3">⭐⭐⭐ Moyen</option>
+                <option value="2">⭐⭐ Faible</option>
+                <option value="1">⭐ Très faible</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary" [disabled]="loading()">
+            @if (loading()) {
+            <span>{{ 'FEEDBACK.FORM.SUBMITTING' | translate }}</span>
+            } @else {
+            <span>{{ 'FEEDBACK.FORM.SUBMIT' | translate }}</span>
+            }
+        </button>
+    </form>
+    }
+</div>

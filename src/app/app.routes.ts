@@ -13,6 +13,10 @@ export const routes: Routes = [{
     path: 'editor',
     loadComponent: () => import('./features/editor/editor').then(m => m.Editor),
     loadChildren: () => import('./features/editor/editor.routes').then(m => m.EDITOR_ROUTES)
+},
+{
+    path: 'feedback',
+    loadComponent: () => import('./features/feedback/feedback').then(m => m.Feedback)
 }
 
 ];
