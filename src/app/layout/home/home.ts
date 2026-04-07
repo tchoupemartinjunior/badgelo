@@ -25,7 +25,7 @@ export class Home {
   ];
 
   testimonials = [
-    { quoteKey: 'HOME.TESTIMONIALS.QUOTE1.TEXT', author: 'Alice — Event Organizer' },
+    { quoteKey: 'HOME.TESTIMONIALS.QUOTE1.TEXT', author: 'Stephanie — Event Organizer' },
     { quoteKey: 'HOME.TESTIMONIALS.QUOTE2.TEXT', author: 'Marc — Community Manager' }
   ];
 
