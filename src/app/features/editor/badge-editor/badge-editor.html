@@ -40,7 +40,7 @@
         <label for="badge-text" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.TEXT_LABEL' | translate
             }}</label>
         <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="badge-text"
-            placeholder="{{ 'BADGE_EDITOR.TEXT_PLACEHOLDER' | translate }}"
+            maxlength="30" placeholder="{{ 'BADGE_EDITOR.TEXT_PLACEHOLDER' | translate }}"
             class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-24"></textarea>
     </div>
     }
@@ -53,7 +53,7 @@
                 'BADGE_EDITOR.CUSTOM_BADGE_TYPE_LABEL' |
                 translate }}</label>
             <input [value]="editorStateService.badgeCustomTitle()" (input)="updateCustomBadgeType($event)"
-                id="custom-badge-type" type="text"
+                id="custom-badge-type" type="text" maxlength="20"
                 placeholder="{{ 'BADGE_EDITOR.CUSTOM_BADGE_TYPE_PLACEHOLDER' | translate }}"
                 class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
         </div>
@@ -61,7 +61,7 @@
             <label for="custom-text" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.CUSTOM_TEXT_LABEL' |
                 translate }}</label>
             <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="custom-text"
-                placeholder="{{ 'BADGE_EDITOR.CUSTOM_TEXT_PLACEHOLDER' | translate }}"
+                maxlength="30" placeholder="{{ 'BADGE_EDITOR.CUSTOM_TEXT_PLACEHOLDER' | translate }}"
                 class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-32"></textarea>
         </div>
     </div>
