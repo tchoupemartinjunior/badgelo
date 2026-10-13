@@ -2,6 +2,15 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { EditorState } from './editor-state.interface';
 import { Analytics } from '@shared/services/analytics';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  BadgeFontId,
+  DEFAULT_TEXT_STYLE,
+  TEXT_SIZE_MAX,
+  TEXT_SIZE_MIN,
+  TextAlign,
+  TextPosition,
+  TextStyle,
+} from '../badge-editor/text-style';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +25,7 @@ export class EditorStateService {
     contrast: 100,
     saturation: 100,
     badge: null,
+    textStyle: { ...DEFAULT_TEXT_STYLE },
   });
 
   readonly brightness = computed(() => this.imageState().brightness);
@@ -25,6 +35,7 @@ export class EditorStateService {
   readonly badgeType = computed(() => this.imageState().badge?.type || '');
   readonly badgeColor = computed(() => this.imageState().badge?.color || '');
   readonly badgeCustomTitle = computed(() => this.imageState().badge?.customTitle || '');
+  readonly textStyle = computed(() => this.imageState().textStyle);
   readonly canvas = computed(() => this._canvas());
 
   readonly imageStyleFilter = computed(() => {
@@ -37,7 +48,8 @@ export class EditorStateService {
       brightness: 100,
       contrast: 100,
       saturation: 100,
-      badge: null
+      badge: null,
+      textStyle: { ...DEFAULT_TEXT_STYLE },
     });
   }
 
@@ -108,6 +120,43 @@ export class EditorStateService {
       event_category: 'badge_edit',
       event_label: 'custom_badge_title_input'
     });
+  }
+
+  setTextFont(font: BadgeFontId) {
+    this.updateTextStyle({ font });
+    this.analyticsService.track('select_text_font', {
+      event_category: 'badge_edit',
+      event_label: font
+    });
+  }
+
+  setTextSize(size: number) {
+    const clamped = Math.min(TEXT_SIZE_MAX, Math.max(TEXT_SIZE_MIN, size));
+    this.updateTextStyle({ size: clamped });
+    this.analyticsService.track('adjust_text_size', {
+      event_category: 'badge_edit',
+      event_label: 'text_size_slider'
+    });
+  }
+
+  setTextAlign(align: TextAlign) {
+    this.updateTextStyle({ align });
+    this.analyticsService.track('select_text_align', {
+      event_category: 'badge_edit',
+      event_label: align
+    });
+  }
+
+  setTextPosition(position: TextPosition) {
+    this.updateTextStyle({ position });
+    this.analyticsService.track('select_text_position', {
+      event_category: 'badge_edit',
+      event_label: position
+    });
+  }
+
+  private updateTextStyle(patch: Partial<TextStyle>) {
+    this.imageState.update(s => ({ ...s, textStyle: { ...s.textStyle, ...patch } }));
   }
 
   hasBadge(): boolean {

@@ -103,14 +103,38 @@
     "BADGE_EDITOR": {
         "TITLE": "Éditeur de Badges",
         "TYPE_LABEL": "Type de badge",
-        "TYPE_PLACEHOLDER": "Sélectionnez un type",
+        "TYPE_PLACEHOLDER": "Choisissez un type de badge",
         "COLOR_LABEL": "Couleur du badge",
         "TEXT_LABEL": "Texte du badge",
-        "TEXT_PLACEHOLDER": "<Texte du badge>",
+        "TEXT_PLACEHOLDER": "Ex. : Awa, 25 ans aujourd'hui !",
         "CUSTOM_TEXT_LABEL": "Description du badge",
-        "CUSTOM_TEXT_PLACEHOLDER": "Entrez une description supplémentaire du badge",
+        "CUSTOM_TEXT_PLACEHOLDER": "Ex. : Merci pour toutes ces années !",
         "CUSTOM_BADGE_TYPE_LABEL": "Titre du badge",
-        "CUSTOM_BADGE_TYPE_PLACEHOLDER": "Entrez le titre affiché sur le badge"
+        "CUSTOM_BADGE_TYPE_PLACEHOLDER": "Ex. : Champion de l'année",
+        "TEXT_STYLE": {
+            "TITLE": "Mise en forme du texte",
+            "FONT_LABEL": "Police",
+            "SIZE_LABEL": "Taille du texte",
+            "ALIGN_LABEL": "Alignement",
+            "POSITION_LABEL": "Position",
+            "ALIGN": {
+                "LEFT": "Aligner à gauche",
+                "CENTER": "Centrer",
+                "RIGHT": "Aligner à droite"
+            },
+            "POSITION": {
+                "TOP": "Haut",
+                "MIDDLE": "Milieu",
+                "BOTTOM": "Bas"
+            }
+        },
+        "FONTS": {
+            "CLASSIC": "Classique",
+            "MODERN": "Moderne",
+            "ELEGANT": "Élégante",
+            "FESTIVE": "Festive"
+        },
+        "PREVIEW_TEXT_FALLBACK": "Votre message ici"
     },
     "BADGE_TYPES": {
         "BIRTHDAY": "Joyeux Anniversaire",
