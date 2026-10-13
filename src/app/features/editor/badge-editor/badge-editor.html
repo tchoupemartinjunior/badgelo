@@ -37,11 +37,57 @@
     @if(!isCustomBadgeType()) {
     <!-- Badge Text Input -->
     <div class="flex flex-col gap-2">
-        <label for="badge-text" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.TEXT_LABEL' | translate
+        <label for="badge-text" class="text-sm font-medium text-gray-700">{{ (isQuote() ? 'BADGE_EDITOR.QUOTE.TEXT_LABEL' : 'BADGE_EDITOR.TEXT_LABEL') | translate
             }}</label>
-        <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="badge-text" placeholder="{{ 'BADGE_EDITOR.TEXT_PLACEHOLDER' | translate }}"
+        <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="badge-text" [placeholder]="(isQuote() ? 'BADGE_EDITOR.QUOTE.TEXT_PLACEHOLDER' : 'BADGE_EDITOR.TEXT_PLACEHOLDER') | translate"
             class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-24"></textarea>
     </div>
+    }
+
+    @if(isQuote()) {
+    <!-- Citation : auteur, guillemets, disposition -->
+    <section class="space-y-5">
+        <div class="flex flex-col gap-2">
+            <label for="quote-author" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.QUOTE.AUTHOR_LABEL' | translate }}</label>
+            <input id="quote-author" type="text" [value]="quote().author" (input)="updateQuoteAuthor($event)"
+                [placeholder]="'BADGE_EDITOR.QUOTE.AUTHOR_PLACEHOLDER' | translate"
+                class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+        </div>
+        <div class="flex flex-col gap-2">
+            <label for="quote-role" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.QUOTE.ROLE_LABEL' | translate }}</label>
+            <input id="quote-role" type="text" [value]="quote().role" (input)="updateQuoteRole($event)"
+                [placeholder]="'BADGE_EDITOR.QUOTE.ROLE_PLACEHOLDER' | translate"
+                class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+        </div>
+        <div class="flex flex-col gap-2">
+            <span id="quote-marks-label" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.QUOTE.MARKS_LABEL' | translate }}</span>
+            <div class="flex gap-2" role="group" aria-labelledby="quote-marks-label">
+                @for(option of marksOptions; track option.value) {
+                <button type="button" (click)="selectMarks(option.value)"
+                    [attr.aria-pressed]="quote().marks === option.value"
+                    [attr.aria-label]="option.labelKey | translate"
+                    [class]="optionClass(quote().marks === option.value)"
+                    class="min-h-11 min-w-16 rounded-lg border px-3 text-lg hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    {{ option.sample }}
+                </button>
+                }
+            </div>
+        </div>
+        <div class="flex flex-col gap-2">
+            <span id="quote-layout-label" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.QUOTE.LAYOUT_LABEL' | translate }}</span>
+            <div class="grid grid-cols-3 gap-2" role="group" aria-labelledby="quote-layout-label">
+                @for(option of layoutOptions; track option.value) {
+                <button type="button" (click)="selectLayout(option.value)"
+                    [attr.aria-pressed]="quote().layout === option.value"
+                    [class]="optionClass(quote().layout === option.value)"
+                    class="min-h-11 rounded-lg border px-2 text-sm hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    {{ option.labelKey | translate }}
+                </button>
+                }
+            </div>
+        </div>
+        <p class="text-sm text-gray-700">{{ 'BADGE_EDITOR.QUOTE.PORTRAIT_HINT' | translate }}</p>
+    </section>
     }
 
     <!-- Custom Text Input - Only shown when Custom Badge type is selected -->
@@ -112,7 +158,8 @@
                 </div>
             </div>
 
-            <!-- Position -->
+            <!-- Position (seule la disposition « Bandeau » d'une citation la prend en compte) -->
+            @if(!isQuote() || quote().layout === 'band') {
             <div class="flex min-w-0 flex-1 flex-col gap-2">
                 <span id="text-position-label" class="text-sm font-medium text-gray-700">{{
                     'BADGE_EDITOR.TEXT_STYLE.POSITION_LABEL' | translate }}</span>
@@ -127,6 +174,7 @@
                     }
                 </div>
             </div>
+            }
         </div>
     </section>
 

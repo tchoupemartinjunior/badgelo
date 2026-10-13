@@ -1,7 +1,24 @@
 import { Injectable, inject } from '@angular/core';
 import { EditorStateService } from '../../features/editor/state/editor-state.service';
 import { TranslateService } from '@ngx-translate/core';
+import { FrameSettings, Size, computePlacement, isRoundFrame } from '../utils/image-geometry';
+import { LogoSettings } from '../../features/editor/logo-editor/logo-settings';
+import { formatQuote } from '../../features/editor/badge-editor/quote-settings';
 import { BADGE_FONTS, BadgeFont, BadgeFontId } from '../../features/editor/badge-editor/text-style';
+
+/** Zone verticale occupée par le texte du badge, que le logo évite. */
+interface Band {
+    top: number;
+    bottom: number;
+}
+
+/** Contenu imposé à `drawOverlay` (citation) : deux blocs, tailles en fraction de la largeur. */
+interface OverlayContent {
+    first: string;
+    second: string;
+    firstSize: number;
+    secondSize: number;
+}
 
 interface TextBlock {
     lines: string[];
@@ -24,36 +41,80 @@ export class CanvasService {
         if (!canvas || !previewUrl) return;
         if (this.editorStateService.hasBadge()) {
             await this.ensureFontLoaded(this.editorStateService.textStyle().font);
-            return this.renderImage(previewUrl, canvas, this.drawOverlay.bind(this));
         }
-        return this.renderImage(previewUrl, canvas);
+        return this.renderImage(previewUrl, canvas, this.drawOverlays.bind(this));
     }
 
     async renderImage(
         previewUrl: string,
         canvas: HTMLCanvasElement,
-        overlay?: (ctx: CanvasRenderingContext2D, img: HTMLImageElement) => void
+        overlay?: (ctx: CanvasRenderingContext2D, size: Size) => void | Promise<void>
     ): Promise<void> {
         if (!canvas) return;
+        const img = await this.loadImage(previewUrl);
+        const state = this.editorStateService.imageState();
+        const imageSize: Size = { width: img.width, height: img.height };
+        this.editorStateService.setImageSize(imageSize);
+
+        // La taille du canvas dépend du format choisi ; la photo est recadrée pour le remplir
+        const placement = computePlacement(imageSize, state.frame, state.transform);
+        canvas.width = placement.frame.width;
+        canvas.height = placement.frame.height;
         const ctx = canvas.getContext('2d')!;
+
+        ctx.save();
+        ctx.translate(canvas.width / 2 + placement.translateX, canvas.height / 2 + placement.translateY);
+        ctx.rotate(placement.angle);
+        ctx.scale(placement.scale * (state.transform.flipX ? -1 : 1), placement.scale);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.restore();
+
+        // Apply filters using pixel manipulation for better mobile support
+        this.applyFilters(ctx, canvas);
+
+        if (overlay) await overlay(ctx, { width: canvas.width, height: canvas.height });
+
+        this.applyFrameShape(ctx, canvas, state.frame);
+    }
+
+    private cachedImage: { url: string; img: HTMLImageElement } | null = null;
+
+    /** Évite de redécoder la photo à chaque modification d'un curseur. */
+    private async loadImage(url: string): Promise<HTMLImageElement> {
+        if (this.cachedImage?.url === url) return this.cachedImage.img;
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        img.src = previewUrl;
-
+        img.src = url;
         await new Promise<void>((resolve, reject) => {
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-
-                // Apply filters using pixel manipulation for better mobile support
-                this.applyFilters(ctx, canvas);
-
-                if (overlay) overlay(ctx, img);
-                resolve();
-            };
+            img.onload = () => resolve();
             img.onerror = () => reject(new Error('Failed to load image'));
         });
+        this.cachedImage = { url, img };
+        return img;
+    }
+
+    /** Découpe l'image finale en rond ou en carré arrondi ; les coins deviennent transparents. */
+    private applyFrameShape(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, frame: FrameSettings): void {
+        const round = isRoundFrame(frame);
+        if (!round && frame.shape !== 'rounded') return;
+
+        const { width, height } = canvas;
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.beginPath();
+        if (round) {
+            ctx.ellipse(width / 2, height / 2, width / 2, height / 2, 0, 0, Math.PI * 2);
+        } else {
+            const radius = Math.round(Math.min(width, height) * 0.08);
+            ctx.moveTo(radius, 0);
+            ctx.arcTo(width, 0, width, height, radius);
+            ctx.arcTo(width, height, 0, height, radius);
+            ctx.arcTo(0, height, 0, 0, radius);
+            ctx.arcTo(0, 0, width, 0, radius);
+            ctx.closePath();
+        }
+        ctx.fill();
+        ctx.restore();
     }
 
     private applyFilters(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
@@ -61,8 +122,10 @@ export class CanvasService {
         const contrast = this.editorStateService.contrast();
         const saturation = this.editorStateService.saturation();
 
+        const filter = this.editorStateService.filter();
+
         // Skip if all values are at default (100)
-        if (brightness === 100 && contrast === 100 && saturation === 100) {
+        if (brightness === 100 && contrast === 100 && saturation === 100 && filter === 'none') {
             return;
         }
 
@@ -100,6 +163,18 @@ export class CanvasService {
                 r = rgb.r;
                 g = rgb.g;
                 b = rgb.b;
+            }
+
+            if (filter === 'bw') {
+                const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                r = g = b = gray;
+            } else if (filter === 'sepia') {
+                const sr = 0.393 * r + 0.769 * g + 0.189 * b;
+                const sg = 0.349 * r + 0.686 * g + 0.168 * b;
+                const sb = 0.272 * r + 0.534 * g + 0.131 * b;
+                r = Math.min(255, sr);
+                g = Math.min(255, sg);
+                b = Math.min(255, sb);
             }
 
             data[i] = Math.round(r);
@@ -205,11 +280,12 @@ export class CanvasService {
 
     drawOverlay(
         ctx: CanvasRenderingContext2D,
-        img: HTMLImageElement
-    ): void {
+        size: Size,
+        content?: OverlayContent
+    ): Band {
 
-        const width = img.width;
-        const height = img.height;
+        const width = size.width;
+        const height = size.height;
 
         const style = this.editorStateService.textStyle();
         const font = this.findFont(style.font);
@@ -234,8 +310,8 @@ export class CanvasService {
         // Les tailles suivent le curseur ; le texte passe à la ligne et se réduit au besoin
         // pour ne jamais dépasser de l'image, quelle que soit sa longueur.
         const { typeBlock, messageBlock, lineSpacing, blockHeight } = this.layoutBadgeText(
-            ctx, typeLine, messageLine, font,
-            Math.round(width * 0.09 * scale), Math.round(width * 0.07 * scale),
+            ctx, content?.first ?? typeLine, content?.second ?? messageLine, font,
+            Math.round(width * (content?.firstSize ?? 0.09) * scale), Math.round(width * (content?.secondSize ?? 0.07) * scale),
             maxTextWidth, height - edgePadding * 2
         );
 
@@ -250,17 +326,35 @@ export class CanvasService {
         this.drawBadgeGradient(ctx, width, height, style.position, gradientHeight, badgeColor);
 
         /* --- Texte --- */
-        const x = style.align === 'left'
-            ? sidePadding
-            : style.align === 'right'
-                ? width - sidePadding
-                : width / 2;
+        const x = this.textX(style.align, width, sidePadding);
+        this.drawTextBlocks(ctx, { typeBlock, messageBlock, lineSpacing }, font, x, blockBottom, style.align, this.textColorFor(badgeColor));
+        this.drawSmallWatermark(ctx, size);
 
-        ctx.fillStyle = this.textColorFor(badgeColor);
-        ctx.textAlign = style.align;
+        return {
+            top: Math.max(0, blockBottom - blockHeight - edgePadding),
+            bottom: Math.min(height, blockBottom + edgePadding),
+        };
+    }
+
+    private textX(align: CanvasTextAlign, width: number, padding: number): number {
+        return align === 'left' ? padding : align === 'right' ? width - padding : width / 2;
+    }
+
+    /** Les lignes sont posées de bas en haut : message, puis premier bloc (type de badge ou citation). */
+    private drawTextBlocks(
+        ctx: CanvasRenderingContext2D,
+        layout: { typeBlock: TextBlock; messageBlock: TextBlock; lineSpacing: number },
+        font: BadgeFont,
+        x: number,
+        blockBottom: number,
+        align: CanvasTextAlign,
+        color: string
+    ): void {
+        const { typeBlock, messageBlock, lineSpacing } = layout;
+        ctx.fillStyle = color;
+        ctx.textAlign = align;
         ctx.textBaseline = 'bottom';
 
-        // Les lignes sont posées de bas en haut : message, puis type de badge
         const messageStep = messageBlock.size * LINE_HEIGHT;
         const typeStep = typeBlock.size * LINE_HEIGHT;
         const lastMessageIndex = messageBlock.lines.length - 1;
@@ -278,15 +372,209 @@ export class CanvasService {
         typeBlock.lines.forEach((line, i) => {
             ctx.fillText(line, x, typeBottom - (lastTypeIndex - i) * typeStep);
         });
+    }
 
-        // ajouter un filigrane "Made with Badgelo" en bas à droite
-        const watermarkText = 'Badgelo';
-        const watermarkFontSize = Math.round(width * 0.02);
-        ctx.font = `400 ${watermarkFontSize}px Arial`;
+    private drawSmallWatermark(ctx: CanvasRenderingContext2D, size: Size): void {
+        ctx.save();
+        ctx.font = `400 ${Math.round(size.width * 0.02)}px Arial`;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(watermarkText, width - 10, height - 10);
+        ctx.fillText('Badgelo', size.width - 10, size.height - 10);
+        ctx.restore();
+    }
+
+    /** Badge « Citation » : guillemets, auteur, et la photo importée comme portrait. */
+    private drawQuote(ctx: CanvasRenderingContext2D, size: Size): Band {
+        const state = this.editorStateService;
+        const quote = state.quote();
+        const text = formatQuote(
+            state.badgeText().trim() || this.translateService.instant('BADGE_EDITOR.QUOTE.PREVIEW_QUOTE'),
+            quote.marks
+        );
+        const author = quote.author.trim() || this.translateService.instant('BADGE_EDITOR.QUOTE.PREVIEW_AUTHOR');
+        const role = quote.role.trim();
+        const attribution = role ? `\u2014 ${author}\n${role}` : `\u2014 ${author}`;
+
+        const style = state.textStyle();
+        const font = this.findFont(style.font);
+        const scale = style.size / 100;
+        const color = state.badgeColor();
+        const { width, height } = size;
+
+        if (quote.layout === 'band') {
+            return this.drawOverlay(ctx, size, { first: text, second: attribution, firstSize: 0.075, secondSize: 0.045 });
+        }
+
+        if (quote.layout === 'card') {
+            const snapshot = document.createElement('canvas');
+            snapshot.width = ctx.canvas.width;
+            snapshot.height = ctx.canvas.height;
+            snapshot.getContext('2d')?.drawImage(ctx.canvas, 0, 0);
+
+            const pad = Math.round(Math.min(width, height) * 0.07);
+            const diameter = Math.round(Math.min(width, height) * 0.32);
+            const cx = width / 2;
+            const cy = pad + diameter / 2;
+            const textColor = this.textColorFor(color);
+
+            ctx.save();
+            ctx.fillStyle = color || '#0f766e';
+            ctx.fillRect(0, 0, width, height);
+            const side = Math.min(snapshot.width, snapshot.height);
+            ctx.beginPath();
+            ctx.arc(cx, cy, diameter / 2, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(
+                snapshot,
+                (snapshot.width - side) / 2, (snapshot.height - side) * 0.35, side, side,
+                cx - diameter / 2, cy - diameter / 2, diameter, diameter
+            );
+            ctx.restore();
+
+            ctx.save();
+            ctx.lineWidth = Math.max(2, diameter * 0.035);
+            ctx.strokeStyle = textColor;
+            ctx.beginPath();
+            ctx.arc(cx, cy, diameter / 2, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+
+            const top = cy + diameter / 2 + pad;
+            const available = Math.max(0, height - pad - top);
+            const layout = this.layoutBadgeText(
+                ctx, text, attribution, font,
+                Math.round(width * 0.075 * scale), Math.round(width * 0.045 * scale),
+                width - pad * 2, available
+            );
+            const blockBottom = top + (available + layout.blockHeight) / 2;
+            this.drawTextBlocks(ctx, layout, font, width / 2, blockBottom, 'center', textColor);
+            this.drawSmallWatermark(ctx, size);
+            return { top: Math.max(0, blockBottom - layout.blockHeight - pad / 2), bottom: Math.min(height, blockBottom + pad / 2) };
+        }
+
+        // Plein cadre : la photo reste visible sous un voile teinté, le texte est centré
+        const rgb = this.parseHex(color);
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)` : 'rgba(0, 102, 204, 0.55)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.restore();
+
+        const pad = Math.round(width * 0.1);
+        const layout = this.layoutBadgeText(
+            ctx, text, attribution, font,
+            Math.round(width * 0.085 * scale), Math.round(width * 0.05 * scale),
+            width - pad * 2, height - pad * 2
+        );
+        const blockBottom = (height + layout.blockHeight) / 2;
+        ctx.save();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+        ctx.shadowBlur = Math.round(width * 0.012);
+        this.drawTextBlocks(ctx, layout, font, this.textX(style.align, width, pad), blockBottom, style.align, '#FFFFFF');
+        ctx.restore();
+        this.drawSmallWatermark(ctx, size);
+        return { top: Math.max(0, blockBottom - layout.blockHeight - pad / 3), bottom: Math.min(height, blockBottom + pad / 3) };
+    }
+
+    /** Filigrane, badge puis logo, dans cet ordre : le logo reste toujours lisible. */
+    private async drawOverlays(ctx: CanvasRenderingContext2D, size: Size): Promise<void> {
+        const state = this.editorStateService.imageState();
+        const isQuote = this.editorStateService.hasBadge() && this.editorStateService.isQuote();
+        // La carte repeint toute l'image : le filigrane doit venir après
+        const watermarkLast = isQuote && this.editorStateService.quote().layout === 'card';
+        if (state.watermark && !watermarkLast) this.drawDiagonalWatermark(ctx, size);
+        const occupied = !this.editorStateService.hasBadge()
+            ? null
+            : isQuote ? this.drawQuote(ctx, size) : this.drawOverlay(ctx, size);
+        if (state.watermark && watermarkLast) this.drawDiagonalWatermark(ctx, size);
+        if (state.logo.url) await this.drawLogo(ctx, size, state.logo, occupied);
+    }
+
+    private drawDiagonalWatermark(ctx: CanvasRenderingContext2D, size: Size): void {
+        const text = 'Badgelo';
+        const fontSize = Math.max(14, Math.round(size.width * 0.045));
+
+        ctx.save();
+        ctx.font = `600 ${fontSize}px Arial, sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+        ctx.shadowBlur = Math.round(fontSize * 0.15);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        const stepX = ctx.measureText(text).width * 2.6;
+        const stepY = fontSize * 4;
+        const reach = Math.hypot(size.width, size.height) / 2;
+
+        ctx.translate(size.width / 2, size.height / 2);
+        ctx.rotate(-Math.PI / 6);
+        let row = 0;
+        for (let y = -reach; y <= reach; y += stepY, row++) {
+            const offset = row % 2 ? stepX / 2 : 0;
+            for (let x = -reach + offset; x <= reach; x += stepX) {
+                ctx.fillText(text, x, y);
+            }
+        }
+        ctx.restore();
+    }
+
+    private async drawLogo(
+        ctx: CanvasRenderingContext2D,
+        size: Size,
+        logo: LogoSettings,
+        occupied: Band | null
+    ): Promise<void> {
+        if (!logo.url) return;
+        let img: HTMLImageElement;
+        try {
+            img = await this.loadLogo(logo.url);
+        } catch {
+            return;
+        }
+
+        const row = logo.position[0];
+        const col = logo.position[1];
+        // Dans un cadre rond, les coins sont rognés : le logo rentre dans le cercle
+        const roundCorner = isRoundFrame(this.editorStateService.frame()) && row !== 'm' && col !== 'c';
+        const margin = Math.round(size.width * (roundCorner ? 0.15 : 0.03));
+
+        let width = Math.round(size.width * logo.size / 100);
+        let height = Math.round(width * img.height / img.width);
+        const maxHeight = Math.round(size.height * 0.4);
+        if (height > maxHeight) {
+            height = maxHeight;
+            width = Math.round(height * img.width / img.height);
+        }
+
+        const x = col === 'l' ? margin : col === 'r' ? size.width - margin - width : (size.width - width) / 2;
+        let y = row === 't' ? margin : row === 'b' ? size.height - margin - height : (size.height - height) / 2;
+
+        // Le logo se place au-dessus ou en dessous du texte du badge, jamais dessus
+        if (occupied && row !== 'm' && y < occupied.bottom && y + height > occupied.top) {
+            y = row === 't' ? occupied.bottom : occupied.top - height;
+        }
+        y = Math.min(Math.max(0, y), size.height - height);
+
+        ctx.save();
+        ctx.globalAlpha = logo.opacity / 100;
+        ctx.drawImage(img, x, y, width, height);
+        ctx.restore();
+    }
+
+    private cachedLogo: { url: string; img: HTMLImageElement } | null = null;
+
+    private async loadLogo(url: string): Promise<HTMLImageElement> {
+        if (this.cachedLogo?.url === url) return this.cachedLogo.img;
+        const img = new Image();
+        img.src = url;
+        await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve();
+            img.onerror = () => reject(new Error('Failed to load logo'));
+        });
+        this.cachedLogo = { url, img };
+        return img;
     }
 
     private drawBadgeGradient(
@@ -388,7 +676,7 @@ export class CanvasService {
             // Un mot seul plus large que la ligne ne peut pas être coupé : on réduit la police
             const fontSize = Math.max(MIN_FONT_SIZE, desiredSize);
             setFont(fontSize);
-            const longestWord = Math.max(0, ...text.split(/\s+/).map(word => ctx.measureText(word).width));
+            const longestWord = Math.max(0, ...text.split(/[ \t\n]+/).map(word => ctx.measureText(word).width));
             return longestWord > maxWidth
                 ? Math.max(MIN_FONT_SIZE, Math.floor(fontSize * maxWidth / longestWord))
                 : fontSize;
@@ -398,7 +686,7 @@ export class CanvasService {
         const lines: string[] = [];
         for (const paragraph of text.split('\n')) {
             let current = '';
-            for (const word of paragraph.split(/\s+/).filter(Boolean)) {
+            for (const word of paragraph.split(/[ \t]+/).filter(Boolean)) {
                 const candidate = current ? `${current} ${word}` : word;
                 if (!current || ctx.measureText(candidate).width <= maxWidth) {
                     current = candidate;

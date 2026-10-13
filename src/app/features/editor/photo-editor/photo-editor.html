@@ -2,45 +2,136 @@
     <div class="border-b border-gray-200 pb-4">
         <h2 class="text-lg font-semibold text-purple-700">{{ 'PHOTO_EDITOR.TITLE' | translate }}</h2>
     </div>
-    <!-- Boutons pour chaque accordion -->
+
     @for(acc of accordions; track acc.key){
-    <ng-container>
-        <button (click)="toggleAccordion(acc.key)"
-            class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-600 font-medium hover:cursor-pointer hover:bg-purple-50">
-            {{ acc.label | translate}}
-            <span [class.rotate-180]="openAccordions.has(acc.key)" class="transition-transform duration-200">
+    <div>
+        <button type="button" (click)="toggle(acc.key)" [attr.aria-expanded]="isOpen(acc.key)"
+            [attr.aria-controls]="'photo-section-' + acc.key"
+            class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-700 font-medium hover:cursor-pointer hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-purple-700">
+            {{ acc.label | translate }}
+            <span [class.rotate-180]="isOpen(acc.key)" class="transition-transform duration-200" aria-hidden="true">
                 ▼
             </span>
         </button>
-        <!-- Contenu dynamique via ng-template -->
-        @if(openAccordions.has(acc.key)) {
-        <ng-container [ngTemplateOutlet]="getTemplate(acc.key)"></ng-container>
+
+        @if(isOpen(acc.key)) {
+        <div [id]="'photo-section-' + acc.key" class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
+            @switch(acc.key) {
+
+            @case('base') {
+            <bdge-slider [value]="editorStateService.brightness()"
+                (valueChange)="editorStateService.setBrightness($event)"
+                [label]="'PHOTO_EDITOR.SLIDERS.BRIGHTNESS' | translate"></bdge-slider>
+            <bdge-slider [value]="editorStateService.contrast()" (valueChange)="editorStateService.setContrast($event)"
+                [label]="'PHOTO_EDITOR.SLIDERS.CONTRAST' | translate"></bdge-slider>
+            <bdge-slider [value]="editorStateService.saturation()"
+                (valueChange)="editorStateService.setSaturation($event)"
+                [label]="'PHOTO_EDITOR.SLIDERS.SATURATION' | translate"></bdge-slider>
+            }
+
+            @case('transform') {
+            <!-- Format -->
+            <div class="flex flex-col gap-2">
+                <span id="photo-format-label" class="text-sm font-medium text-gray-700">{{
+                    'PHOTO_EDITOR.TRANSFORM.FORMAT_LABEL' | translate }}</span>
+                <div class="grid grid-cols-2 gap-2" role="group" aria-labelledby="photo-format-label">
+                    @for(format of formats; track format.value) {
+                    <button type="button" (click)="editorStateService.setFrameFormat(format.value)"
+                        [attr.aria-pressed]="editorStateService.frame().format === format.value"
+                        [class]="optionClass(editorStateService.frame().format === format.value)"
+                        class="min-h-11 rounded-lg border px-2 text-sm hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                        {{ format.labelKey | translate }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Cadre -->
+            <div class="flex flex-col gap-2">
+                <span id="photo-shape-label" class="text-sm font-medium text-gray-700">{{
+                    'PHOTO_EDITOR.TRANSFORM.SHAPE_LABEL' | translate }}</span>
+                <div class="grid grid-cols-3 gap-2" role="group" aria-labelledby="photo-shape-label">
+                    @for(shape of shapes; track shape.value) {
+                    <button type="button" (click)="editorStateService.setFrameShape(shape.value)"
+                        [attr.aria-pressed]="isShapeSelected(shape.value)"
+                        [class]="optionClass(isShapeSelected(shape.value))"
+                        class="flex min-h-11 items-center justify-center gap-1.5 rounded-lg border px-2 text-sm hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                        <span class="size-4 border-2 border-current" [class]="shape.iconClass" aria-hidden="true"></span>
+                        {{ shape.labelKey | translate }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <bdge-slider [value]="editorStateService.transform().zoom" [min]="zoomMin" [max]="zoomMax"
+                (valueChange)="editorStateService.setZoom($event)"
+                [label]="'PHOTO_EDITOR.TRANSFORM.ZOOM_LABEL' | translate"></bdge-slider>
+            <bdge-slider [value]="editorStateService.transform().rotation" [min]="rotationMin" [max]="rotationMax"
+                (valueChange)="editorStateService.setRotation($event)"
+                [label]="'PHOTO_EDITOR.TRANSFORM.ROTATION_LABEL' | translate"></bdge-slider>
+
+            <div class="flex items-center gap-2">
+                <button type="button" (click)="editorStateService.rotateQuarter(-1)"
+                    [attr.aria-label]="'PHOTO_EDITOR.TRANSFORM.ROTATE_LEFT' | translate"
+                    [attr.title]="'PHOTO_EDITOR.TRANSFORM.ROTATE_LEFT' | translate"
+                    class="flex size-11 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:cursor-pointer hover:border-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 8V3M3 8h5" />
+                        <path d="M3.5 8a9 9 0 1 1-1 6" />
+                    </svg>
+                </button>
+                <button type="button" (click)="editorStateService.rotateQuarter(1)"
+                    [attr.aria-label]="'PHOTO_EDITOR.TRANSFORM.ROTATE_RIGHT' | translate"
+                    [attr.title]="'PHOTO_EDITOR.TRANSFORM.ROTATE_RIGHT' | translate"
+                    class="flex size-11 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:cursor-pointer hover:border-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 8V3M21 8h-5" />
+                        <path d="M20.5 8a9 9 0 1 0 1 6" />
+                    </svg>
+                </button>
+                <button type="button" (click)="editorStateService.toggleFlip()"
+                    [attr.aria-pressed]="editorStateService.transform().flipX"
+                    [attr.aria-label]="'PHOTO_EDITOR.TRANSFORM.FLIP' | translate"
+                    [attr.title]="'PHOTO_EDITOR.TRANSFORM.FLIP' | translate"
+                    [class]="optionClass(editorStateService.transform().flipX)"
+                    class="flex size-11 items-center justify-center rounded-lg border hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3v18" />
+                        <path d="M8 7L3 18h5z" />
+                        <path d="M16 7l5 11h-5z" />
+                    </svg>
+                </button>
+                <button type="button" (click)="editorStateService.resetFraming()"
+                    class="ml-auto min-h-11 px-2 text-sm font-medium text-purple-700 underline hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-purple-700">
+                    {{ 'PHOTO_EDITOR.TRANSFORM.RECENTER' | translate }}
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-600">{{ 'PHOTO_EDITOR.TRANSFORM.HINT' | translate }}</p>
+            }
+
+            @case('filters') {
+            <div class="grid grid-cols-3 gap-2">
+                @for(filter of filters; track filter.value) {
+                <button type="button" (click)="editorStateService.setFilter(filter.value)"
+                    [attr.aria-pressed]="editorStateService.filter() === filter.value"
+                    [class]="filterClass(editorStateService.filter() === filter.value)"
+                    class="flex flex-col items-center gap-1 rounded-lg border-2 p-1 text-xs text-gray-700 hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    <img [src]="fileService.previewUrl()" alt="" class="size-20 rounded object-cover"
+                        [style.filter]="filter.css" />
+                    {{ filter.labelKey | translate }}
+                </button>
+                }
+            </div>
+            }
+
+            }
+        </div>
         }
-    </ng-container>
+    </div>
     }
 
 </div>
-
-<!-- Templates définis une seule fois -->
-<ng-template #baseTemplate>
-    <div class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
-        <bdge-slider [value]="editorStateService.brightness()" (valueChange)="editorStateService.setBrightness($event)"
-            [label]="'PHOTO_EDITOR.SLIDERS.BRIGHTNESS' | translate"></bdge-slider>
-        <bdge-slider [value]="editorStateService.contrast()" (valueChange)="editorStateService.setContrast($event)"
-            [label]="'PHOTO_EDITOR.SLIDERS.CONTRAST' | translate"></bdge-slider>
-        <bdge-slider [value]="editorStateService.saturation()" (valueChange)="editorStateService.setSaturation($event)"
-            [label]="'PHOTO_EDITOR.SLIDERS.SATURATION' | translate"></bdge-slider>
-    </div>
-</ng-template>
-
-<ng-template #filtersTemplate>
-    <div class="p-4 bg-gray-50 rounded shadow">
-        {{ 'PHOTO_EDITOR.FILTERS_CONTENT' | translate }}
-    </div>
-</ng-template>
-
-<ng-template #transformTemplate>
-    <div class="p-4 bg-gray-50 rounded shadow">
-        {{ 'PHOTO_EDITOR.TRANSFORM_CONTENT' | translate }}
-    </div>
-</ng-template>

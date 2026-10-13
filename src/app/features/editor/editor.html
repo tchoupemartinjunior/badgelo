@@ -1,4 +1,9 @@
-<div class="container p-4 mx-auto flex flex-col pt-5 items-center">
+@if(!fileService.previewUrl()) {
+<bdge-editor-welcome [dragging]="dragging()" />
+}
+
+<!-- Toujours présent dans le DOM : le canvas doit exister dès l'import de la photo -->
+<div class="container p-4 mx-auto flex flex-col pt-5 items-center" [class.hidden]="!fileService.previewUrl()">
     <div>
         <h1 class="text-3xl text-purple-700">{{ 'EDITOR.TITLE' | translate }}</h1>
     </div>
@@ -31,6 +36,10 @@
                 @case('badge') {
                 <bdge-badge-editor />
                 }
+
+                @case('logo') {
+                <bdge-logo-editor />
+                }
                 }
             </div>
 
@@ -44,12 +53,41 @@
 
         <!-- Preview section -->
         <div class="w-full md:w-2/3 p-4 flex flex-col items-center bg-gray-50">
-            <h2>{{ 'EDITOR.PREVIEW' | translate }}</h2>
+            <div class="flex w-full items-center justify-between">
+                <h2>{{ 'EDITOR.PREVIEW' | translate }}</h2>
+                @if(fileService.previewUrl()) {
+                <div class="flex gap-2">
+                    <button type="button" (click)="editorStateService.undo()"
+                        [disabled]="!editorStateService.canUndo()" [attr.aria-label]="'EDITOR.UNDO' | translate"
+                        [attr.title]="'EDITOR.UNDO' | translate"
+                        class="flex size-11 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:cursor-pointer hover:border-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 disabled:cursor-default disabled:bg-gray-100 disabled:text-gray-500 disabled:hover:border-gray-300">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 14L4 9l5-5" />
+                            <path d="M4 9h10a6 6 0 0 1 0 12h-3" />
+                        </svg>
+                    </button>
+                    <button type="button" (click)="editorStateService.redo()"
+                        [disabled]="!editorStateService.canRedo()" [attr.aria-label]="'EDITOR.REDO' | translate"
+                        [attr.title]="'EDITOR.REDO' | translate"
+                        class="flex size-11 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:cursor-pointer hover:border-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 disabled:cursor-default disabled:bg-gray-100 disabled:text-gray-500 disabled:hover:border-gray-300">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 14l5-5-5-5" />
+                            <path d="M20 9H10a6 6 0 0 0 0 12h3" />
+                        </svg>
+                    </button>
+                </div>
+                }
+            </div>
 
             @if(!editorStateService.hasChanges()) {
             <bdge-preview></bdge-preview>
             }
-            <canvas [hidden]="!editorStateService.hasChanges()" class="h-100 w-full object-contain" #canvas></canvas>
+            <canvas [hidden]="!editorStateService.hasChanges()" class="h-100 w-full touch-none cursor-grab object-contain active:cursor-grabbing"
+                (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)"
+                (pointerup)="onPointerEnd()" (pointercancel)="onPointerEnd()" (wheel)="onWheel($event)"
+                #canvas></canvas>
         </div>
     </div>
 
@@ -63,3 +101,9 @@
     </div>
 
 </div>
+
+@if(dragging()) {
+<div class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-purple-900/60">
+    <p class="rounded-2xl bg-white px-8 py-6 text-xl font-semibold text-purple-800 shadow-xl">{{ 'EDITOR.DROP_HERE' | translate }}</p>
+</div>
+}

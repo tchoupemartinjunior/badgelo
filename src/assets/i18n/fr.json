@@ -81,9 +81,13 @@
         "INSTRUCTIONS": "Cliquez sur le bouton ci-dessous pour sélectionner une image depuis votre appareil.",
         "TABS": {
             "PHOTO": "Éditeur Photo",
-            "BADGE": "Badge"
+            "BADGE": "Badge",
+            "LOGO": "Logo"
         },
-        "UPLOAD_IMAGE": "Choisir une image"
+        "UPLOAD_IMAGE": "Choisir une image",
+        "UNDO": "Annuler",
+        "REDO": "Rétablir",
+        "DROP_HERE": "Déposez votre photo ici"
     },
     "PHOTO_EDITOR": {
         "TITLE": "Éditeur Photo",
@@ -98,6 +102,33 @@
             "BASE": "Paramètres de base",
             "FILTERS": "Filtres",
             "TRANSFORM": "Transformations"
+        },
+        "TRANSFORM": {
+            "FORMAT_LABEL": "Format",
+            "SHAPE_LABEL": "Cadre",
+            "ZOOM_LABEL": "Zoom",
+            "ROTATION_LABEL": "Rotation fine",
+            "ROTATE_LEFT": "Pivoter à gauche",
+            "ROTATE_RIGHT": "Pivoter à droite",
+            "FLIP": "Miroir horizontal",
+            "RECENTER": "Recentrer",
+            "HINT": "Glissez la photo pour la déplacer, molette ou curseur pour zoomer."
+        },
+        "FORMATS": {
+            "FREE": "Libre",
+            "SQUARE": "Carré 1080",
+            "STORY": "Story 9:16",
+            "AVATAR": "Avatar rond"
+        },
+        "SHAPES": {
+            "SQUARE": "Carré",
+            "ROUNDED": "Arrondi",
+            "CIRCLE": "Rond"
+        },
+        "FILTERS": {
+            "NONE": "Original",
+            "BW": "Noir et blanc",
+            "SEPIA": "Sépia"
         }
     },
     "BADGE_EDITOR": {
@@ -134,12 +165,32 @@
             "ELEGANT": "Élégante",
             "FESTIVE": "Festive"
         },
-        "PREVIEW_TEXT_FALLBACK": "Votre message ici"
+        "PREVIEW_TEXT_FALLBACK": "Votre message ici",
+        "QUOTE": {
+            "TEXT_LABEL": "Citation",
+            "TEXT_PLACEHOLDER": "Écrivez la citation, sans les guillemets…",
+            "AUTHOR_LABEL": "Auteur de la citation",
+            "AUTHOR_PLACEHOLDER": "Ex. : Awa Ndiaye",
+            "ROLE_LABEL": "Fonction (facultatif)",
+            "ROLE_PLACEHOLDER": "Ex. : Responsable accueil",
+            "MARKS_LABEL": "Guillemets",
+            "MARKS_FRENCH": "Guillemets français",
+            "MARKS_CURLY": "Guillemets typographiques",
+            "MARKS_STRAIGHT": "Guillemets droits",
+            "LAYOUT_LABEL": "Disposition",
+            "LAYOUT_BAND": "Bandeau",
+            "LAYOUT_CARD": "Carte",
+            "LAYOUT_FULL": "Plein cadre",
+            "PORTRAIT_HINT": "La photo importée sert de portrait de l’auteur.",
+            "PREVIEW_QUOTE": "Servir, c’est donner le meilleur de soi.",
+            "PREVIEW_AUTHOR": "Nom de l’auteur"
+        }
     },
     "BADGE_TYPES": {
         "BIRTHDAY": "Joyeux Anniversaire",
         "WELCOME": "Bienvenue",
         "FAREWELL": "Au revoir",
+        "QUOTE": "Citation",
         "CUSTOM": "Badge Personnalisé"
     },
     "FEEDBACK": {
@@ -174,5 +225,41 @@
         "ABOUT_US": "À propos",
         "CONTACT": "Contact",
         "PRIVACY_POLICY": "Politique de confidentialité"
+    },
+    "EDITOR_WELCOME": {
+        "TITLE": "Édition",
+        "TITLE_HIGHLIGHT": "photo",
+        "SUBTITLE": "Importez une photo pour y ajouter un badge, un texte ou une citation.",
+        "DROP_TITLE": "Glissez-déposez votre photo ici",
+        "OR": "ou",
+        "FORMATS": "JPG, PNG ou WebP",
+        "PILL_BADGES": "Badges anniversaire, bienvenue…",
+        "PILL_QUOTES": "Citations avec portrait",
+        "PILL_FRAMING": "Recadrage, cadre rond, logo",
+        "PRIVACY": "Vos photos restent privées."
+    },
+    "LOGO_EDITOR": {
+        "TITLE": "Logo et filigrane",
+        "UPLOAD": "Importer un logo",
+        "REPLACE": "Remplacer",
+        "REMOVE": "Retirer",
+        "HINT": "Un PNG à fond transparent donne le meilleur rendu.",
+        "POSITION_LABEL": "Position",
+        "BOTTOM_HINT": "En haut ou en bas, le logo évite le texte du badge.",
+        "SIZE_LABEL": "Taille",
+        "OPACITY_LABEL": "Opacité",
+        "WATERMARK_LABEL": "Ajouter un filigrane",
+        "WATERMARK_DESC": "Le texte « Badgelo » est répété en diagonale sur la photo.",
+        "POSITIONS": {
+            "TL": "Haut gauche",
+            "TC": "Haut centre",
+            "TR": "Haut droite",
+            "ML": "Milieu gauche",
+            "MC": "Centre",
+            "MR": "Milieu droite",
+            "BL": "Bas gauche",
+            "BC": "Bas centre",
+            "BR": "Bas droite"
+        }
     }
 }

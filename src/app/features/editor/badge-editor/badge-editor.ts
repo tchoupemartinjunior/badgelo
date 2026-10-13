@@ -5,6 +5,7 @@ import { BadgeType, BadgeTypeOptions } from './badge.enum';
 import { PredefinedBadgeColors, PredefinedBadgeColorsArray } from './colors/colors.enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { SliderComponent } from '@shared/components/slider/slider';
+import { QUOTE_LAYOUT_OPTIONS, QUOTE_MARKS_OPTIONS, QuoteLayout, QuoteMarks } from './quote-settings';
 import {
   BADGE_FONTS,
   BadgeFontId,
@@ -30,6 +31,10 @@ export class BadgeEditor {
   readonly predefinedBadgeColors = PredefinedBadgeColorsArray;
 
   readonly textStyle = this.editorStateService.textStyle;
+  readonly isQuote = this.editorStateService.isQuote;
+  readonly quote = this.editorStateService.quote;
+  readonly marksOptions = QUOTE_MARKS_OPTIONS;
+  readonly layoutOptions = QUOTE_LAYOUT_OPTIONS;
   readonly fonts = BADGE_FONTS;
   readonly alignOptions = TEXT_ALIGN_OPTIONS;
   readonly positionOptions = TEXT_POSITION_OPTIONS;
@@ -57,6 +62,22 @@ export class BadgeEditor {
 
   selectPredefinedColor(color: string) {
     this.editorStateService.setBadgeColor(color);
+  }
+
+  updateQuoteAuthor(event: Event) {
+    this.editorStateService.setQuoteAuthor((event.target as HTMLInputElement).value);
+  }
+
+  updateQuoteRole(event: Event) {
+    this.editorStateService.setQuoteRole((event.target as HTMLInputElement).value);
+  }
+
+  selectMarks(marks: QuoteMarks) {
+    this.editorStateService.setQuoteMarks(marks);
+  }
+
+  selectLayout(layout: QuoteLayout) {
+    this.editorStateService.setQuoteLayout(layout);
   }
 
   selectFont(font: BadgeFontId) {
