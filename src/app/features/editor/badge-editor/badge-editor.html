@@ -8,7 +8,7 @@
         <label for="badge-type" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.TYPE_LABEL' | translate
             }}</label>
         <select (input)="updateBadgeType($event)"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm bg-white cursor-pointer">
+            class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm bg-white cursor-pointer">
             <option value="" disabled selected>{{ 'BADGE_EDITOR.TYPE_PLACEHOLDER' | translate }}</option>
             @for(option of badgeTypeOptions; track option.label) {
             <option [value]="option.value">{{ option.label | translate }}</option>
@@ -39,9 +39,8 @@
     <div class="flex flex-col gap-2">
         <label for="badge-text" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.TEXT_LABEL' | translate
             }}</label>
-        <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="badge-text"
-            maxlength="30" placeholder="{{ 'BADGE_EDITOR.TEXT_PLACEHOLDER' | translate }}"
-            class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-24"></textarea>
+        <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="badge-text" placeholder="{{ 'BADGE_EDITOR.TEXT_PLACEHOLDER' | translate }}"
+            class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-24"></textarea>
     </div>
     }
 
@@ -53,19 +52,82 @@
                 'BADGE_EDITOR.CUSTOM_BADGE_TYPE_LABEL' |
                 translate }}</label>
             <input [value]="editorStateService.badgeCustomTitle()" (input)="updateCustomBadgeType($event)"
-                id="custom-badge-type" type="text" maxlength="20"
+                id="custom-badge-type" type="text"
                 placeholder="{{ 'BADGE_EDITOR.CUSTOM_BADGE_TYPE_PLACEHOLDER' | translate }}"
-                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+                class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
         </div>
         <div class="flex flex-col gap-2">
             <label for="custom-text" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.CUSTOM_TEXT_LABEL' |
                 translate }}</label>
-            <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="custom-text"
-                maxlength="30" placeholder="{{ 'BADGE_EDITOR.CUSTOM_TEXT_PLACEHOLDER' | translate }}"
-                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-32"></textarea>
+            <textarea [value]="editorStateService.badgeText()" (input)="updateBadgeText($event)" id="custom-text" placeholder="{{ 'BADGE_EDITOR.CUSTOM_TEXT_PLACEHOLDER' | translate }}"
+                class="px-3 py-2 placeholder:text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none h-32"></textarea>
         </div>
     </div>
     }
 
+    <!-- Mise en forme du texte -->
+    <section class="border-t border-gray-200 pt-6 space-y-5">
+        <h3 class="text-base font-semibold text-purple-700">{{ 'BADGE_EDITOR.TEXT_STYLE.TITLE' | translate }}</h3>
+
+        <!-- Police -->
+        <div class="flex flex-col gap-2">
+            <span id="text-font-label" class="text-sm font-medium text-gray-700">{{ 'BADGE_EDITOR.TEXT_STYLE.FONT_LABEL'
+                | translate }}</span>
+            <div class="grid grid-cols-4 gap-2" role="group" aria-labelledby="text-font-label">
+                @for(font of fonts; track font.id) {
+                <button type="button" (click)="selectFont(font.id)" [attr.aria-pressed]="textStyle().font === font.id"
+                    [class]="fontClass(textStyle().font === font.id)"
+                    class="flex min-h-16 flex-col items-center justify-center gap-0.5 rounded-lg border px-1 py-2 hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    <span class="text-2xl leading-none text-gray-900" [style.font-family]="font.family"
+                        aria-hidden="true">Aa</span>
+                    <span class="text-xs text-gray-700">{{ font.labelKey | translate }}</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <!-- Taille -->
+        <bdge-slider [value]="textStyle().size" [min]="textSizeMin" [max]="textSizeMax"
+            (valueChange)="updateTextSize($event)"
+            [label]="'BADGE_EDITOR.TEXT_STYLE.SIZE_LABEL' | translate"></bdge-slider>
+
+        <div class="flex gap-4">
+            <!-- Alignement -->
+            <div class="flex flex-none flex-col gap-2">
+                <span id="text-align-label" class="text-sm font-medium text-gray-700">{{
+                    'BADGE_EDITOR.TEXT_STYLE.ALIGN_LABEL' | translate }}</span>
+                <div class="flex gap-1.5" role="group" aria-labelledby="text-align-label">
+                    @for(option of alignOptions; track option.value) {
+                    <button type="button" (click)="selectAlign(option.value)"
+                        [attr.aria-pressed]="textStyle().align === option.value"
+                        [attr.aria-label]="option.labelKey | translate"
+                        [class]="optionClass(textStyle().align === option.value)"
+                        class="flex size-11 items-center justify-center rounded-lg border hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                            <path [attr.d]="option.iconPath" />
+                        </svg>
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Position -->
+            <div class="flex min-w-0 flex-1 flex-col gap-2">
+                <span id="text-position-label" class="text-sm font-medium text-gray-700">{{
+                    'BADGE_EDITOR.TEXT_STYLE.POSITION_LABEL' | translate }}</span>
+                <div class="grid grid-cols-3 gap-1.5" role="group" aria-labelledby="text-position-label">
+                    @for(option of positionOptions; track option.value) {
+                    <button type="button" (click)="selectPosition(option.value)"
+                        [attr.aria-pressed]="textStyle().position === option.value"
+                        [class]="optionClass(textStyle().position === option.value)"
+                        class="min-h-11 rounded-lg border px-2 text-sm hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                        {{ option.labelKey | translate }}
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>

@@ -1,6 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { EditorStateService } from '../../features/editor/state/editor-state.service';
 import { TranslateService } from '@ngx-translate/core';
+import { BADGE_FONTS, BadgeFont, BadgeFontId } from '../../features/editor/badge-editor/text-style';
+
+interface TextBlock {
+    lines: string[];
+    size: number;
+}
+
+/** Interligne des textes sur plusieurs lignes, en multiple de la taille de police. */
+const LINE_HEIGHT = 1.15;
+const MIN_FONT_SIZE = 8;
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +23,7 @@ export class CanvasService {
         const canvas = this.editorStateService.canvas();
         if (!canvas || !previewUrl) return;
         if (this.editorStateService.hasBadge()) {
+            await this.ensureFontLoaded(this.editorStateService.textStyle().font);
             return this.renderImage(previewUrl, canvas, this.drawOverlay.bind(this));
         }
         return this.renderImage(previewUrl, canvas);
@@ -200,52 +211,73 @@ export class CanvasService {
         const width = img.width;
         const height = img.height;
 
-        /* --- Dégradé bleu (bas de l’image) --- */
-        const gradientHeight = height * 0.4;
-
-        const gradient = ctx.createLinearGradient(
-            0,
-            height,
-            0,
-            height - gradientHeight
-        );
-
-        gradient.addColorStop(0, this.editorStateService.badgeColor() || 'rgba(0, 102, 204, 0.85)');
-        gradient.addColorStop(1, 'rgba(0, 102, 204, 0)');
-
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, height - gradientHeight, width, gradientHeight);
-
-        /* --- Texte --- */
-        ctx.fillStyle = '#FFFFFF';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-
-        const titleSize = Math.round(width * 0.07);
-        const subtitleSize = Math.round(width * 0.09);
-
-        const lineSpacing = Math.round(subtitleSize * 0.6);
-        const bottomPadding = Math.round(height * 0.05);
+        const style = this.editorStateService.textStyle();
+        const font = this.findFont(style.font);
+        const scale = style.size / 100;
+        const badgeColor = this.editorStateService.badgeColor();
 
         // Déterminer si c'est un badge personnalisé
         const isCustomBadge = this.editorStateService.badgeType().includes('Badge Personnalisé') ||
             this.editorStateService.badgeType().includes('Custom Badge');
 
         // Ligne 1 - Afficher le titre personnalisé si c'est un badge custom, sinon le type
-        ctx.font = `600 ${subtitleSize}px Arial`;
-        ctx.fillText(
-            isCustomBadge ? (this.editorStateService.badgeCustomTitle() || 'Badge') : (this.editorStateService.badgeType() || 'Joyeux Anniversaire'),
-            width / 2,
-            height - bottomPadding - titleSize - lineSpacing
+        const typeLine = isCustomBadge
+            ? (this.editorStateService.badgeCustomTitle() || 'Badge')
+            : (this.editorStateService.badgeType() || 'Joyeux Anniversaire');
+        // Ligne 2 - le message
+        const messageLine = this.editorStateService.badgeText() || this.translateService.instant('BADGE_EDITOR.PREVIEW_TEXT_FALLBACK');
+
+        const sidePadding = Math.round(width * 0.06);
+        const edgePadding = Math.round(height * 0.05);
+        const maxTextWidth = width - sidePadding * 2;
+
+        // Les tailles suivent le curseur ; le texte passe à la ligne et se réduit au besoin
+        // pour ne jamais dépasser de l'image, quelle que soit sa longueur.
+        const { typeBlock, messageBlock, lineSpacing, blockHeight } = this.layoutBadgeText(
+            ctx, typeLine, messageLine, font,
+            Math.round(width * 0.09 * scale), Math.round(width * 0.07 * scale),
+            maxTextWidth, height - edgePadding * 2
         );
 
-        // Ligne 2 (très visible)
-        ctx.font = `900 ${titleSize}px Arial`;
-        ctx.fillText(
-            this.editorStateService.badgeText() || this.translateService.instant('BADGE_EDITOR.TEXT_PLACEHOLDER'),
-            width / 2,
-            height - bottomPadding
-        );
+        const blockBottom = style.position === 'top'
+            ? edgePadding + blockHeight
+            : style.position === 'middle'
+                ? (height + blockHeight) / 2
+                : height - edgePadding;
+
+        /* --- Dégradé de couleur derrière le texte --- */
+        const gradientHeight = Math.min(height, Math.max(height * 0.4, blockHeight + edgePadding * 2));
+        this.drawBadgeGradient(ctx, width, height, style.position, gradientHeight, badgeColor);
+
+        /* --- Texte --- */
+        const x = style.align === 'left'
+            ? sidePadding
+            : style.align === 'right'
+                ? width - sidePadding
+                : width / 2;
+
+        ctx.fillStyle = this.textColorFor(badgeColor);
+        ctx.textAlign = style.align;
+        ctx.textBaseline = 'bottom';
+
+        // Les lignes sont posées de bas en haut : message, puis type de badge
+        const messageStep = messageBlock.size * LINE_HEIGHT;
+        const typeStep = typeBlock.size * LINE_HEIGHT;
+        const lastMessageIndex = messageBlock.lines.length - 1;
+        const lastTypeIndex = typeBlock.lines.length - 1;
+
+        ctx.font = `${font.textWeight} ${messageBlock.size}px ${font.family}`;
+        messageBlock.lines.forEach((line, i) => {
+            ctx.fillText(line, x, blockBottom - (lastMessageIndex - i) * messageStep);
+        });
+
+        const firstMessageBaseline = blockBottom - lastMessageIndex * messageStep;
+        const typeBottom = firstMessageBaseline - messageBlock.size - lineSpacing;
+
+        ctx.font = `${font.titleWeight} ${typeBlock.size}px ${font.family}`;
+        typeBlock.lines.forEach((line, i) => {
+            ctx.fillText(line, x, typeBottom - (lastTypeIndex - i) * typeStep);
+        });
 
         // ajouter un filigrane "Made with Badgelo" en bas à droite
         const watermarkText = 'Badgelo';
@@ -255,5 +287,151 @@ export class CanvasService {
         ctx.textAlign = 'right';
         ctx.textBaseline = 'bottom';
         ctx.fillText(watermarkText, width - 10, height - 10);
+    }
+
+    private drawBadgeGradient(
+        ctx: CanvasRenderingContext2D,
+        width: number,
+        height: number,
+        position: 'top' | 'middle' | 'bottom',
+        gradientHeight: number,
+        badgeColor: string
+    ): void {
+        const { solid, clear } = this.gradientColors(badgeColor);
+
+        let top: number;
+        let gradient: CanvasGradient;
+        if (position === 'top') {
+            top = 0;
+            gradient = ctx.createLinearGradient(0, 0, 0, gradientHeight);
+            gradient.addColorStop(0, solid);
+            gradient.addColorStop(1, clear);
+        } else if (position === 'middle') {
+            top = (height - gradientHeight) / 2;
+            gradient = ctx.createLinearGradient(0, top, 0, top + gradientHeight);
+            gradient.addColorStop(0, clear);
+            gradient.addColorStop(0.5, solid);
+            gradient.addColorStop(1, clear);
+        } else {
+            top = height - gradientHeight;
+            gradient = ctx.createLinearGradient(0, height, 0, top);
+            gradient.addColorStop(0, solid);
+            gradient.addColorStop(1, clear);
+        }
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, top, width, gradientHeight);
+    }
+
+    private findFont(fontId: BadgeFontId) {
+        return BADGE_FONTS.find(f => f.id === fontId) ?? BADGE_FONTS[0];
+    }
+
+    /** Les polices web doivent être chargées avant de dessiner, sinon le canvas utilise la police de repli. */
+    private async ensureFontLoaded(fontId: BadgeFontId): Promise<void> {
+        if (typeof document === 'undefined' || !document.fonts) return;
+        const font = this.findFont(fontId);
+        try {
+            await Promise.all([
+                document.fonts.load(`${font.titleWeight} 32px ${font.family}`),
+                document.fonts.load(`${font.textWeight} 32px ${font.family}`),
+            ]);
+        } catch {
+            // hors ligne : le canvas retombe sur la police générique de la pile
+        }
+    }
+
+    /**
+     * Découpe le type de badge et le message en lignes qui tiennent dans `maxWidth`,
+     * en réduisant les polices jusqu'à ce que le bloc tienne aussi dans `maxBlockHeight`.
+     */
+    private layoutBadgeText(
+        ctx: CanvasRenderingContext2D,
+        typeLine: string,
+        messageLine: string,
+        font: BadgeFont,
+        typeSize: number,
+        messageSize: number,
+        maxWidth: number,
+        maxBlockHeight: number
+    ): { typeBlock: TextBlock; messageBlock: TextBlock; lineSpacing: number; blockHeight: number } {
+        const build = (factor: number) => {
+            const typeBlock = this.wrapText(ctx, typeLine, font.titleWeight, Math.round(typeSize * factor), font.family, maxWidth);
+            const messageBlock = this.wrapText(ctx, messageLine, font.textWeight, Math.round(messageSize * factor), font.family, maxWidth);
+            const lineSpacing = Math.round(typeBlock.size * 0.6);
+            const blockHeight =
+                typeBlock.size + (typeBlock.lines.length - 1) * typeBlock.size * LINE_HEIGHT +
+                lineSpacing +
+                messageBlock.size + (messageBlock.lines.length - 1) * messageBlock.size * LINE_HEIGHT;
+            return { typeBlock, messageBlock, lineSpacing, blockHeight };
+        };
+
+        let factor = 1;
+        let layout = build(factor);
+        while (layout.blockHeight > maxBlockHeight && factor > 0.1) {
+            factor *= 0.9;
+            layout = build(factor);
+        }
+        return layout;
+    }
+
+    private wrapText(
+        ctx: CanvasRenderingContext2D,
+        text: string,
+        weight: number,
+        desiredSize: number,
+        family: string,
+        maxWidth: number
+    ): TextBlock {
+        const setFont = (size: number) => { ctx.font = `${weight} ${size}px ${family}`; };
+        const size = (() => {
+            // Un mot seul plus large que la ligne ne peut pas être coupé : on réduit la police
+            const fontSize = Math.max(MIN_FONT_SIZE, desiredSize);
+            setFont(fontSize);
+            const longestWord = Math.max(0, ...text.split(/\s+/).map(word => ctx.measureText(word).width));
+            return longestWord > maxWidth
+                ? Math.max(MIN_FONT_SIZE, Math.floor(fontSize * maxWidth / longestWord))
+                : fontSize;
+        })();
+
+        setFont(size);
+        const lines: string[] = [];
+        for (const paragraph of text.split('\n')) {
+            let current = '';
+            for (const word of paragraph.split(/\s+/).filter(Boolean)) {
+                const candidate = current ? `${current} ${word}` : word;
+                if (!current || ctx.measureText(candidate).width <= maxWidth) {
+                    current = candidate;
+                } else {
+                    lines.push(current);
+                    current = word;
+                }
+            }
+            if (current) lines.push(current);
+        }
+        return { lines: lines.length ? lines : [''], size };
+    }
+
+    private parseHex(color: string): { r: number; g: number; b: number } | null {
+        const match = /^#([0-9a-f]{6})$/i.exec(color);
+        if (!match) return null;
+        const value = parseInt(match[1], 16);
+        return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
+    }
+
+    private gradientColors(color: string): { solid: string; clear: string } {
+        const rgb = this.parseHex(color);
+        if (!rgb) {
+            return { solid: 'rgba(0, 102, 204, 0.85)', clear: 'rgba(0, 102, 204, 0)' };
+        }
+        return { solid: color, clear: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)` };
+    }
+
+    /** Texte sombre sur les couleurs claires (jaune, vert, orange), blanc sinon. */
+    private textColorFor(color: string): string {
+        const rgb = this.parseHex(color);
+        if (!rgb) return '#FFFFFF';
+        const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+        return luminance > 0.55 ? '#1F2937' : '#FFFFFF';
     }
 }

@@ -99,14 +99,38 @@
     "BADGE_EDITOR": {
         "TITLE": "Badge Editor",
         "TYPE_LABEL": "Badge Type",
-        "TYPE_PLACEHOLDER": "Select a type",
+        "TYPE_PLACEHOLDER": "Choose a badge type",
         "COLOR_LABEL": "Badge Color",
         "TEXT_LABEL": "Badge Text",
-        "TEXT_PLACEHOLDER": "Enter badge content",
+        "TEXT_PLACEHOLDER": "E.g. Awa turns 25 today!",
         "CUSTOM_TEXT_LABEL": "Badge Description",
-        "CUSTOM_TEXT_PLACEHOLDER": "<Badge description>",
+        "CUSTOM_TEXT_PLACEHOLDER": "E.g. Thank you for all these years!",
         "CUSTOM_BADGE_TYPE_LABEL": "Badge Title",
-        "CUSTOM_BADGE_TYPE_PLACEHOLDER": "Enter the title displayed on the badge"
+        "CUSTOM_BADGE_TYPE_PLACEHOLDER": "E.g. Champion of the year",
+        "TEXT_STYLE": {
+            "TITLE": "Text formatting",
+            "FONT_LABEL": "Font",
+            "SIZE_LABEL": "Text size",
+            "ALIGN_LABEL": "Alignment",
+            "POSITION_LABEL": "Position",
+            "ALIGN": {
+                "LEFT": "Align left",
+                "CENTER": "Center",
+                "RIGHT": "Align right"
+            },
+            "POSITION": {
+                "TOP": "Top",
+                "MIDDLE": "Middle",
+                "BOTTOM": "Bottom"
+            }
+        },
+        "FONTS": {
+            "CLASSIC": "Classic",
+            "MODERN": "Modern",
+            "ELEGANT": "Elegant",
+            "FESTIVE": "Festive"
+        },
+        "PREVIEW_TEXT_FALLBACK": "Your message here"
     },
     "BADGE_TYPES": {
         "BIRTHDAY": "Birthday",
