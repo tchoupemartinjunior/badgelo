@@ -91,7 +91,7 @@
         },
         "FEEDBACK": {
             "TITLE": "Feedback form",
-            "TEXT": "If you write to us through the feedback page, the information you enter (optional name, email, subject, message, rating) is sent to a Google Forms form and used only to reply and improve Badgelo. It is not shared with third parties."
+            "TEXT": "If you write to us through the feedback page, the information you enter (optional name, email, subject, message, rating) is recorded through a message-collection service and used only to reply and improve Badgelo. It is not shared with third parties."
         },
         "RIGHTS": {
             "TITLE": "Your rights",

@@ -91,7 +91,7 @@
         },
         "FEEDBACK": {
             "TITLE": "Formulaire de feedback",
-            "TEXT": "Si vous nous écrivez via la page de feedback, les informations saisies (nom facultatif, email, sujet, message, note) sont transmises à un formulaire Google Forms et utilisées uniquement pour répondre et améliorer Badgelo. Elles ne sont pas partagées avec des tiers."
+            "TEXT": "Si vous nous écrivez via la page de feedback, les informations saisies (nom facultatif, email, sujet, message, note) sont enregistrées via un service de collecte de messages et utilisées uniquement pour répondre et améliorer Badgelo. Elles ne sont pas partagées avec des tiers."
         },
         "RIGHTS": {
             "TITLE": "Vos droits",
