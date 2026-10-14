@@ -77,6 +77,32 @@
         "DESCRIPTION": "La page que vous cherchez n'existe pas ou a été déplacée.",
         "BACK_HOME": "Retour à l'accueil"
     },
+    "PRIVACY": {
+        "TITLE": "Politique de confidentialité",
+        "UPDATED": "Dernière mise à jour : 14 octobre 2026",
+        "INTRO": "Badgelo est un outil gratuit pour ajouter des badges et des textes à vos photos. Cette page explique quelles données sont traitées lorsque vous l'utilisez.",
+        "PHOTOS": {
+            "TITLE": "Vos photos",
+            "TEXT": "Les photos que vous importez sont traitées uniquement dans votre navigateur. Elles ne sont ni envoyées à nos serveurs ni stockées : elles disparaissent quand vous quittez ou rechargez la page."
+        },
+        "ANALYTICS": {
+            "TITLE": "Mesure d'audience",
+            "TEXT": "Nous utilisons Google Analytics pour comprendre comment le site est utilisé (pages visitées, import et téléchargement d'une image, type d'appareil). Ces statistiques n'incluent ni vos photos ni leur contenu. Google peut déposer des cookies et traiter votre adresse IP ; vous pouvez les refuser via les réglages de votre navigateur ou une extension de blocage."
+        },
+        "FEEDBACK": {
+            "TITLE": "Formulaire de feedback",
+            "TEXT": "Si vous nous écrivez via la page de feedback, les informations saisies (nom facultatif, email, sujet, message, note) sont enregistrées via un service de collecte de messages et utilisées uniquement pour répondre et améliorer Badgelo. Elles ne sont pas partagées avec des tiers."
+        },
+        "RIGHTS": {
+            "TITLE": "Vos droits",
+            "TEXT": "Conformément au RGPD, vous pouvez demander l'accès, la rectification ou la suppression des données que vous nous avez transmises via le formulaire de feedback, ou vous opposer à leur traitement, en nous contactant."
+        },
+        "CONTROLLER": {
+            "TITLE": "Responsable du site",
+            "TEXT": "Badgelo est développé et édité par MJ Tchoupe. Pour toute question sur cette politique, utilisez la page de contact ci-dessous."
+        },
+        "CONTACT_BUTTON": "Nous contacter"
+    },
     "EDITOR": {
         "TITLE": "Edition Photo",
         "PREVIEW": "Aperçu de l'image",

@@ -23,6 +23,10 @@ export const routes: Routes = [{
     loadComponent: () => import('./features/about/about').then(m => m.About)
 },
 {
+    path: 'privacy',
+    loadComponent: () => import('./features/privacy/privacy').then(m => m.Privacy)
+},
+{
     path: '**',
     loadComponent: () => import('./features/not-found/not-found').then(m => m.NotFound)
 }
