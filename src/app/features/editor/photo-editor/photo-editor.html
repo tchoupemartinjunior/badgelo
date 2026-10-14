@@ -1,5 +1,5 @@
-<div class="space-y-6">
-    <div class="border-b border-gray-200 pb-4">
+<div class="space-y-3 md:space-y-6">
+    <div class="hidden border-b border-gray-200 pb-4 md:block">
         <h2 class="text-lg font-semibold text-purple-700">{{ 'PHOTO_EDITOR.TITLE' | translate }}</h2>
     </div>
 
@@ -7,7 +7,7 @@
     <div>
         <button type="button" (click)="toggle(acc.key)" [attr.aria-expanded]="isOpen(acc.key)"
             [attr.aria-controls]="'photo-section-' + acc.key"
-            class="w-full flex justify-between items-center px-4 py-2 rounded-lg text-purple-700 font-medium hover:cursor-pointer hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-purple-700">
+            class="w-full min-h-11 flex justify-between items-center px-4 py-2 rounded-lg text-purple-700 font-medium hover:cursor-pointer hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-purple-700">
             {{ acc.label | translate }}
             <span [class.rotate-180]="isOpen(acc.key)" class="transition-transform duration-200" aria-hidden="true">
                 ▼
@@ -15,7 +15,7 @@
         </button>
 
         @if(isOpen(acc.key)) {
-        <div [id]="'photo-section-' + acc.key" class="space-y-4 mt-4 p-6 bg-gray-50 rounded shadow">
+        <div [id]="'photo-section-' + acc.key" class="space-y-4 mt-2 md:mt-4 p-3 md:p-6 bg-gray-50 rounded shadow">
             @switch(acc.key) {
 
             @case('base') {
@@ -30,8 +30,8 @@
             }
 
             @case('transform') {
-            <!-- Format -->
-            <div class="flex flex-col gap-2">
+            <!-- Format (sur mobile : puces sous l'aperçu) -->
+            <div class="hidden flex-col gap-2 md:flex">
                 <span id="photo-format-label" class="text-sm font-medium text-gray-700">{{
                     'PHOTO_EDITOR.TRANSFORM.FORMAT_LABEL' | translate }}</span>
                 <div class="grid grid-cols-2 gap-2" role="group" aria-labelledby="photo-format-label">

@@ -144,9 +144,9 @@ export class EditorStateService {
     this.trackPhoto('select_filter', filter);
   }
 
-  setZoom(zoom: number) {
+  setZoom(zoom: number, track = true) {
     this.updateTransform({ zoom: Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoom)) });
-    this.trackPhoto('adjust_zoom', 'zoom_slider');
+    if (track) this.trackPhoto('adjust_zoom', 'zoom_slider');
   }
 
   setRotation(rotation: number) {

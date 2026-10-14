@@ -5,7 +5,7 @@ import { Preview } from "../preview/preview";
 import { NgClass } from '@angular/common';
 import { ButtonComponent } from "@shared/components/button/button";
 import { EditorStateService } from './state/editor-state.service';
-import { PhotoEditor } from './photo-editor/photo-editor';
+import { FRAME_FORMATS, PhotoEditor } from './photo-editor/photo-editor';
 import { BadgeEditor } from "./badge-editor/badge-editor";
 import { EditorWelcome } from './welcome/editor-welcome';
 import { LogoEditor } from './logo-editor/logo-editor';
@@ -33,6 +33,8 @@ export class Editor implements AfterViewInit {
   fileService = inject(FileService);
   editorStateService = inject(EditorStateService);
   canvasService = inject(CanvasService);
+
+  readonly frameFormats = FRAME_FORMATS;
 
   activeTab: string = 'badge';
 
@@ -80,15 +82,40 @@ export class Editor implements AfterViewInit {
   }
 
   private drag: { startX: number; startY: number; offsetX: number; offsetY: number } | null = null;
+  /** Doigts posés sur le canvas : un seul déplace la photo, deux la zooment (pincement). */
+  private readonly pointers = new Map<number, { x: number; y: number }>();
+  private pinch: { distance: number; zoom: number } | null = null;
 
   onPointerDown(event: PointerEvent) {
-    const { offsetX, offsetY } = this.editorStateService.transform();
     this.canvas.nativeElement.setPointerCapture(event.pointerId);
-    this.drag = { startX: event.clientX, startY: event.clientY, offsetX, offsetY };
+    this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (this.pointers.size === 2) {
+      this.drag = null;
+      this.pinch = { distance: this.pointerDistance(), zoom: this.editorStateService.transform().zoom };
+    } else {
+      this.startDrag(event.clientX, event.clientY);
+    }
   }
 
-  /** Déplace la photo dans le cadre en suivant le pointeur. */
+  private startDrag(x: number, y: number) {
+    const { offsetX, offsetY } = this.editorStateService.transform();
+    this.drag = { startX: x, startY: y, offsetX, offsetY };
+  }
+
+  private pointerDistance(): number {
+    const [a, b] = [...this.pointers.values()];
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  /** Déplace la photo dans le cadre en suivant le pointeur, ou la zoome quand deux doigts se rapprochent. */
   onPointerMove(event: PointerEvent) {
+    if (this.pointers.has(event.pointerId)) this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (this.pinch && this.pointers.size === 2) {
+      if (this.pinch.distance > 0) {
+        this.editorStateService.setZoom(Math.round(this.pinch.zoom * this.pointerDistance() / this.pinch.distance), false);
+      }
+      return;
+    }
     if (!this.drag) return;
     const canvas = this.canvas.nativeElement;
     const rect = canvas.getBoundingClientRect();
@@ -101,8 +128,13 @@ export class Editor implements AfterViewInit {
     );
   }
 
-  onPointerEnd() {
+  onPointerEnd(event: PointerEvent) {
+    this.pointers.delete(event.pointerId);
+    this.pinch = null;
     this.drag = null;
+    // Un doigt reste après un pincement : il reprend le déplacement sans sauter
+    const [remaining] = this.pointers.values();
+    if (remaining) this.startDrag(remaining.x, remaining.y);
   }
 
   onWheel(event: WheelEvent) {

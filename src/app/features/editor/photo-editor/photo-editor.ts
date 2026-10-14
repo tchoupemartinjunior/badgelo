@@ -16,6 +16,14 @@ import { EditorStateService } from '../state/editor-state.service';
 
 type AccordionKey = 'base' | 'transform' | 'filters';
 
+/** Formats de cadre proposés (aussi affichés en puces sous l'aperçu sur mobile). */
+export const FRAME_FORMATS: readonly { value: FrameFormat; labelKey: string }[] = [
+  { value: 'free', labelKey: 'PHOTO_EDITOR.FORMATS.FREE' },
+  { value: 'square', labelKey: 'PHOTO_EDITOR.FORMATS.SQUARE' },
+  { value: 'story', labelKey: 'PHOTO_EDITOR.FORMATS.STORY' },
+  { value: 'avatar', labelKey: 'PHOTO_EDITOR.FORMATS.AVATAR' },
+];
+
 @Component({
   selector: 'bdge-photo-editor',
   imports: [SliderComponent, TranslateModule],
@@ -34,12 +42,7 @@ export class PhotoEditor {
     { key: 'filters', label: 'PHOTO_EDITOR.ACCORDIONS.FILTERS' },
   ];
 
-  readonly formats: readonly { value: FrameFormat; labelKey: string }[] = [
-    { value: 'free', labelKey: 'PHOTO_EDITOR.FORMATS.FREE' },
-    { value: 'square', labelKey: 'PHOTO_EDITOR.FORMATS.SQUARE' },
-    { value: 'story', labelKey: 'PHOTO_EDITOR.FORMATS.STORY' },
-    { value: 'avatar', labelKey: 'PHOTO_EDITOR.FORMATS.AVATAR' },
-  ];
+  readonly formats = FRAME_FORMATS;
 
   /** `iconClass` dessine la forme du cadre dans le bouton. */
   readonly shapes: readonly { value: FrameShape; labelKey: string; iconClass: string }[] = [
