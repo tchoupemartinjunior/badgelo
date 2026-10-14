@@ -102,8 +102,10 @@ export class FileService implements OnDestroy {
     /** Partage natif (feuille de partage iOS/Android) si possible, sinon téléchargement classique. */
     private async deliver(file: File): Promise<'share' | 'download' | 'cancelled'> {
         const nav = navigator as Navigator & { canShare?: (data: ShareData) => boolean };
-        const isTouch = navigator.maxTouchPoints > 0;
-        if (isTouch && typeof nav.share === 'function' && nav.canShare?.({ files: [file] })) {
+        // Partage natif réservé aux vrais mobiles : un PC tactile garde le téléchargement direct
+        const isMobile = /Android|iP(hone|ad|od)/i.test(navigator.userAgent)
+            || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS se présente comme un Mac
+        if (isMobile && typeof nav.share === 'function' && nav.canShare?.({ files: [file] })) {
             try {
                 await nav.share({ files: [file] });
                 return 'share';
