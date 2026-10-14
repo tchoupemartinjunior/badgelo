@@ -49,11 +49,11 @@ describe('EditorStateService', () => {
   });
 
   it('builds the quote settings and creates the badge on first edit', () => {
-    service.setQuoteAuthor('Awa Ndiaye');
+    service.setQuoteAuthor('Camille Martin');
     service.setQuoteLayout('card');
     service.setQuoteMarks('curly');
 
-    expect(service.quote()).toEqual({ author: 'Awa Ndiaye', role: '', marks: 'curly', layout: 'card' });
+    expect(service.quote()).toEqual({ author: 'Camille Martin', role: '', marks: 'curly', layout: 'card' });
     expect(service.hasBadge()).toBe(true);
   });
 });

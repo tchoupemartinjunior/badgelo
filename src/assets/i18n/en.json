@@ -14,7 +14,7 @@
         "TAGLINE": "Edit your images with Badgelo",
         "DESCRIPTION": "Badgelo is a badge management app for events. Create, manage and print participant badges.",
         "HERO_SUB": "Create beautiful badges and image previews in seconds.",
-        "HERO_CTA": "Get Started",
+        "HERO_CTA": "Upload a photo",
         "HERO_LEARN": "Learn more",
         "PLACEHOLDER_IMAGE": "Image placeholder",
         "QUICK": "Fast & Easy",
@@ -53,7 +53,8 @@
                     "TITLE": "Volunteers",
                     "DESC": "Quickly prepare identification badges for teams."
                 }
-            }
+            },
+            "HEADLINE": "Made for people who organize"
         },
         "TESTIMONIALS": {
             "TITLE": "What people say",
@@ -62,11 +63,76 @@
             },
             "QUOTE2": {
                 "TEXT": "Simple, fast and reliable — highly recommended."
-            }
+            },
+            "HEADLINE": "Already used by many"
         },
         "CTA_TITLE": "Ready to create your first badge?",
         "CTA_DESC": "Start now for free — upload an image or try a template.",
-        "CTA_BUTTON": "Start now"
+        "CTA_BUTTON": "Start now",
+        "HERO_BADGE": "Free, no sign-up",
+        "HERO_TITLE_BEFORE": "Give your photos ",
+        "HERO_TITLE_ACCENT": "style",
+        "HERO_TITLE_AFTER": "",
+        "HERO_DESC": "Birthday and welcome badges, quotes with a portrait: add your message and your logo, then download the result in seconds.",
+        "PERKS": {
+            "NO_ACCOUNT": "No account needed",
+            "PRIVATE": "100% private photos",
+            "HD": "HD export"
+        },
+        "SAMPLE": {
+            "BIRTHDAY_TITLE": "Happy birthday",
+            "BIRTHDAY_NAME": "Camille!",
+            "QUOTE": "To serve is to give the best of yourself.",
+            "QUOTE_AUTHOR": "Camille Martin",
+            "QUOTE_ROLE": "Front desk manager",
+            "READY": "Ready to download"
+        },
+        "SHOWCASE": {
+            "EYEBROW": "All-in-one",
+            "TITLE": "One editor, endless ways to create",
+            "ITEMS": {
+                "BADGES": {
+                    "TITLE": "Badges",
+                    "DESC": "Birthday, welcome, farewell or free text, with the font, size and color of your choice."
+                },
+                "QUOTES": {
+                    "TITLE": "Quotes",
+                    "DESC": "The sentence in quotation marks, the author's name and portrait, as a banner, card or full frame."
+                },
+                "FRAMING": {
+                    "TITLE": "Cropping and frames",
+                    "DESC": "Zoom, rotation, story and square formats, round frame for avatars, black-and-white or sepia filters."
+                },
+                "LOGO": {
+                    "TITLE": "Logo and watermark",
+                    "DESC": "Import your logo and place it anywhere, or protect your images with a watermark."
+                }
+            }
+        },
+        "STEPS": {
+            "EYEBROW": "Simple",
+            "TITLE": "Three steps, thirty seconds",
+            "ITEMS": {
+                "IMPORT": {
+                    "TITLE": "Upload",
+                    "DESC": "Drag your photo in or pick it."
+                },
+                "CUSTOMIZE": {
+                    "TITLE": "Customize",
+                    "DESC": "Text, font, color, logo, frame."
+                },
+                "DOWNLOAD": {
+                    "TITLE": "Download",
+                    "DESC": "Your image is ready to share."
+                }
+            }
+        },
+        "DEMO": {
+            "EYEBROW": "In action",
+            "TITLE": "See how simple it is",
+            "ALT_1": "Badgelo demo: the badge and photo editor in action",
+            "ALT_2": "Badgelo demo: the editor features"
+        }
     },
     "NOT_FOUND": {
         "TITLE": "Page not found",
@@ -174,7 +240,7 @@
         "TYPE_PLACEHOLDER": "Choose a badge type",
         "COLOR_LABEL": "Badge Color",
         "TEXT_LABEL": "Badge Text",
-        "TEXT_PLACEHOLDER": "E.g. Awa turns 25 today!",
+        "TEXT_PLACEHOLDER": "E.g. Camille turns 25 today!",
         "CUSTOM_TEXT_LABEL": "Badge Description",
         "CUSTOM_TEXT_PLACEHOLDER": "E.g. Thank you for all these years!",
         "CUSTOM_BADGE_TYPE_LABEL": "Badge Title",
@@ -207,7 +273,7 @@
             "TEXT_LABEL": "Quote",
             "TEXT_PLACEHOLDER": "Write the quote, without quotation marks…",
             "AUTHOR_LABEL": "Quote author",
-            "AUTHOR_PLACEHOLDER": "E.g. Awa Ndiaye",
+            "AUTHOR_PLACEHOLDER": "E.g. Camille Martin",
             "ROLE_LABEL": "Role (optional)",
             "ROLE_PLACEHOLDER": "E.g. Front desk manager",
             "MARKS_LABEL": "Quotation marks",

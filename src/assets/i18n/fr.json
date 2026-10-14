@@ -14,7 +14,7 @@
         "TAGLINE": "Editez vos images en toute simplicité",
         "DESCRIPTION": "Badgelo est une application de gestion de badges pour les événements. Elle permet de créer, gérer et imprimer des badges pour les participants.",
         "HERO_SUB": "Créez de beaux badges et aperçus d'images en quelques secondes.",
-        "HERO_CTA": "Commencer",
+        "HERO_CTA": "Importer une photo",
         "HERO_LEARN": "En savoir plus",
         "PLACEHOLDER_IMAGE": "Espace image",
         "QUICK": "Rapide & Simple",
@@ -53,7 +53,8 @@
                     "TITLE": "Bénévoles",
                     "DESC": "Préparez rapidement des badges d'identification pour vos équipes."
                 }
-            }
+            },
+            "HEADLINE": "Fait pour ceux qui organisent"
         },
         "TESTIMONIALS": {
             "TITLE": "Témoignages",
@@ -62,11 +63,76 @@
             },
             "QUOTE2": {
                 "TEXT": "Simple, rapide et fiable — fortement recommandé."
-            }
+            },
+            "HEADLINE": "Ils l'utilisent déjà"
         },
         "CTA_TITLE": "Prêt à créer votre premier badge ?",
         "CTA_DESC": "Commencez maintenant gratuitement — téléchargez une image ou essayez un modèle.",
-        "CTA_BUTTON": "Commencer"
+        "CTA_BUTTON": "Commencer",
+        "HERO_BADGE": "Gratuit, sans inscription",
+        "HERO_TITLE_BEFORE": "Donnez du ",
+        "HERO_TITLE_ACCENT": "style",
+        "HERO_TITLE_AFTER": " à vos photos",
+        "HERO_DESC": "Badges d'anniversaire, de bienvenue, citations avec portrait : ajoutez votre message, votre logo et téléchargez le résultat en quelques secondes.",
+        "PERKS": {
+            "NO_ACCOUNT": "Sans compte",
+            "PRIVATE": "Photos 100 % privées",
+            "HD": "Export HD"
+        },
+        "SAMPLE": {
+            "BIRTHDAY_TITLE": "Joyeux anniversaire",
+            "BIRTHDAY_NAME": "Camille !",
+            "QUOTE": "Servir, c’est donner le meilleur de soi.",
+            "QUOTE_AUTHOR": "Camille Martin",
+            "QUOTE_ROLE": "Responsable accueil",
+            "READY": "Prêt à télécharger"
+        },
+        "SHOWCASE": {
+            "EYEBROW": "Tout-en-un",
+            "TITLE": "Un éditeur, mille façons de créer",
+            "ITEMS": {
+                "BADGES": {
+                    "TITLE": "Badges",
+                    "DESC": "Anniversaire, bienvenue, au revoir ou texte libre, avec police, taille et couleur au choix."
+                },
+                "QUOTES": {
+                    "TITLE": "Citations",
+                    "DESC": "La phrase entre guillemets, le nom de l'auteur et son portrait, en bandeau, carte ou plein cadre."
+                },
+                "FRAMING": {
+                    "TITLE": "Recadrage et cadres",
+                    "DESC": "Zoom, rotation, formats story et carré, cadre rond pour vos avatars, filtres noir et blanc ou sépia."
+                },
+                "LOGO": {
+                    "TITLE": "Logo et filigrane",
+                    "DESC": "Importez votre logo, placez-le où vous voulez, ou protégez vos images avec un filigrane."
+                }
+            }
+        },
+        "STEPS": {
+            "EYEBROW": "Simple",
+            "TITLE": "Trois étapes, trente secondes",
+            "ITEMS": {
+                "IMPORT": {
+                    "TITLE": "Importez",
+                    "DESC": "Glissez votre photo ou choisissez-la."
+                },
+                "CUSTOMIZE": {
+                    "TITLE": "Personnalisez",
+                    "DESC": "Texte, police, couleur, logo, cadre."
+                },
+                "DOWNLOAD": {
+                    "TITLE": "Téléchargez",
+                    "DESC": "Votre image est prête à partager."
+                }
+            }
+        },
+        "DEMO": {
+            "EYEBROW": "En action",
+            "TITLE": "Voyez comme c’est simple",
+            "ALT_1": "Démonstration de Badgelo : l'éditeur de badges et de photos en action",
+            "ALT_2": "Démonstration de Badgelo : les fonctionnalités de l'éditeur"
+        }
     },
     "ABOUT": {
         "TITLE": "À propos de Badgelo",
@@ -174,7 +240,7 @@
         "TYPE_PLACEHOLDER": "Choisissez un type de badge",
         "COLOR_LABEL": "Couleur du badge",
         "TEXT_LABEL": "Texte du badge",
-        "TEXT_PLACEHOLDER": "Ex. : Awa, 25 ans aujourd'hui !",
+        "TEXT_PLACEHOLDER": "Ex. : Camille, 25 ans aujourd'hui !",
         "CUSTOM_TEXT_LABEL": "Description du badge",
         "CUSTOM_TEXT_PLACEHOLDER": "Ex. : Merci pour toutes ces années !",
         "CUSTOM_BADGE_TYPE_LABEL": "Titre du badge",
@@ -207,7 +273,7 @@
             "TEXT_LABEL": "Citation",
             "TEXT_PLACEHOLDER": "Écrivez la citation, sans les guillemets…",
             "AUTHOR_LABEL": "Auteur de la citation",
-            "AUTHOR_PLACEHOLDER": "Ex. : Awa Ndiaye",
+            "AUTHOR_PLACEHOLDER": "Ex. : Camille Martin",
             "ROLE_LABEL": "Fonction (facultatif)",
             "ROLE_PLACEHOLDER": "Ex. : Responsable accueil",
             "MARKS_LABEL": "Guillemets",

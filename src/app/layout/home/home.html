@@ -1,90 +1,224 @@
 <div class="w-full">
     <!-- Hero -->
-    <section class="w-full bg-white py-20">
-        <div class="max-w-screen-xl mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-10 items-center">
-                <div>
-                    <h1 class="text-5xl font-extrabold text-purple-700 mb-4">{{ 'HOME.TITLE' | translate }}</h1>
-                    <p class="text-lg text-gray-700 mb-6">{{ 'HOME.TAGLINE' | translate }}</p>
-                    <p class="text-gray-600 mb-6">{{ 'HOME.HERO_SUB' | translate }}</p>
-
-                    <div class="flex gap-4">
-                        <button (click)="onFileSelectedButton()"
-                            class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-lg shadow">
-                            {{ 'HOME.HERO_CTA' | translate }}
-                        </button>
-                        <a routerLink="/features" class="text-purple-700 font-medium self-center">{{ 'HOME.HERO_LEARN' |
-                            translate }}</a>
-                    </div>
-
-                    <div class="mt-10 grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-white rounded shadow">
-                            <h3 class="font-semibold">{{ 'HOME.QUICK' | translate }}</h3>
-                            <p class="text-sm text-gray-600">{{ 'HOME.QUICK_DESC' | translate }}</p>
-                        </div>
-                        <div class="p-4 bg-white rounded shadow">
-                            <h3 class="font-semibold">{{ 'HOME.SECURE' | translate }}</h3>
-                            <p class="text-sm text-gray-600">{{ 'HOME.SECURE_DESC' | translate }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-center">
-                    <img src="/assets/images/demo-badgelo.gif" alt="Badgelo Demo - Badge and Photo Editor in Action"
-                        class="w-full rounded-lg shadow-lg" />
-                </div>
-            </div>
+    <section
+        class="relative w-full overflow-hidden bg-linear-to-br from-purple-50 via-white to-orange-50 py-16 lg:py-24">
+        <div aria-hidden="true"
+            class="pointer-events-none absolute inset-0 bg-[radial-gradient(#d8b4fe_1.2px,transparent_1.2px)] bg-size-[28px_28px] opacity-40 mask-[linear-gradient(90deg,transparent_0%,#000_65%)]">
         </div>
-    </section>
 
-    <!-- Features -->
-    <section id="features" class="w-full bg-gray-50 py-16 scroll-mt-4">
-        <div class="max-w-screen-xl mx-auto px-6">
-            <h2 class="text-2xl font-bold mb-6">{{ 'HOME.FEATURES.TITLE' | translate }}</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                @for(feature of features; track feature.titleKey) {
-                <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg transition">
+        <div class="relative mx-auto grid max-w-screen-xl items-center gap-12 px-6 lg:grid-cols-2">
+            <div class="flex flex-col gap-6">
+                <span
+                    class="inline-flex w-fit items-center gap-2 rounded-full border border-purple-200 bg-white px-4 py-2 text-sm text-purple-800">
+                    <span class="size-2 rounded-full bg-orange-400" aria-hidden="true"></span>
+                    {{ 'HOME.HERO_BADGE' | translate }}
+                </span>
+                <h1 class="text-5xl leading-[1.05] font-extrabold tracking-tight text-gray-900 lg:text-6xl">
+                    {{ 'HOME.HERO_TITLE_BEFORE' | translate }}<span
+                        class="font-['Playfair_Display'] font-black text-purple-700 italic">{{ 'HOME.HERO_TITLE_ACCENT' |
+                        translate }}</span>{{ 'HOME.HERO_TITLE_AFTER' | translate }}
+                </h1>
+                <p class="max-w-xl text-lg leading-relaxed text-gray-700">{{ 'HOME.HERO_DESC' | translate }}</p>
+
+                <div class="flex flex-wrap gap-4">
+                    <button type="button" (click)="onFileSelectedButton()"
+                        class="inline-flex min-h-14 items-center gap-3 rounded-2xl bg-linear-to-br from-purple-700 to-purple-600 px-7 font-semibold text-white shadow-lg shadow-purple-700/30 hover:cursor-pointer hover:from-purple-800 hover:to-purple-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 16V4" />
+                            <path d="M7 9l5-5 5 5" />
+                            <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+                        </svg>
+                        {{ 'HOME.HERO_CTA' | translate }}
+                    </button>
+                    <a routerLink="/features"
+                        class="inline-flex min-h-14 items-center rounded-2xl border border-purple-300 bg-white px-6 font-semibold text-purple-800 hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                        {{ 'HOME.HERO_LEARN' | translate }}
+                    </a>
+                </div>
+
+                <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
+                    @for(perk of perks; track perk) {
+                    <li class="flex items-center gap-1.5"><span class="text-purple-700" aria-hidden="true">✓</span>{{
+                        perk | translate }}</li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Composition décorative de badges -->
+            <div aria-hidden="true" class="relative mx-auto hidden h-[580px] w-[560px] lg:block">
+                <!-- Anniversaire -->
+                <div
+                    class="absolute top-[70px] left-0 h-[300px] w-[300px] -rotate-6 overflow-hidden rounded-[22px] bg-white shadow-2xl shadow-gray-900/25">
+                    <div class="absolute inset-0 bg-linear-to-b from-[#fde2b8] via-[#f6a98a] to-[#7a4a6e]"></div>
+                    <svg viewBox="0 0 600 600" class="absolute inset-0 size-full">
+                        <circle cx="440" cy="190" r="60" fill="#fff3d6" opacity=".85" />
+                        <path d="M0 470Q150 380 300 450T600 430V600H0Z" fill="#5a3a63" />
+                        <path d="M120 600C130 500 200 470 300 470 400 470 470 500 480 600Z" fill="#f2b632" />
+                        <rect x="268" y="400" width="64" height="80" rx="24" fill="#8a5a3c" />
+                        <ellipse cx="300" cy="340" rx="78" ry="92" fill="#9a6644" />
+                        <path d="M222 335C215 240 385 240 378 335 360 290 330 275 300 275 265 275 240 295 222 335Z"
+                            fill="#241a2b" />
+                    </svg>
                     <div
-                        class="h-12 w-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center font-bold mb-4">
-                        ★</div>
-                    <h3 class="font-semibold mb-2">{{ feature.titleKey | translate }}</h3>
-                    <p class="text-sm text-gray-600">{{ feature.descKey | translate }}</p>
-                </div>
-                }
-            </div>
-        </div>
-    </section>
-
-    <!-- Targets -->
-    <section class="w-full bg-purple-50 py-16">
-        <div class="max-w-screen-xl mx-auto px-6">
-            <h2 class="text-2xl font-bold mb-6">{{ 'HOME.TARGETS.TITLE' | translate }}</h2>
-            <div class="flex gap-6 flex-wrap">
-                @for(target of targets; track target.key) {
-                <div class="p-4 bg-white rounded-lg shadow w-64">
-                    <h4 class="font-semibold mb-1">{{ target.titleKey | translate }}</h4>
-                    <p class="text-sm text-gray-600">{{ target.descKey | translate }}</p>
-                </div>
-                }
-            </div>
-        </div>
-    </section>
-
-    <!-- Visuals + Testimonials -->
-    <section class="w-full bg-white py-16">
-        <div class="max-w-screen-xl mx-auto px-6 grid lg:grid-cols-2 gap-8 items-start">
-            <div>
-                <img src="/assets/images/demo-badgelo-2.gif" alt="Badgelo Demo - Badge and Photo Editor Features"
-                    class="w-full rounded-lg shadow-lg" />
-            </div>
-            <div>
-                <h2 class="text-2xl font-bold mb-4">{{ 'HOME.TESTIMONIALS.TITLE' | translate }}</h2>
-                <div class="space-y-4">
-                    @for(test of testimonials; track test.author) {
-                    <div class="p-4 bg-white rounded shadow">
-                        <p class="text-gray-700 italic">“{{ test.quoteKey | translate }}”</p>
-                        <p class="mt-2 text-sm font-semibold">— {{ test.author }}</p>
+                        class="absolute inset-x-0 bottom-0 bg-linear-to-t from-[#AF52DE] from-35% to-[#AF52DE]/0 px-4 pt-10 pb-4 text-center text-white">
+                        <div class="font-['Playfair_Display'] text-xl font-bold">{{ 'HOME.SAMPLE.BIRTHDAY_TITLE' |
+                            translate }}</div>
+                        <div class="font-['Playfair_Display'] text-3xl font-black">{{ 'HOME.SAMPLE.BIRTHDAY_NAME' |
+                            translate }}</div>
                     </div>
+                </div>
+
+                <!-- Citation en carte -->
+                <div
+                    class="absolute top-0 right-0 flex h-[340px] w-[270px] rotate-5 flex-col items-center gap-3.5 overflow-hidden rounded-[22px] bg-[#0f766e] px-5.5 py-6 text-center text-white shadow-2xl shadow-gray-900/25">
+                    <div class="relative size-[92px] flex-none overflow-hidden rounded-full border-[3px] border-white">
+                        <div class="absolute inset-0 bg-linear-to-b from-[#fde2b8] via-[#f6a98a] to-[#7a4a6e]"></div>
+                        <svg viewBox="170 200 260 260" class="absolute inset-0 size-full">
+                            <path d="M0 470Q150 380 300 450T600 430V600H0Z" fill="#5a3a63" />
+                            <path d="M120 600C130 500 200 470 300 470 400 470 470 500 480 600Z" fill="#f2b632" />
+                            <rect x="268" y="400" width="64" height="80" rx="24" fill="#8a5a3c" />
+                            <ellipse cx="300" cy="340" rx="78" ry="92" fill="#9a6644" />
+                            <path d="M222 335C215 240 385 240 378 335 360 290 330 275 300 275 265 275 240 295 222 335Z"
+                                fill="#241a2b" />
+                        </svg>
+                    </div>
+                    <div class="font-['Playfair_Display'] text-xl leading-snug font-medium">«&nbsp;{{
+                        'HOME.SAMPLE.QUOTE' | translate }}&nbsp;»</div>
+                    <div class="mt-auto text-sm leading-snug"><strong>{{ 'HOME.SAMPLE.QUOTE_AUTHOR' | translate
+                            }}</strong><br>{{ 'HOME.SAMPLE.QUOTE_ROLE' | translate }}</div>
+                </div>
+
+                <!-- Avatar rond avec logo -->
+                <div
+                    class="absolute bottom-0 left-[150px] size-60 rotate-2 overflow-hidden rounded-full border-[6px] border-white bg-white shadow-2xl shadow-gray-900/25">
+                    <div class="absolute inset-0 bg-linear-to-b from-[#c7d2fe] via-[#a5b4fc] to-[#4338ca]"></div>
+                    <svg viewBox="140 190 320 320" class="absolute inset-0 size-full">
+                        <path d="M120 600C130 500 200 470 300 470 400 470 470 500 480 600Z" fill="#fb923c" />
+                        <rect x="268" y="400" width="64" height="80" rx="24" fill="#8a5a3c" />
+                        <ellipse cx="300" cy="340" rx="78" ry="92" fill="#9a6644" />
+                        <path d="M222 335C215 240 385 240 378 335 360 290 330 275 300 275 265 275 240 295 222 335Z"
+                            fill="#241a2b" />
+                    </svg>
+                    <div
+                        class="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-[10px] bg-white/90 px-2.5 py-1 text-sm font-bold text-purple-700">
+                        Badgelo</div>
+                </div>
+
+                <!-- Pastille -->
+                <div
+                    class="absolute right-5 bottom-[70px] flex items-center gap-2.5 rounded-2xl bg-white px-4 py-3 text-sm font-semibold shadow-xl shadow-gray-900/20">
+                    <span class="flex size-[30px] items-center justify-center rounded-full bg-green-100 text-green-700">✓</span>
+                    {{ 'HOME.SAMPLE.READY' | translate }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fonctionnalités -->
+    <section id="features" class="w-full scroll-mt-4 bg-white py-20">
+        <div class="mx-auto max-w-screen-xl px-6">
+            <div class="text-center">
+                <p class="text-sm font-semibold tracking-widest text-purple-700 uppercase">{{
+                    'HOME.SHOWCASE.EYEBROW' | translate }}</p>
+                <h2 class="mt-2 text-3xl font-bold text-gray-900 lg:text-4xl">{{ 'HOME.SHOWCASE.TITLE' | translate }}
+                </h2>
+            </div>
+            <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                @for(item of showcase; track item.key) {
+                <article
+                    class="rounded-[20px] border border-purple-100 bg-white p-7 shadow-lg shadow-purple-900/5 transition hover:-translate-y-0.5 hover:shadow-xl">
+                    <div class="mb-5 flex size-13 items-center justify-center rounded-2xl" [class]="item.tone">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path [attr.d]="item.icon" />
+                        </svg>
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-gray-900">{{ item.titleKey | translate }}</h3>
+                    <p class="text-[15px] leading-relaxed text-gray-700">{{ item.descKey | translate }}</p>
+                </article>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Démonstrations -->
+    <section class="w-full bg-gray-50 py-20">
+        <div class="mx-auto max-w-screen-xl px-6">
+            <div class="text-center">
+                <p class="text-sm font-semibold tracking-widest text-purple-700 uppercase">{{ 'HOME.DEMO.EYEBROW' |
+                    translate }}</p>
+                <h2 class="mt-2 text-3xl font-bold text-gray-900 lg:text-4xl">{{ 'HOME.DEMO.TITLE' | translate }}</h2>
+            </div>
+            <div class="mt-12 grid gap-8 md:grid-cols-2">
+                <img ngSrc="/assets/images/demo-badgelo.gif" width="940" height="788"
+                    [alt]="'HOME.DEMO.ALT_1' | translate" class="w-full rounded-2xl shadow-xl shadow-purple-900/10" />
+                <img ngSrc="/assets/images/demo-badgelo-2.gif" width="940" height="788"
+                    [alt]="'HOME.DEMO.ALT_2' | translate" class="w-full rounded-2xl shadow-xl shadow-purple-900/10" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Étapes -->
+    <section class="w-full bg-purple-50/60 py-20">
+        <div class="mx-auto max-w-screen-xl px-6">
+            <div class="text-center">
+                <p class="text-sm font-semibold tracking-widest text-purple-700 uppercase">{{ 'HOME.STEPS.EYEBROW' |
+                    translate }}</p>
+                <h2 class="mt-2 text-3xl font-bold text-gray-900 lg:text-4xl">{{ 'HOME.STEPS.TITLE' | translate }}
+                </h2>
+            </div>
+            <ol class="relative mt-12 grid gap-10 md:grid-cols-3">
+                <div aria-hidden="true"
+                    class="absolute top-5.5 right-[16%] left-[16%] hidden border-t-2 border-dashed border-purple-300 md:block">
+                </div>
+                @for(step of steps; track step.num) {
+                <li class="relative text-center">
+                    <span
+                        class="mx-auto flex size-11 items-center justify-center rounded-full bg-purple-700 text-lg font-bold text-white">{{
+                        step.num }}</span>
+                    <h3 class="mt-4 mb-1.5 text-lg font-semibold text-gray-900">{{ step.titleKey | translate }}</h3>
+                    <p class="text-[15px] text-gray-700">{{ step.descKey | translate }}</p>
+                </li>
+                }
+            </ol>
+        </div>
+    </section>
+
+    <!-- Pour qui + témoignages -->
+    <section class="w-full bg-white py-20">
+        <div class="mx-auto grid max-w-screen-xl gap-14 px-6 lg:grid-cols-2">
+            <div>
+                <p class="text-sm font-semibold tracking-widest text-purple-700 uppercase">{{ 'HOME.TARGETS.TITLE' |
+                    translate }}</p>
+                <h2 class="mt-2 text-3xl font-bold text-gray-900">{{ 'HOME.TARGETS.HEADLINE' | translate }}</h2>
+                <ul class="mt-7 flex flex-col gap-3.5">
+                    @for(target of targets; track target.key) {
+                    <li
+                        class="flex items-center gap-4 rounded-[20px] border border-purple-100 bg-white px-5.5 py-5 shadow-lg shadow-purple-900/5">
+                        <span class="flex size-11 flex-none items-center justify-center rounded-2xl text-xl"
+                            [class]="target.tone" aria-hidden="true">{{ target.emoji }}</span>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ target.titleKey | translate }}</h3>
+                            <p class="text-sm text-gray-700">{{ target.descKey | translate }}</p>
+                        </div>
+                    </li>
+                    }
+                </ul>
+            </div>
+            <div>
+                <p class="text-sm font-semibold tracking-widest text-purple-700 uppercase">{{
+                    'HOME.TESTIMONIALS.TITLE' | translate }}</p>
+                <h2 class="mt-2 text-3xl font-bold text-gray-900">{{ 'HOME.TESTIMONIALS.HEADLINE' | translate }}</h2>
+                <div class="mt-7 flex flex-col gap-4">
+                    @for(test of testimonials; track test.author; let first = $first) {
+                    <figure class="rounded-[20px] border p-7 shadow-lg shadow-purple-900/5"
+                        [class]="first ? 'border-purple-700 bg-purple-700 text-white' : 'border-purple-100 bg-white text-gray-900'">
+                        <blockquote class="font-['Playfair_Display'] text-xl leading-snug italic">«&nbsp;{{
+                            test.quoteKey | translate }}&nbsp;»</blockquote>
+                        <figcaption class="mt-3.5 text-sm font-semibold"
+                            [class]="first ? 'text-purple-100' : 'text-purple-800'">— {{ test.author }}</figcaption>
+                    </figure>
                     }
                 </div>
             </div>
@@ -92,13 +226,14 @@
     </section>
 
     <!-- CTA -->
-    <section class="w-full bg-purple-700 text-white py-20">
-        <div class="max-w-screen-xl mx-auto px-6 text-center">
-            <h3 class="text-xl font-bold mb-4">{{ 'HOME.CTA_TITLE' | translate }}</h3>
-            <p class="text-purple-100 mb-6">{{ 'HOME.CTA_DESC' | translate }}</p>
-            <button (click)="onFileSelectedButton()"
-                class="bg-purple-600 hover:bg-purple-500 text-white px-8 py-3 rounded-lg shadow">{{ 'HOME.CTA_BUTTON' |
-                translate }}</button>
+    <section class="w-full bg-linear-to-br from-purple-900 via-purple-700 to-purple-500 py-20 text-white">
+        <div class="mx-auto flex max-w-screen-xl flex-col items-center gap-4 px-6 text-center">
+            <h2 class="text-3xl font-bold lg:text-4xl">{{ 'HOME.CTA_TITLE' | translate }}</h2>
+            <p class="text-lg text-purple-100">{{ 'HOME.CTA_DESC' | translate }}</p>
+            <button type="button" (click)="onFileSelectedButton()"
+                class="mt-2 min-h-14 rounded-2xl bg-white px-8 font-bold text-purple-800 shadow-xl shadow-black/25 hover:cursor-pointer hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                {{ 'HOME.CTA_BUTTON' | translate }}
+            </button>
         </div>
     </section>
 
