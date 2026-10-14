@@ -29,6 +29,8 @@ export class FileService {
         this._previewUrl.set(URL.createObjectURL(file));
         this.canvasService.drawImageToCanvas(this.previewUrl());
         this.editorStateService.resetEditor();
+        this.editorStateService.clearHistory();
+        this.editorStateService.setImageSize(null);
         this.analyticsService.track('upload_image', {
             event_category: 'file_management',
             event_label: 'image_upload'

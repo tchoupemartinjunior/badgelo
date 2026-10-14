@@ -16,6 +16,14 @@
     transition: all 0.3s ease;
     z-index: 50;
 
+    /* Sur mobile, reste au-dessus de la barre d'actions de l'éditeur */
+    @media (max-width: 767px) {
+        bottom: 5.5rem;
+        right: 1rem;
+        width: 3rem;
+        height: 3rem;
+    }
+
     &:hover {
         transform: scale(1.1);
         box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);

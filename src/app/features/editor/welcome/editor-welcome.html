@@ -1,0 +1,58 @@
+<section class="mx-auto flex w-full max-w-3xl flex-col items-center px-4 pt-10 pb-8 text-center sm:pt-14">
+    <h1 class="text-4xl leading-tight font-bold text-gray-800 sm:text-5xl">
+        {{ 'EDITOR_WELCOME.TITLE' | translate }}
+        <span class="text-purple-700">{{ 'EDITOR_WELCOME.TITLE_HIGHLIGHT' | translate }}</span>
+    </h1>
+    <p class="mt-3 max-w-xl text-lg text-gray-600">{{ 'EDITOR_WELCOME.SUBTITLE' | translate }}</p>
+
+    <!-- Zone de dépôt -->
+    <div [class]="dragging() ? 'border-purple-600 bg-purple-100' : 'border-violet-400 bg-purple-50 hover:border-purple-600 hover:bg-purple-100'"
+        class="mt-9 flex w-full flex-col items-center gap-4 rounded-3xl border-2 border-dashed px-6 py-12 transition-colors duration-150">
+        <div class="flex size-18 items-center justify-center rounded-full bg-violet-100 text-violet-700">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 16V4" />
+                <path d="M7 9l5-5 5 5" />
+                <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+            </svg>
+        </div>
+
+        <div>
+            <p class="text-2xl font-semibold text-gray-800">{{ 'EDITOR_WELCOME.DROP_TITLE' | translate }}</p>
+            <p class="mt-1 text-gray-600">{{ 'EDITOR_WELCOME.OR' | translate }}</p>
+        </div>
+
+        <button type="button" (click)="fileInput.click()"
+            class="inline-flex min-h-13 items-center gap-2.5 rounded-xl bg-purple-700 px-6 text-base font-semibold text-white hover:cursor-pointer hover:bg-purple-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <circle cx="9" cy="10" r="2" />
+                <path d="M21 16l-5-5-8 8" />
+            </svg>
+            {{ 'EDITOR.UPLOAD_IMAGE' | translate }}
+        </button>
+        <input #fileInput type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)"
+            [attr.aria-label]="'EDITOR.UPLOAD_IMAGE' | translate" />
+
+        <p class="text-sm text-gray-600">{{ 'EDITOR_WELCOME.FORMATS' | translate }}</p>
+    </div>
+
+    <!-- Ce que l'on peut faire -->
+    <ul class="mt-7 flex flex-wrap justify-center gap-3">
+        @for(feature of features; track feature) {
+        <li class="inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700">
+            {{ feature | translate }}
+        </li>
+        }
+    </ul>
+
+    <p class="mt-6 flex items-center gap-2 text-sm text-gray-600">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="11" width="16" height="10" rx="2" />
+            <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </svg>
+        {{ 'EDITOR_WELCOME.PRIVACY' | translate }}
+    </p>
+</section>

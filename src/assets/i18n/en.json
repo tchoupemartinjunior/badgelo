@@ -77,9 +77,13 @@
         "INSTRUCTIONS": "Click the button below to select an image from your device.",
         "TABS": {
             "PHOTO": "Photo Editor",
-            "BADGE": "Badge"
+            "BADGE": "Badge",
+            "LOGO": "Logo"
         },
-        "UPLOAD_IMAGE": "Upload image"
+        "UPLOAD_IMAGE": "Upload image",
+        "UNDO": "Undo",
+        "REDO": "Redo",
+        "DROP_HERE": "Drop your photo here"
     },
     "PHOTO_EDITOR": {
         "TITLE": "Photo Editor",
@@ -94,6 +98,33 @@
             "BASE": "Base settings",
             "FILTERS": "Filters",
             "TRANSFORM": "Transformations"
+        },
+        "TRANSFORM": {
+            "FORMAT_LABEL": "Format",
+            "SHAPE_LABEL": "Frame",
+            "ZOOM_LABEL": "Zoom",
+            "ROTATION_LABEL": "Fine rotation",
+            "ROTATE_LEFT": "Rotate left",
+            "ROTATE_RIGHT": "Rotate right",
+            "FLIP": "Flip horizontally",
+            "RECENTER": "Recenter",
+            "HINT": "Drag the photo to move it, use the wheel or the slider to zoom."
+        },
+        "FORMATS": {
+            "FREE": "Free",
+            "SQUARE": "Square 1080",
+            "STORY": "Story 9:16",
+            "AVATAR": "Round avatar"
+        },
+        "SHAPES": {
+            "SQUARE": "Square",
+            "ROUNDED": "Rounded",
+            "CIRCLE": "Round"
+        },
+        "FILTERS": {
+            "NONE": "Original",
+            "BW": "Black & white",
+            "SEPIA": "Sepia"
         }
     },
     "BADGE_EDITOR": {
@@ -130,12 +161,32 @@
             "ELEGANT": "Elegant",
             "FESTIVE": "Festive"
         },
-        "PREVIEW_TEXT_FALLBACK": "Your message here"
+        "PREVIEW_TEXT_FALLBACK": "Your message here",
+        "QUOTE": {
+            "TEXT_LABEL": "Quote",
+            "TEXT_PLACEHOLDER": "Write the quote, without quotation marks…",
+            "AUTHOR_LABEL": "Quote author",
+            "AUTHOR_PLACEHOLDER": "E.g. Awa Ndiaye",
+            "ROLE_LABEL": "Role (optional)",
+            "ROLE_PLACEHOLDER": "E.g. Front desk manager",
+            "MARKS_LABEL": "Quotation marks",
+            "MARKS_FRENCH": "French guillemets",
+            "MARKS_CURLY": "Curly quotes",
+            "MARKS_STRAIGHT": "Straight quotes",
+            "LAYOUT_LABEL": "Layout",
+            "LAYOUT_BAND": "Banner",
+            "LAYOUT_CARD": "Card",
+            "LAYOUT_FULL": "Full frame",
+            "PORTRAIT_HINT": "The imported photo is used as the author’s portrait.",
+            "PREVIEW_QUOTE": "To serve is to give the best of yourself.",
+            "PREVIEW_AUTHOR": "Author name"
+        }
     },
     "BADGE_TYPES": {
         "BIRTHDAY": "Birthday",
         "WELCOME": "Welcome",
         "FAREWELL": "Farewell",
+        "QUOTE": "Quote",
         "CUSTOM": "Custom Badge"
     },
     "FEEDBACK": {
@@ -170,5 +221,41 @@
         "ABOUT_US": "About Us",
         "CONTACT": "Contact",
         "PRIVACY_POLICY": "Privacy Policy"
+    },
+    "EDITOR_WELCOME": {
+        "TITLE": "Photo",
+        "TITLE_HIGHLIGHT": "editor",
+        "SUBTITLE": "Import a photo to add a badge, a text or a quote.",
+        "DROP_TITLE": "Drag and drop your photo here",
+        "OR": "or",
+        "FORMATS": "JPG, PNG or WebP",
+        "PILL_BADGES": "Birthday, welcome badges…",
+        "PILL_QUOTES": "Quotes with portrait",
+        "PILL_FRAMING": "Cropping, round frame, logo",
+        "PRIVACY": "Your photos stay private."
+    },
+    "LOGO_EDITOR": {
+        "TITLE": "Logo and watermark",
+        "UPLOAD": "Import a logo",
+        "REPLACE": "Replace",
+        "REMOVE": "Remove",
+        "HINT": "A PNG with a transparent background looks best.",
+        "POSITION_LABEL": "Position",
+        "BOTTOM_HINT": "At the top or bottom, the logo avoids the badge text.",
+        "SIZE_LABEL": "Size",
+        "OPACITY_LABEL": "Opacity",
+        "WATERMARK_LABEL": "Add a watermark",
+        "WATERMARK_DESC": "The text “Badgelo” is repeated diagonally over the photo.",
+        "POSITIONS": {
+            "TL": "Top left",
+            "TC": "Top center",
+            "TR": "Top right",
+            "ML": "Middle left",
+            "MC": "Center",
+            "MR": "Middle right",
+            "BL": "Bottom left",
+            "BC": "Bottom center",
+            "BR": "Bottom right"
+        }
     }
 }

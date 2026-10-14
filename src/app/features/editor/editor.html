@@ -1,4 +1,9 @@
-<div class="container p-4 mx-auto flex flex-col pt-5 items-center">
+@if(!fileService.previewUrl()) {
+<bdge-editor-welcome [dragging]="dragging()" />
+}
+
+<!-- Toujours présent dans le DOM : le canvas doit exister dès l'import de la photo -->
+<div class="container px-2 py-4 sm:p-4 mx-auto flex flex-col pt-3 sm:pt-5 items-center" [class.hidden]="!fileService.previewUrl()">
     <div>
         <h1 class="text-3xl text-purple-700">{{ 'EDITOR.TITLE' | translate }}</h1>
     </div>
@@ -9,12 +14,12 @@
         <!-- Edition section -->
         @if(fileService.previewUrl()) {
         <div
-            class="w-full md:w-1/3 p-4 border-purple-200 md:border-r shadow-lg rounded-lg flex flex-col justify-between">
+            class="w-full md:w-1/3 p-3 md:p-4 border-purple-200 md:border-r shadow-lg rounded-lg flex flex-col justify-between md:max-h-[calc(100vh-7rem)]">
             <div class="border-b border-gray-200 mb-4">
-                <nav class="-mb-px flex gap-6">
+                <nav class="-mb-px flex md:gap-6">
                     @for(tab of tabs; track tab.index) {
-                    <button (click)="activeTab = tab.key"
-                        class="border-b-2 px-1 pb-2 text-sm font-medium hover:cursor-pointer" [ngClass]="activeTab === tab.key 
+                    <button type="button" (click)="activeTab = tab.key" [attr.aria-pressed]="activeTab === tab.key"
+                        class="min-h-11 flex-1 md:flex-none border-b-2 px-1 text-sm font-medium hover:cursor-pointer" [ngClass]="activeTab === tab.key 
                 ? 'border-purple-600 text-purple-600' 
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'">
                         {{ tab.label |translate}}
@@ -22,7 +27,7 @@
                     }
                 </nav>
             </div>
-            <div class="flex-grow">
+            <div class="flex-grow min-h-0 md:overflow-y-auto md:pr-2">
                 @switch(activeTab) {
                 @case('photo') {
                 <bdge-photo-editor />
@@ -31,10 +36,14 @@
                 @case('badge') {
                 <bdge-badge-editor />
                 }
+
+                @case('logo') {
+                <bdge-logo-editor />
+                }
                 }
             </div>
 
-            <div class="mt-4 flex justify-start">
+            <div class="mt-4 flex justify-start pb-1">
                 <bdge-button [text]="'EDITOR.RESET_CHANGES' | translate" [bgColor]="'bg-gray-500'"
                     [onHoverBgColor]="'bg-gray-500'" (onClick)="editorStateService.resetEditor()"></bdge-button>
             </div>
@@ -43,23 +52,76 @@
 
 
         <!-- Preview section -->
-        <div class="w-full md:w-2/3 p-4 flex flex-col items-center bg-gray-50">
-            <h2>{{ 'EDITOR.PREVIEW' | translate }}</h2>
+        <div class="w-full md:w-2/3 p-3 md:p-4 flex flex-col items-center bg-gray-50 rounded-t-lg md:rounded-none sticky top-0 z-20 shadow-md md:shadow-none md:top-4 md:self-start">
+            <div class="flex w-full items-center justify-between">
+                <h2 class="text-base md:text-lg">{{ 'EDITOR.PREVIEW' | translate }}</h2>
+                @if(fileService.previewUrl()) {
+                <div class="flex gap-2">
+                    <button type="button" (click)="editorStateService.undo()"
+                        [disabled]="!editorStateService.canUndo()" [attr.aria-label]="'EDITOR.UNDO' | translate"
+                        [attr.title]="'EDITOR.UNDO' | translate"
+                        class="flex size-11 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:cursor-pointer hover:border-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 disabled:cursor-default disabled:bg-gray-100 disabled:text-gray-500 disabled:hover:border-gray-300">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 14L4 9l5-5" />
+                            <path d="M4 9h10a6 6 0 0 1 0 12h-3" />
+                        </svg>
+                    </button>
+                    <button type="button" (click)="editorStateService.redo()"
+                        [disabled]="!editorStateService.canRedo()" [attr.aria-label]="'EDITOR.REDO' | translate"
+                        [attr.title]="'EDITOR.REDO' | translate"
+                        class="flex size-11 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:cursor-pointer hover:border-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 disabled:cursor-default disabled:bg-gray-100 disabled:text-gray-500 disabled:hover:border-gray-300">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 14l5-5-5-5" />
+                            <path d="M20 9H10a6 6 0 0 0 0 12h3" />
+                        </svg>
+                    </button>
+                </div>
+                }
+            </div>
+
+            @if(fileService.previewUrl()) {
+            <!-- Formats : défilement horizontal sous l'aperçu (mobile uniquement) -->
+            <div class="md:hidden -mx-3 mt-2 flex w-[calc(100%+1.5rem)] gap-2 overflow-x-auto px-3 pb-1" role="group"
+                [attr.aria-label]="'PHOTO_EDITOR.TRANSFORM.FORMAT_LABEL' | translate">
+                @for(format of frameFormats; track format.value) {
+                <button type="button" (click)="editorStateService.setFrameFormat(format.value)"
+                    [attr.aria-pressed]="editorStateService.frame().format === format.value"
+                    [class]="editorStateService.frame().format === format.value ? 'border-purple-700 bg-purple-700 text-white' : 'border-gray-300 bg-white text-gray-700'"
+                    class="min-h-11 flex-none whitespace-nowrap rounded-lg border px-4 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    {{ format.labelKey | translate }}
+                </button>
+                }
+            </div>
+            }
 
             @if(!editorStateService.hasChanges()) {
             <bdge-preview></bdge-preview>
             }
-            <canvas [hidden]="!editorStateService.hasChanges()" class="h-100 w-full object-contain" #canvas></canvas>
+            <canvas [hidden]="!editorStateService.hasChanges()" class="h-[34svh] max-h-80 md:h-100 md:max-h-none w-full touch-none cursor-grab object-contain active:cursor-grabbing"
+                (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)"
+                (pointerup)="onPointerEnd($event)" (pointercancel)="onPointerEnd($event)" (wheel)="onWheel($event)"
+                #canvas></canvas>
         </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 mt-4 items-center w-full md:w-11/12"
+    <!-- Barre d'actions : collée en bas de l'écran sur mobile -->
+    <div class="sticky bottom-0 z-30 mt-3 flex w-[calc(100%+1rem)] gap-2 border-t border-gray-200 bg-white/95 px-2 py-3 backdrop-blur sm:w-[calc(100%+2rem)] sm:px-4 md:static md:mt-4 md:w-11/12 md:gap-4 md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
         [ngClass]="fileService.previewUrl() ? 'justify-center md:justify-end' : 'justify-center'">
-        <bdge-upload-button [backgroundColor]="'bg-gray-700'" (fileSelected)="fileService.upload($event)">
+        <bdge-upload-button class="flex-1 md:flex-none [&_label]:block [&_label]:px-3 [&_label]:text-center [&_label]:text-sm md:[&_label]:px-6 md:[&_label]:text-base"
+            [backgroundColor]="'bg-gray-700'" (fileSelected)="fileService.upload($event)">
         </bdge-upload-button>
         @if(fileService.previewUrl()) {
-        <bdge-button [text]="'EDITOR.DOWNLOAD_IMAGE' | translate" (onClick)="fileService.download()" />
+        <bdge-button class="flex-1 md:flex-none [&_button]:w-full [&_button]:px-3 [&_button]:text-sm md:[&_button]:w-auto md:[&_button]:px-6 md:[&_button]:text-base"
+            [text]="'EDITOR.DOWNLOAD_IMAGE' | translate" (onClick)="fileService.download()" />
         }
     </div>
 
 </div>
+
+@if(dragging()) {
+<div class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-purple-900/60">
+    <p class="rounded-2xl bg-white px-8 py-6 text-xl font-semibold text-purple-800 shadow-xl">{{ 'EDITOR.DROP_HERE' | translate }}</p>
+</div>
+}

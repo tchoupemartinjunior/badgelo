@@ -7,7 +7,7 @@ import { Component, input, output, EventEmitter, ChangeDetectionStrategy } from 
       <label class="block text-gray-700 mb-1">{{ label() }}</label>
       <input
         type="range"
-        class="w-full accent-indigo-600 cursor-pointer"
+        class="h-9 md:h-auto w-full accent-purple-600 cursor-pointer"
         [min]="min()"
         [max]="max()"
         [value]="value()"
