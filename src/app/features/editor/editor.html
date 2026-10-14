@@ -43,9 +43,11 @@
                 }
             </div>
 
-            <div class="mt-4 flex justify-start pb-1">
-                <bdge-button [text]="'EDITOR.RESET_CHANGES' | translate" [bgColor]="'bg-gray-500'"
-                    [onHoverBgColor]="'bg-gray-500'" (onClick)="editorStateService.resetEditor()"></bdge-button>
+            <div class="mt-2 flex justify-start border-t border-gray-100 pt-2 pb-1">
+                <button type="button" (click)="editorStateService.resetEditor()"
+                    class="min-h-11 rounded-lg px-1 text-sm text-gray-600 underline underline-offset-2 hover:cursor-pointer hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+                    {{ 'EDITOR.RESET_CHANGES' | translate }}
+                </button>
             </div>
         </div>
         }

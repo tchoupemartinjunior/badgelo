@@ -138,7 +138,7 @@
             (valueChange)="updateTextSize($event)"
             [label]="'BADGE_EDITOR.TEXT_STYLE.SIZE_LABEL' | translate"></bdge-slider>
 
-        <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4">
             <!-- Alignement -->
             <div class="flex flex-none flex-col gap-2">
                 <span id="text-align-label" class="text-sm font-medium text-gray-700">{{
@@ -161,7 +161,7 @@
 
             <!-- Position (seule la disposition « Bandeau » d'une citation la prend en compte) -->
             @if(!isQuote() || quote().layout === 'band') {
-            <div class="flex min-w-0 flex-1 flex-col gap-2">
+            <div class="flex min-w-48 flex-1 flex-col gap-2">
                 <span id="text-position-label" class="text-sm font-medium text-gray-700">{{
                     'BADGE_EDITOR.TEXT_STYLE.POSITION_LABEL' | translate }}</span>
                 <div class="grid grid-cols-3 gap-1.5" role="group" aria-labelledby="text-position-label">
