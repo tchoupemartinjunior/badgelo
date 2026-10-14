@@ -72,6 +72,11 @@
         "TITLE": "À propos de Badgelo",
         "DESCRIPTION": "Badgelo a été développé pour faciliter la gestion des badges lors des événements. Il offre une interface conviviale et des fonctionnalités avancées pour répondre aux besoins des organisateurs d'événements."
     },
+    "NOT_FOUND": {
+        "TITLE": "Page introuvable",
+        "DESCRIPTION": "La page que vous cherchez n'existe pas ou a été déplacée.",
+        "BACK_HOME": "Retour à l'accueil"
+    },
     "EDITOR": {
         "TITLE": "Edition Photo",
         "PREVIEW": "Aperçu de l'image",
