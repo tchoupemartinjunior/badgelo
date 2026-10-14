@@ -108,6 +108,33 @@
         </div>
     </div>
 
+    @if(fileService.previewUrl()) {
+    <!-- Options d'export -->
+    <div class="mt-3 flex w-full flex-wrap items-center justify-center gap-2 text-sm text-gray-700 md:w-11/12 md:justify-end">
+        <label class="flex items-center gap-2">
+            <span>{{ 'EDITOR.EXPORT.FORMAT' | translate }}</span>
+            <select class="min-h-11 rounded-lg border border-gray-300 bg-white px-2"
+                [value]="fileService.exportFormat()"
+                (change)="fileService.exportFormat.set($any($event.target).value)">
+                <option value="png">PNG</option>
+                <option value="jpeg">JPEG</option>
+            </select>
+        </label>
+        <label class="flex items-center gap-2">
+            <span>{{ 'EDITOR.EXPORT.SIZE' | translate }}</span>
+            <select class="min-h-11 rounded-lg border border-gray-300 bg-white px-2"
+                (change)="fileService.exportMaxSize.set($any($event.target).value ? +$any($event.target).value : null)">
+                <option value="" [selected]="fileService.exportMaxSize() === null">{{ 'EDITOR.EXPORT.SIZE_ORIGINAL' | translate }}</option>
+                <option value="2048" [selected]="fileService.exportMaxSize() === 2048">2048 px</option>
+                <option value="1080" [selected]="fileService.exportMaxSize() === 1080">1080 px</option>
+            </select>
+        </label>
+    </div>
+    @if(fileService.downloadError(); as errorKey) {
+    <p role="alert" class="mt-2 text-center text-sm text-red-600">{{ errorKey | translate }}</p>
+    }
+    }
+
     <!-- Barre d'actions : collée en bas de l'écran sur mobile -->
     <div class="sticky bottom-0 z-30 mt-3 flex w-[calc(100%+1rem)] gap-2 border-t border-gray-200 bg-white/95 px-2 py-3 backdrop-blur sm:w-[calc(100%+2rem)] sm:px-4 md:static md:mt-4 md:w-11/12 md:gap-4 md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
         [ngClass]="fileService.previewUrl() ? 'justify-center md:justify-end' : 'justify-center'">
@@ -116,7 +143,7 @@
         </bdge-upload-button>
         @if(fileService.previewUrl()) {
         <bdge-button class="flex-1 md:flex-none [&_button]:w-full [&_button]:px-3 [&_button]:text-sm md:[&_button]:w-auto md:[&_button]:px-6 md:[&_button]:text-base"
-            [text]="'EDITOR.DOWNLOAD_IMAGE' | translate" (onClick)="fileService.download()" />
+            [text]="'EDITOR.DOWNLOAD_IMAGE' | translate" [disabled]="fileService.downloading()" (onClick)="fileService.download()" />
         }
     </div>
 

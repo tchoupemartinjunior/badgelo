@@ -77,6 +77,12 @@
         "PREVIEW": "Aperçu de l'image",
         "RESET_CHANGES": "Réinitialiser les modifications",
         "DOWNLOAD_IMAGE": "Téléchargez l'image",
+        "DOWNLOAD_ERROR": "L'export de l'image a échoué. Réessayez.",
+        "EXPORT": {
+            "FORMAT": "Format",
+            "SIZE": "Taille",
+            "SIZE_ORIGINAL": "Taille d'origine"
+        },
         "UPLOAD_TITLE": "Télécharger une image",
         "INSTRUCTIONS": "Cliquez sur le bouton ci-dessous pour sélectionner une image depuis votre appareil.",
         "TABS": {

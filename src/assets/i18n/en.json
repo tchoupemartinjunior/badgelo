@@ -73,6 +73,12 @@
         "PREVIEW": "Image Preview",
         "RESET_CHANGES": "Reset changes",
         "DOWNLOAD_IMAGE": "Download image",
+        "DOWNLOAD_ERROR": "Image export failed. Please try again.",
+        "EXPORT": {
+            "FORMAT": "Format",
+            "SIZE": "Size",
+            "SIZE_ORIGINAL": "Original size"
+        },
         "UPLOAD_TITLE": "Upload Image",
         "INSTRUCTIONS": "Click the button below to select an image from your device.",
         "TABS": {

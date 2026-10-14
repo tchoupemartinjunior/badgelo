@@ -243,39 +243,49 @@ export class CanvasService {
         return { r: r * 255, g: g * 255, b: b * 255 };
     }
 
-    async exportAndDownload(previewUrl: string, canvas: HTMLCanvasElement, filename = 'Badgelo-edited-image.png'): Promise<void> {
+    /**
+     * Redessine l'image puis l'encode en PNG ou JPEG.
+     * `maxSize` limite le plus grand côté (en px) ; l'image n'est jamais agrandie.
+     */
+    async exportBlob(
+        previewUrl: string,
+        canvas: HTMLCanvasElement,
+        options: { type: 'image/png' | 'image/jpeg'; quality?: number; maxSize?: number | null }
+    ): Promise<Blob> {
         await this.drawImageToCanvas(previewUrl);
 
-        const blob = await new Promise<Blob | null>((resolve) =>
-            canvas.toBlob(resolve, 'image/png')
-        );
+        let source = canvas;
+        const longest = Math.max(canvas.width, canvas.height);
+        if (options.maxSize && longest > options.maxSize) {
+            const ratio = options.maxSize / longest;
+            source = document.createElement('canvas');
+            source.width = Math.max(1, Math.round(canvas.width * ratio));
+            source.height = Math.max(1, Math.round(canvas.height * ratio));
+            const ctx = source.getContext('2d')!;
+            ctx.imageSmoothingQuality = 'high';
+            if (options.type === 'image/jpeg') {
+                // JPEG n'a pas de transparence : fond blanc plutôt que noir
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, source.width, source.height);
+            }
+            ctx.drawImage(canvas, 0, 0, source.width, source.height);
+        } else if (options.type === 'image/jpeg') {
+            source = document.createElement('canvas');
+            source.width = canvas.width;
+            source.height = canvas.height;
+            const ctx = source.getContext('2d')!;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, source.width, source.height);
+            ctx.drawImage(canvas, 0, 0);
+        }
 
+        const blob = await new Promise<Blob | null>((resolve) =>
+            source.toBlob(resolve, options.type, options.quality)
+        );
         if (!blob) {
             throw new Error('Failed to create image blob');
         }
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        // Some browsers (notably iOS Safari) ignore the download attribute.
-        // Append link to the DOM so click() works reliably on mobile browsers.
-        document.body.appendChild(link);
-
-        const isDownloadSupported = 'download' in HTMLAnchorElement.prototype;
-        const isIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !(window as any).MSStream;
-
-        if (!isDownloadSupported || isIOS) {
-            // Fallback: open in new tab so user can long-press to save the image.
-            window.open(url, '_blank');
-        } else {
-            link.click();
-        }
-
-        setTimeout(() => {
-            URL.revokeObjectURL(url);
-            if (link.parentNode) link.parentNode.removeChild(link);
-        }, 1000);
+        return blob;
     }
 
     drawOverlay(
