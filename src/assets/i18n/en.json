@@ -68,6 +68,15 @@
         "CTA_DESC": "Start now for free — upload an image or try a template.",
         "CTA_BUTTON": "Start now"
     },
+    "NOT_FOUND": {
+        "TITLE": "Page not found",
+        "DESCRIPTION": "The page you are looking for does not exist or has been moved.",
+        "BACK_HOME": "Back to home"
+    },
+    "ABOUT": {
+        "TITLE": "About Badgelo",
+        "DESCRIPTION": "Badgelo was built to make badge creation easier for events. It offers a friendly interface and advanced features for event organizers."
+    },
     "EDITOR": {
         "TITLE": "Photo Editor",
         "PREVIEW": "Image Preview",
