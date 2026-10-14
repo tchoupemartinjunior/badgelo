@@ -1,0 +1,17 @@
+<main class="mx-auto max-w-3xl px-6 py-16">
+  <h1 class="mb-2 text-3xl font-bold text-gray-900">{{ 'PRIVACY.TITLE' | translate }}</h1>
+  <p class="mb-8 text-sm text-gray-600">{{ 'PRIVACY.UPDATED' | translate }}</p>
+  <p class="mb-8 text-gray-700">{{ 'PRIVACY.INTRO' | translate }}</p>
+
+  @for (section of sections; track section) {
+  <section class="mb-8">
+    <h2 class="mb-2 text-xl font-semibold text-gray-900">{{ 'PRIVACY.' + section + '.TITLE' | translate }}</h2>
+    <p class="text-gray-700">{{ 'PRIVACY.' + section + '.TEXT' | translate }}</p>
+  </section>
+  }
+
+  <a routerLink="/feedback"
+    class="inline-block rounded-lg bg-purple-700 px-6 py-3 font-medium text-white hover:bg-purple-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700">
+    {{ 'PRIVACY.CONTACT_BUTTON' | translate }}
+  </a>
+</main>

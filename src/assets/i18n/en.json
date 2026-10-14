@@ -77,6 +77,32 @@
         "TITLE": "About Badgelo",
         "DESCRIPTION": "Badgelo was built to make badge creation easier for events. It offers a friendly interface and advanced features for event organizers."
     },
+    "PRIVACY": {
+        "TITLE": "Privacy policy",
+        "UPDATED": "Last updated: October 14, 2026",
+        "INTRO": "Badgelo is a free tool to add badges and text overlays to your photos. This page explains what data is processed when you use it.",
+        "PHOTOS": {
+            "TITLE": "Your photos",
+            "TEXT": "The photos you import are processed only in your browser. They are neither sent to our servers nor stored: they disappear when you leave or reload the page."
+        },
+        "ANALYTICS": {
+            "TITLE": "Audience measurement",
+            "TEXT": "We use Google Analytics to understand how the site is used (pages visited, image import and download, device type). These statistics do not include your photos or their content. Google may set cookies and process your IP address; you can refuse them through your browser settings or a blocking extension."
+        },
+        "FEEDBACK": {
+            "TITLE": "Feedback form",
+            "TEXT": "If you write to us through the feedback page, the information you enter (optional name, email, subject, message, rating) is sent to a Google Forms form and used only to reply and improve Badgelo. It is not shared with third parties."
+        },
+        "RIGHTS": {
+            "TITLE": "Your rights",
+            "TEXT": "Under the GDPR, you can request access to, correction or deletion of the data you sent us through the feedback form, or object to its processing, by contacting us."
+        },
+        "CONTROLLER": {
+            "TITLE": "Site owner",
+            "TEXT": "Badgelo is developed and published by MJ Tchoupe. For any question about this policy, use the contact page below."
+        },
+        "CONTACT_BUTTON": "Contact us"
+    },
     "EDITOR": {
         "TITLE": "Photo Editor",
         "PREVIEW": "Image Preview",
